@@ -333,6 +333,7 @@
 		F69A090018EEA72D00D88D85 /* ALAirplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALAirplayView.m; sourceTree = "<group>"; };
 		F69A090118EEA72D00D88D85 /* ALButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALButton.h; sourceTree = "<group>"; };
 		F69A090218EEA72D00D88D85 /* ALButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALButton.m; sourceTree = "<group>"; };
+		F6A8D66119260CF700B6E1D9 /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defines.h; sourceTree = "<group>"; };
 		F6C6D85F18FD067E00A6ED0B /* sunny_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sunny_small.png; sourceTree = "<group>"; };
 		F6C6D86018FD067E00A6ED0B /* foggy_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = foggy_small.png; sourceTree = "<group>"; };
 		F6C6D86118FD067E00A6ED0B /* snowy_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snowy_small.png; sourceTree = "<group>"; };
@@ -427,6 +428,7 @@
 		F62D112B18FF6C950041CEFE /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				F6A8D66119260CF700B6E1D9 /* defines.h */,
 				F62D112818FE78E80041CEFE /* networkWeather.h */,
 				F62D112918FE78E80041CEFE /* networkWeather.m */,
 				3D8642D6191917AA00D985A2 /* AFWeather.h */,

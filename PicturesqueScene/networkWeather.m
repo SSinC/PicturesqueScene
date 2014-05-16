@@ -14,8 +14,12 @@
 #import "FMResultSet.h"
 #import "FMDatabaseAdditions.h"
 #import "LocationManager.h"
+#import "defines.h"
 
 @implementation networkWeather
+{
+    NSUserDefaults *_userDefaults;
+}
 
 
 + (instancetype)sharedInstance
@@ -33,6 +37,8 @@
 - (instancetype)_init
 {
     if (self = [super init]) {
+        _userDefaults = [NSUserDefaults standardUserDefaults];
+        
     }
     return self;
 }
@@ -131,10 +137,12 @@
             [db close];
             
             if (cityNumber == nil) {
-                NSLog(@"city Number is Nil");
-                cityNumber = @"101210101";
+                NSLog(@"city Number is Nil,uses PSLastCityNumber");
+//                cityNumber = @"101210101";
+                cityNumber = [_userDefaults objectForKey:PSLastCityNumber];
             }else{
                 NSLog(@"cityNumber:%@",cityNumber);
+                [_userDefaults setObject:cityNumber forKey:PSLastCityNumber];
             }
             
             NSString *string1 = @"http://www.weather.com.cn/data/cityinfo/";
@@ -182,8 +190,13 @@
         }else{
             json = nil;
         }
+        
         if(nil == json){
             NSLog(@"json is nil");
+            NSString *lastMainWeather = [_userDefaults objectForKey:PSLastMainWeather];
+            if ([self.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
+                [self.delegate gotWeatherInfo:lastMainWeather];
+            }
             return ;
         }
         
@@ -207,6 +220,7 @@
         //         NSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
         //         NSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ",text0,text1,text2,text3,text4,text5,text6,text7);
         
+        [_userDefaults setObject:text4 forKey:PSLastMainWeather];
         if ([self.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
             [self.delegate gotWeatherInfo:text4];
         }

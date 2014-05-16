@@ -8,11 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
-
-#define  MMLastLongitude @"MMLastLongitude"
-#define  MMLastLatitude  @"MMLastLatitude"
-#define  MMLastCity      @"MMLastCity"
-#define  MMLastAddress   @"MMLastAddress"
+#import "defines.h"
 
 typedef void (^LocationBlock)(CLLocationCoordinate2D locationCorrrdinate);
 typedef void (^LocationErrorBlock) (NSError *error);
