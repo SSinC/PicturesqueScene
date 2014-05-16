@@ -1,6 +1,6 @@
 //
 //  networkWeater.m
-//  GraduationProject
+//  PicturesqueScene
 //
 //  Created by Stan on 14-4-16.
 //  Copyright (c) 2014年 Stan. All rights reserved.
@@ -21,6 +21,7 @@
 + (instancetype)sharedInstance
 {
     static networkWeather *sharedInstance = nil;
+    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] _init];
@@ -59,15 +60,15 @@
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:queue
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
-                                    handler(response, data, error);
-                                    dispatch_group_leave(group);
-                                }];
+                                   handler(response, data, error);
+                                   dispatch_group_leave(group);
+                               }];
     }
 }
 
 #pragma mark - Obtain weather info
 /****************************
-  Location based ,obtain weather info automaticlly.
+ Location based ,obtain weather info automaticlly.
  ****************************/
 - (void)obtainWeaterInfoLocationBased
 {
@@ -76,10 +77,10 @@
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
-//            NSString *targetName = [addressString substringToIndex:(addressString.length-1)];
+            //            NSString *targetName = [addressString substringToIndex:(addressString.length-1)];
             NSString *targetName = addressString;
             NSLog(@"city name :%@",targetName);
-
+            
             //寻找路径
             NSString *doc_path=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
             //数据库路径
@@ -159,7 +160,7 @@
 {
     if(![CheckNetwork isExistenceNetwork]) return nil;
     
-//    NSURL *url1 =  [NSURL URLWithString:@"http://www.weather.com.cn/data/cityinfo/101210101.html"];
+    //    NSURL *url1 =  [NSURL URLWithString:@"http://www.weather.com.cn/data/cityinfo/101210101.html"];
     NSURL *url1 = [NSURL URLWithString:URLString];
     NSURLRequest *request1 = [[NSURLRequest alloc]initWithURL:url1 cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
     //    NSData *received1 = [NSURLConnection sendSynchronousRequest:request1 returningResponse:nil error:nil];
@@ -171,39 +172,45 @@
     //        NSString *text9 = [json1 objectForKey:[keyArray1 objectAtIndex:9]];
     
     [NSURLConnection sendAsynchronousRequest:request1 queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError){
-         NSDictionary *json = [NSJSONSerialization
-                               JSONObjectWithData:data
-                               options:kNilOptions
-                               error:&connectionError];
-         if(nil == json){
-             NSLog(@"json is nil");
-             return ;
-         }
         
-         // print all the info obtained
-         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:nil];
-         NSLog(@"jsonData %@",[NSString stringWithUTF8String:[jsonData bytes]]);
+        NSDictionary *json;
+        if(data){
+           json = [NSJSONSerialization
+                              JSONObjectWithData:data
+                              options:kNilOptions
+                              error:&connectionError];
+        }else{
+            json = nil;
+        }
+        if(nil == json){
+            NSLog(@"json is nil");
+            return ;
+        }
         
-         NSDictionary *json1 = [json objectForKey:[[json allKeys]objectAtIndex:0]];
-         NSArray *keyArray1 = [json1 allKeys];
-         text0 = [json1 objectForKey:[keyArray1 objectAtIndex:0]];
-         text1 = [json1 objectForKey:[keyArray1 objectAtIndex:1]];
-         text2 = [json1 objectForKey:[keyArray1 objectAtIndex:2]];
-         text3 = [json1 objectForKey:[keyArray1 objectAtIndex:3]];
-         text4 = [json1 objectForKey:[keyArray1 objectAtIndex:4]];
-         text5 = [json1 objectForKey:[keyArray1 objectAtIndex:5]];
-         text6 = [json1 objectForKey:[keyArray1 objectAtIndex:6]];
-         text7 = [json1 objectForKey:[keyArray1 objectAtIndex:7]];
-         //        text8 = [json1 objectForKey:[keyArray1 objectAtIndex:8]];
-         //        text9 = [json1 objectForKey:[keyArray1 objectAtIndex:9]];
-         
-         //         NSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
-//         NSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ",text0,text1,text2,text3,text4,text5,text6,text7);
-         
-         if ([self.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
-             [self.delegate gotWeatherInfo:text4];
-         }
-     }];
+        // print all the info obtained
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:nil];
+        NSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
+        
+        NSDictionary *json1 = [json objectForKey:[[json allKeys]objectAtIndex:0]];
+        NSArray *keyArray1 = [json1 allKeys];
+        text0 = [json1 objectForKey:[keyArray1 objectAtIndex:0]];
+        text1 = [json1 objectForKey:[keyArray1 objectAtIndex:1]];
+        text2 = [json1 objectForKey:[keyArray1 objectAtIndex:2]];
+        text3 = [json1 objectForKey:[keyArray1 objectAtIndex:3]];
+        text4 = [json1 objectForKey:[keyArray1 objectAtIndex:4]];
+        text5 = [json1 objectForKey:[keyArray1 objectAtIndex:5]];
+        text6 = [json1 objectForKey:[keyArray1 objectAtIndex:6]];
+        text7 = [json1 objectForKey:[keyArray1 objectAtIndex:7]];
+        //        text8 = [json1 objectForKey:[keyArray1 objectAtIndex:8]];
+        //        text9 = [json1 objectForKey:[keyArray1 objectAtIndex:9]];
+        
+        //         NSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
+        //         NSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ",text0,text1,text2,text3,text4,text5,text6,text7);
+        
+        if ([self.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
+            [self.delegate gotWeatherInfo:text4];
+        }
+    }];
     
     
     //     NSError* error;
@@ -249,7 +256,7 @@
     [[AFWeather sharedClient]fetchForecastOfLocationWithName:cityName andCompletionBlock:^(NSDictionary *response, NSError *error) {
         if (!error) {
             NSData *data = [NSJSONSerialization dataWithJSONObject:response options:NSJSONWritingPrettyPrinted error:nil];
-            NSLog(@"%@",[NSString stringWithUTF8String:[data bytes]]);
+            NSLog(@"jsonData %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
             
             NSDictionary *jsonData = [response objectForKey:@"data"];
             NSArray *jsonCurrentCondition = [jsonData valueForKey:@"current_condition"];

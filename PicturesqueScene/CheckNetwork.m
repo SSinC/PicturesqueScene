@@ -16,15 +16,15 @@
     switch ([r currentReachabilityStatus]) {
         case NotReachable:
 			isExistenceNetwork=FALSE;
-            //   NSLog(@"无网络连接");
+            NSLog(@"无网络连接");
             break;
         case ReachableViaWWAN:
 			isExistenceNetwork=TRUE;
-            //   NSLog(@"3G网络");
+            NSLog(@"3G网络");
             break;
         case ReachableViaWiFi:
 			isExistenceNetwork=TRUE;
-            //  NSLog(@"Wifi网络");
+            NSLog(@"Wifi网络");
             break;
     }
 	if (!isExistenceNetwork) {

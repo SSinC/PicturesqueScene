@@ -1,6 +1,6 @@
 //
 //  StanGlassScrollView.m
-//  GraduationProject
+//  PicturesqueScene
 //
 //  Created by stan on 3/25/14.
 //  Copyright (c) 2014 stan. All rights reserved.

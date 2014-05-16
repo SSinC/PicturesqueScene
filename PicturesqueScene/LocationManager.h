@@ -1,9 +1,9 @@
 //
 //  LocationManager.h
-//  GraduationProject
+//  PicturesqueScene
 //
 //  Created by stan on 5/12/14.
-//  Copyright (c) 2013 stan. All rights reserved.
+//  Copyright (c) 2014 stan. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

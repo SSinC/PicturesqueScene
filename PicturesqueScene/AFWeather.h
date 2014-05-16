@@ -1,9 +1,9 @@
 //
 //  AFWeather.h
-//  AFWeather-Demo
+//  PicturesqueScene
 //
-//  Created by Alvaro Franco on 4/22/14.
-//  Copyright (c) 2014 AlvaroFranco. All rights reserved.
+//  Created by stan on 5/12/14.
+//  Copyright (c) 2014 stan. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

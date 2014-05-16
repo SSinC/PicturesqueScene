@@ -1,9 +1,9 @@
 //
 //  ViewController.m
-//  GraduationProject
+//  PicturesqueScene
 //
 //  Created by stan on 3/25/14.
-//  Copyright (c) 2013 stan. All rights reserved.
+//  Copyright (c) 2014 stan. All rights reserved.
 //
 
 #import "ViewController.h"
@@ -127,10 +127,9 @@ typedef enum {
     /*************************************
      Netwokr weather instance
      *************************************/
-//    networkWeather *weatherInstance = [networkWeather sharedInstance];
-//    weatherInstance.delegate = self;
-//    NSString *weather = [weatherInstance getWeather:nil];
-//    [weatherInstance obtainWeaterInfoLocationBased];
+    networkWeather *weatherInstance = [networkWeather sharedInstance];
+    weatherInstance.delegate = self;
+    [weatherInstance obtainWeaterInfoLocationBased];
     
 //    NSArray *testArray = @[@"1",@"2",@"3",@"2",@"5"];
 //    NSIndexSet *areaIndexes = [testArray indexesOfObjectsWithOptions:NSEnumerationConcurrent

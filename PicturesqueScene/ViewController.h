@@ -1,9 +1,9 @@
 //
 //  ViewController.h
-//  GraduationProject
+//  PicturesqueScene
 //
 //  Created by stan on 3/25/14.
-//  Copyright (c) 2013 stan. All rights reserved.
+//  Copyright (c) 2014 stan. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

@@ -1,9 +1,9 @@
 //
 //  LocationManager.h
-//  GraduationProject
+//  PicturesqueScene
 //
 //  Created by stan on 5/12/14.
-//  Copyright (c) 2013 stan. All rights reserved.
+//  Copyright (c) 2014 stan. All rights reserved.
 //
 
 #import "LocationManager.h"
@@ -24,12 +24,13 @@
     static dispatch_once_t pred = 0;
     __strong static id _sharedObject = nil;
     dispatch_once(&pred, ^{
-        _sharedObject = [[self alloc] init];
+        _sharedObject = [[self alloc] _init];
     });
     return _sharedObject;
 }
 
-- (id)init {
+- (instancetype)_init
+{
     self = [super init];
     if (self) {
         NSUserDefaults *standard = [NSUserDefaults standardUserDefaults];
@@ -40,10 +41,41 @@
         self.latitude = latitude;
         self.lastCoordinate = CLLocationCoordinate2DMake(longitude,latitude);
         self.lastCity = [standard objectForKey:MMLastCity];
+        NSLog(@"lastcity:%@",self.lastCity);
         self.lastAddress=[standard objectForKey:MMLastAddress];
     }
     return self;
+
 }
+
+- (instancetype)init
+{
+    [NSException raise:NSStringFromClass([self class]) format:@"Use sharedInstance instead of New And Init."];
+    return nil;
+}
+
++ (instancetype)new
+{
+    [NSException raise:NSStringFromClass([self class]) format:@"Use sharedInstance instead of New And Init."];
+    return nil;
+}
+
+//- (id)init
+//{
+//    self = [super init];
+//    if (self) {
+//        NSUserDefaults *standard = [NSUserDefaults standardUserDefaults];
+//        
+//        float longitude = [standard floatForKey:MMLastLongitude];
+//        float latitude = [standard floatForKey:MMLastLatitude];
+//        self.longitude = longitude;
+//        self.latitude = latitude;
+//        self.lastCoordinate = CLLocationCoordinate2DMake(longitude,latitude);
+//        self.lastCity = [standard objectForKey:MMLastCity];
+//        self.lastAddress=[standard objectForKey:MMLastAddress];
+//    }
+//    return self;
+//}
 
 - (void) getLocationCoordinate:(LocationBlock) locaiontBlock
 {

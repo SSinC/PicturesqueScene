@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>9ACEDE4D-C51F-4D5E-9F98-2D4F49F4C0B8</string>
+	<key>IDESourceControlProjectName</key>
+	<string>PicturesqueScene</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>3272EFAD-099E-445B-9B4D-44E9823A1391</key>
+		<string>https://github.com/SSinC/PicturesqueScene.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>PicturesqueScene.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>3272EFAD-099E-445B-9B4D-44E9823A1391</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/SSinC/PicturesqueScene.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>3272EFAD-099E-445B-9B4D-44E9823A1391</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3272EFAD-099E-445B-9B4D-44E9823A1391</string>
+			<key>IDESourceControlWCCName</key>
+			<string>PicturesqueScene</string>
+		</dict>
+	</array>
+</dict>
+</plist>
