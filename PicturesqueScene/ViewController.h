@@ -10,6 +10,7 @@
 #import "STANSideBar.h"
 #import "networkWeather.h"
 #import "ALMoviePlayerController.h"
+#import "WeatherUI.h"
 @interface ViewController : UIViewController
 <STANSideBarDelegate,UIScrollViewDelegate,weatherDelegate>
 

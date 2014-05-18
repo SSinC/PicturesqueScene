@@ -10,6 +10,7 @@
 #import "FBShimmeringView.h"
 
 typedef NS_ENUM(NSUInteger, weatherType) {
+
     Sunny = 0,
     Cloudy,
     Rainy,
@@ -27,8 +28,8 @@ typedef NS_ENUM(NSUInteger, weatherType) {
 //    NSInteger   humidity;
 //    NSInteger   wind;
 //}
-@property(nonatomic,copy) NSString*     city;
-@property(nonatomic,copy) NSString*     cityNumber;
+@property(nonatomic) NSString*     city;
+@property(nonatomic) NSString*     cityNumber;
 @property(nonatomic,readwrite) weatherType   weather;
 @property(nonatomic,readwrite) NSInteger    mainTemperature;
 @property(nonatomic,readwrite) NSInteger    upTemperature;
@@ -38,27 +39,33 @@ typedef NS_ENUM(NSUInteger, weatherType) {
 
 @property(nonatomic,readonly) UIImage*      weatherImage;
 
+-(id)initByItem:(weatherDataItem*)item;
+-(id)initWithCity:(NSString*)cityname weather:( weatherType)weather mainTemp:(NSInteger)temp upTemp:(NSInteger)upTemp downTemp:(NSInteger)downTemp humidity:(NSInteger)humidity wind:(NSInteger)wind ;
+
 @end
 
 @interface weatherInfoDetailView : UIView
 {
-    UILabel*                        cityLabel;
-    UIImageView*                    weatherImageV;
-    FBShimmeringView*               mainTempView;
-    FBShimmeringView*               mainCView;
+    UILabel*                        _cityLabel;
+    UIImageView*                    _weatherImageV;
+    UILabel*                        _contentOfmainTempView;
+    FBShimmeringView*               _mainTempView;
+    UILabel*                        _contentOfmainCView;
+    FBShimmeringView*               _mainCView;
     
-    UIImageView*                    line;
+    UIImageView*                    _line;
     
-    UIImageView*                    upTempIcon;
-    UIImageView*                    downTempIcon;
-    UIImageView*                    perecitationIcon;
-    UIImageView*                    windPowerIcon;
+    UIImageView*                    _upTempIcon;
+    UIImageView*                    _downTempIcon;
+    UIImageView*                    _perecitationIcon;
+    UIImageView*                    _windPowerIcon;
     
-    UILabel*                        upTmpLabel;
-    UILabel*                        downTmpLabel;
-    UILabel*                        humidityLabel ;
-    UILabel*                        windLabel;
-    
+    UILabel*                        _upTmpLabel;
+    UILabel*                        _downTmpLabel;
+    UILabel*                        _humidityLabel ;
+    UILabel*                        _windLabel;
 }
-@property(nonatomic,retain)weatherDataItem* dataItem;
+@property (strong)weatherDataItem* dataItem;
+-(id)initWithFrame:(CGRect)frame withDataItem:(weatherDataItem*)item;
+
 @end

@@ -253,9 +253,13 @@ typedef enum {
 //
 //
 //    });
+    weatherDataItem* data = [[weatherDataItem alloc]initWithCity:@"杭州" weather:Sunny mainTemp:18 upTemp:22 downTemp:16 humidity:56 wind:12];
 
+    weatherInfoDetailView* pop = [[weatherInfoDetailView alloc]initWithFrame:CGRectMake(0, 0, 360, 360) withDataItem:data];
     
-    _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"杭州" image:@"sunny_big" mainTemp:23 upTemp:26 downTemp:10 humidity:10 wind:14 ]  headerView:[self headerViewWithCityName:@"杭州" temp:23 mainweather:sunny] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
+   // pop.dataItem = data;
+
+    _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop  headerView:[self headerViewWithCityName:@"杭州" temp:23 mainweather:sunny] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
 
     _glassScrollView2 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"cloudy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"cloudy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"武汉" image:@"cloudy_big" mainTemp:18 upTemp:22 downTemp:16 humidity:10 wind:14 ] headerView:[self headerViewWithCityName:@"武汉" temp:18 mainweather:cloudy] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
 

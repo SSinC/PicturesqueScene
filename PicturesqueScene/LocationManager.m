@@ -35,14 +35,14 @@
     if (self) {
         NSUserDefaults *standard = [NSUserDefaults standardUserDefaults];
         
-        float longitude = [standard floatForKey:MMLastLongitude];
-        float latitude = [standard floatForKey:MMLastLatitude];
+        float longitude = [standard floatForKey:PSLastLongitude];
+        float latitude = [standard floatForKey:PSLastLatitude];
         self.longitude = longitude;
         self.latitude = latitude;
         self.lastCoordinate = CLLocationCoordinate2DMake(longitude,latitude);
-        self.lastCity = [standard objectForKey:MMLastCity];
+        self.lastCity = [standard objectForKey:PSLastCity];
         NSLog(@"lastcity:%@",self.lastCity);
-        self.lastAddress=[standard objectForKey:MMLastAddress];
+        self.lastAddress=[standard objectForKey:PSLastAddress];
     }
     return self;
 
@@ -117,8 +117,8 @@
     
     NSUserDefaults *standard = [NSUserDefaults standardUserDefaults];
     
-    [standard setObject:@(self.lastCoordinate.longitude) forKey:MMLastLongitude];
-    [standard setObject:@(self.lastCoordinate.latitude) forKey:MMLastLatitude];
+    [standard setObject:@(self.lastCoordinate.longitude) forKey:PSLastLongitude];
+    [standard setObject:@(self.lastCoordinate.latitude) forKey:PSLastLatitude];
     
     CLGeocoder *clGeoCoder = [[CLGeocoder alloc] init];
     CLGeocodeCompletionHandler handle = ^(NSArray *placemarks,NSError *error)
@@ -136,8 +136,8 @@
             self.lastCity = city;
             self.lastAddress=[NSString stringWithFormat:@"%@%@%@%@",state,city,subLocality,street];
             
-            [standard setObject:self.lastCity forKey:MMLastCity];
-            [standard setObject:self.lastAddress forKey:MMLastAddress];
+            [standard setObject:self.lastCity forKey:PSLastCity];
+            [standard setObject:self.lastAddress forKey:PSLastAddress];
             
             [self stopLocation];
         }
