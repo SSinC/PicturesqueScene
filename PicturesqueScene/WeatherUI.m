@@ -62,9 +62,9 @@
 
 -(void)setWeather:(weatherType)weather
 {
-//    if (_weather == weather) {
-//        return;
-//    }
+    //    if (_weather == weather) {
+    //        return;
+    //    }
     _weather = weather;
     
     switch (_weather) {
@@ -108,7 +108,7 @@
     if (self) {
         self.layer.cornerRadius = self.bounds.size.width / 4 ;
         self.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.65];
-       // if (!item) return self;
+        // if (!item) return self;
         
         if (_dataItem == nil) {
             _dataItem = [[weatherDataItem alloc] init];
@@ -135,7 +135,7 @@
     [self createHumidityLabel];
     [self createWindPowerIcon];
     [self createWindLabel];
-
+    
 }
 -(void)setDataItem:(weatherDataItem *)newitem
 {
@@ -151,7 +151,7 @@
 
 -(UILabel*)createCityLabel
 {
-
+    
     _cityLabel = [[UILabel alloc]init];
     _cityLabel.text = self.dataItem.city;
     _cityLabel.textColor = [UIColor whiteColor];
@@ -165,7 +165,7 @@
 
 -(UIImageView*)createWeatherImageV
 {
-   
+    
     _weatherImageV = [[UIImageView alloc]initWithImage:self.dataItem.weatherImage];
     [self addSubview:_weatherImageV];
     return _weatherImageV;
@@ -173,16 +173,16 @@
 
 -(FBShimmeringView*)createMainTempView
 {
-   
+    
     _contentOfmainTempView = [[UILabel alloc]init];
     [_contentOfmainTempView setText:[NSString stringWithFormat:@"%i",self.dataItem.mainTemperature]];
     [_contentOfmainTempView setTextColor:[UIColor whiteColor]];
     _contentOfmainTempView.font = [UIFont boldSystemFontOfSize:70];
     _contentOfmainTempView.textAlignment = NSTextAlignmentCenter;
     _contentOfmainTempView.adjustsFontSizeToFitWidth = YES;
-   
+    
     _mainTempView = [[FBShimmeringView alloc] initWithFrame:CGRectMake(40, 228, 90, 90)];
-//    FBShimmeringView *shimmeringVieWeather = [[FBShimmeringView alloc] initWithFrame:CGRectMake(40, 228, 90, 90)];
+    //    FBShimmeringView *shimmeringVieWeather = [[FBShimmeringView alloc] initWithFrame:CGRectMake(40, 228, 90, 90)];
     _mainTempView.contentView = _contentOfmainTempView;
     _mainTempView.shimmeringSpeed = 75;
     _mainTempView.shimmering = YES;
@@ -224,7 +224,7 @@
 
 -(UIImageView*)createDownTempIcon
 {
-   
+    
     _downTempIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"downWeather"]];
     [self addSubview:_downTempIcon];
     return _downTempIcon;
@@ -239,7 +239,7 @@
 
 -(UIImageView*)createWindPowerIcon
 {
-  
+    
     _windPowerIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"windPower_main"]];
     [self addSubview:_windPowerIcon];
     return _windPowerIcon;
@@ -247,9 +247,9 @@
 
 -(UILabel*)createUpTmpLabel
 {
-  
+    
     _upTmpLabel = [[UILabel alloc]init];
-   // _upTmpLabel.backgroundColor = [UIColor redColor];
+    // _upTmpLabel.backgroundColor = [UIColor redColor];
     [_upTmpLabel setText:[NSString stringWithFormat:@"%d℃",self.dataItem.upTemperature]];
     [_upTmpLabel setTextColor:[UIColor whiteColor]];
     _upTmpLabel.font = [UIFont systemFontOfSize:14.0];
@@ -262,10 +262,10 @@
 
 -(UILabel*)createDownTmpLabel
 {
-
+    
     _downTmpLabel = [[UILabel alloc]init];
-   // _downTmpLabel.backgroundColor = [UIColor redColor];
-
+    // _downTmpLabel.backgroundColor = [UIColor redColor];
+    
     [_downTmpLabel setText:[NSString stringWithFormat:@"%d℃",self.dataItem.downTemperature]];
     [_downTmpLabel setTextColor:[UIColor whiteColor]];
     _downTmpLabel.font = [UIFont systemFontOfSize:14.0];
@@ -280,7 +280,7 @@
 {
     
     _humidityLabel = [[UILabel alloc]init];
-  //  _humidityLabel.backgroundColor = [UIColor redColor];
+    //  _humidityLabel.backgroundColor = [UIColor redColor];
     [_humidityLabel setText:[NSString stringWithFormat:@"%d%%",self.dataItem.humidity]];
     [_humidityLabel setTextColor:[UIColor whiteColor]];
     _humidityLabel.textAlignment = NSTextAlignmentCenter;
@@ -294,10 +294,10 @@
 
 -(UILabel*)createWindLabel
 {
-  
+    
     _windLabel = [[UILabel alloc]init];
     //_windLabel.backgroundColor = [UIColor redColor];
-
+    
     [_windLabel setText:[NSString stringWithFormat:@"%dkm/h",self.dataItem.wind]];
     [_windLabel setTextColor:[UIColor whiteColor]];
     _windLabel.textAlignment = NSTextAlignmentCenter;
@@ -389,13 +389,197 @@
     _perecitationIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"precipitation_main"]];
     _downTempIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"downWeather"]];
     _windPowerIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"windPower_main"]];
-
+    
     [_upTmpLabel setText:[NSString stringWithFormat:@"%d℃",self.dataItem.upTemperature]];
     [_downTmpLabel setText:[NSString stringWithFormat:@"%d℃",self.dataItem.downTemperature]];
     [_humidityLabel setText:[NSString stringWithFormat:@"%d%%",self.dataItem.humidity]];
     [_windLabel setText:[NSString stringWithFormat:@"%dkm/h",self.dataItem.wind]];
-
+    
 }
 
+
+@end
+
+
+/*******************************   watherForecastView   **************************/
+@interface weatherForecastView ()
+{
+    UILabel*        _titleLbel;
+    UIView*         _line;
+    UIImageView*    _weatherImgView;
+    
+    UIImageView*    _upTmpIcon;
+    UIImageView*    _downTmpIcon;
+    UILabel*        _upTmpLabel;
+    UILabel*        _downTmpLabel;
+    
+    UIImageView*    _dashedLine;
+    
+    BOOL            _isios7Later;
+    
+}
+@end
+@implementation weatherForecastView
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    
+    if (self) {
+        self.layer.cornerRadius = self.frame.size.width/4.f;
+        self.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.65];
+        
+        _weather = -1;
+        _isios7Later = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? YES : NO;
+        
+        [self createAllSubviews];
+    }
+    
+    return self;
+}
+- (id)initWithFrame:(CGRect)frame Title:(NSString *)title weather:(weatherType)weather upTemperature:(NSInteger)upTmp downTemperature:(NSInteger)downTmp
+{
+    self = [super initWithFrame:frame];
+    
+    if (self) {
+        
+        self.layer.cornerRadius = self.frame.size.width/4.f;
+        self.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.65];
+        
+        _weather = -1;
+        _isios7Later = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? YES : NO;
+        
+        self.title = title;
+        self.weather = weather;
+        self.upTemperature = upTmp;
+        self.downTemperature = downTmp;
+        
+        [self createAllSubviews];
+    }
+    
+    return self;
+}
+- (void)createAllSubviews
+{
+    _titleLbel = [[UILabel alloc] init];
+    [_titleLbel setText:_title];
+    [_titleLbel setTextColor:[UIColor whiteColor]];
+    //    [labelTitle setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:20]];
+    _titleLbel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:_titleLbel];
+    
+    _line =  [[UIView alloc]init];
+    _line.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.4];
+    [self addSubview:_line];
+    
+    _weatherImgView = [[UIImageView alloc]init];
+    //_weatherImgView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"sunny_small"]];
+    
+    [self addSubview:_weatherImgView];
+    
+    _upTmpIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"upWeather_big"]];
+    [self addSubview:_upTmpIcon];
+    _downTmpIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"downWeather_big"]];
+    [self addSubview:_downTmpIcon];
+    
+    _upTmpLabel = [[UILabel alloc] init];
+    [_upTmpLabel setText:[NSString stringWithFormat:@"%i℃",_upTemperature]];
+    [_upTmpLabel setTextColor:[UIColor whiteColor]];
+    //    [_upTmpLabel setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:30]];
+    _upTmpLabel.adjustsFontSizeToFitWidth = YES;
+    [self addSubview:_upTmpLabel];
+    
+    _downTmpLabel = [[UILabel alloc] init];
+    [_downTmpLabel setText:[NSString stringWithFormat:@"%i℃",_downTemperature]];
+    [_downTmpLabel setTextColor:[UIColor whiteColor]];
+    //    [_downTmpLabel setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:30]];
+    _downTmpLabel.adjustsFontSizeToFitWidth = YES;
+    [self addSubview:_downTmpLabel];
+    
+    _dashedLine = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"line"]];
+    [self addSubview:_dashedLine];
+    
+}
+- (void)setTitle:(NSString *)newtitle
+{
+    if ([_title isEqualToString:newtitle]) {
+        return;
+    }
+    _title = newtitle;
+    [_titleLbel setText:_title];
+}
+
+- (void)setWeather:(weatherType)newweather
+{
+    if (_weather == newweather) {
+        return;
+    }
+    _weather = newweather;
+    switch (_weather) {
+        case Sunny:
+            [_weatherImgView setImage:[UIImage imageNamed:@"sunny_small"]];
+            break;
+        case Rainy:
+            [_weatherImgView setImage:[UIImage imageNamed:@"rainy_small"]];
+            break;
+        case Cloudy:
+            [_weatherImgView setImage:[UIImage imageNamed:@"cloudy_small"]];
+            break;
+        case Snowy:
+            [_weatherImgView setImage:[UIImage imageNamed:@"snowy_small"]];
+            break;
+        case Foggy:
+            [_weatherImgView setImage:[UIImage imageNamed:@"foggy_small"]];
+            
+            break;
+        default:
+            break;
+    }
+}
+- (void)setUpTemperature:(NSInteger)tmp
+{
+    if (_upTemperature == tmp) {
+        return;
+    }
+    _upTemperature = tmp;
+    [_upTmpLabel setText:[NSString stringWithFormat:@"%i℃",_upTemperature]];
+}
+
+- (void)setDownTemperature:(NSInteger)tmp
+{
+    if (_downTemperature == tmp) {
+        return;
+    }
+    _downTemperature = tmp;
+    [_downTmpLabel setText:[NSString stringWithFormat:@"%i℃",_downTemperature]];
+}
+
+-(void)layoutSubviews
+{
+    CGRect rc = self.bounds;
+    CGRect rcTitle,rcLine,rcWeatherIV,rcDashLine;
+    CGRect rcUpIcon,rcDownIcon,rcUpL,rcDownL;
+    
+    // CGSize titleSZ = _isios7Later ? [_titleLbel.text sizeWithAttributes:@{NSFontAttributeName:_titleLbel.font}] : [_titleLbel.text sizeWithFont:_titleLbel.font];
+    
+    rcTitle = CGRectMake((rc.size.width - 80)/2, 0, 80, 40);
+    rcLine = CGRectMake(10, 40, self.frame.size.width - 20, 1);
+    rcWeatherIV = CGRectMake(18, 70, 80, 70);
+    rcDashLine = CGRectMake(95, 106, 74, 1);
+    
+    rcUpIcon = CGRectMake(100, 80, 11, 16);
+    rcDownIcon = CGRectMake(100, 118, 11, 16);
+    rcUpL = CGRectMake(120, 68, 40, 40);
+    rcDownL = CGRectMake(120, 108, 40, 40);
+    
+    _titleLbel.frame = rcTitle;
+    _line.frame = rcLine;
+    _weatherImgView.frame = rcWeatherIV;
+    _upTmpIcon.frame = rcUpIcon;
+    _downTmpIcon.frame = rcDownIcon;
+    _upTmpLabel.frame = rcUpL;
+    _downTmpLabel.frame = rcDownL;
+    _dashedLine.frame = rcDashLine;
+    
+}
 
 @end

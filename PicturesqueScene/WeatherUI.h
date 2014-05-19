@@ -10,7 +10,7 @@
 #import "FBShimmeringView.h"
 
 typedef NS_ENUM(NSUInteger, weatherType) {
-
+    
     Sunny = 0,
     Cloudy,
     Rainy,
@@ -67,5 +67,17 @@ typedef NS_ENUM(NSUInteger, weatherType) {
 }
 @property (strong)weatherDataItem* dataItem;
 -(id)initWithFrame:(CGRect)frame withDataItem:(weatherDataItem*)item;
+
+@end
+
+
+
+@interface weatherForecastView : UIView
+@property(nonatomic) NSString* title;
+@property(nonatomic,readwrite) weatherType  weather;
+@property(nonatomic,readwrite) NSInteger    upTemperature;
+@property(nonatomic,readwrite) NSInteger    downTemperature;
+
+- (id)initWithFrame:(CGRect)frame Title:(NSString *)title weather:(weatherType)weather upTemperature:(NSInteger)upTmp downTemperature:(NSInteger)downTmp;
 
 @end
