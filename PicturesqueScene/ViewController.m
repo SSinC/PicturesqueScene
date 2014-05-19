@@ -84,6 +84,15 @@
 //}
 //@end
 
+//stan
+//- (UIImage *)scaleToSize:(UIImage *)img size:(CGSize)size{
+//    UIGraphicsBeginImageContext(size);
+//    [img drawInRect:CGRectMake(0, 0, size.width, size.height)];
+//    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    return scaledImage;
+//}
+
 typedef enum {
     sunny,
     rainy,
@@ -478,9 +487,10 @@ typedef enum {
 }
 
 #pragma mark - weatherDelegate
-- (void)gotWeatherInfo:(NSString *)weather
+- (BOOL)gotWeatherInfo:(NSString *)weather
 {
     NSLog(@"get weather:%@",weather);
+    return YES;
 }
 
 #pragma mark - STANSideBarDelegate

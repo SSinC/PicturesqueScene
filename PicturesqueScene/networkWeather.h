@@ -10,16 +10,15 @@
 
 @protocol weatherDelegate <NSObject>
 @required
-- (void)gotWeatherInfo:(NSString *)weather;
+- (BOOL)gotWeatherInfo:(NSString *)weather;
 @end
 
 
 @interface networkWeather : NSObject
+
 @property (nonatomic, weak) id <weatherDelegate> delegate;
 
 + (instancetype)sharedInstance;
-+ (instancetype)alloc;
-+ (instancetype)new;
 
 /****************************
  Location based ,obtain weather info automaticlly.

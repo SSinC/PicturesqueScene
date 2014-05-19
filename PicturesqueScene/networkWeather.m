@@ -19,8 +19,8 @@
 @implementation networkWeather
 {
     NSUserDefaults *_userDefaults;
+    BOOL            _sendWeatherInfoCompleted;
 }
-
 
 + (instancetype)sharedInstance
 {
@@ -222,7 +222,7 @@
         
         [_userDefaults setObject:text4 forKey:PSLastMainWeather];
         if ([self.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
-            [self.delegate gotWeatherInfo:text4];
+            _sendWeatherInfoCompleted = [self.delegate gotWeatherInfo:text4];
         }
     }];
     
