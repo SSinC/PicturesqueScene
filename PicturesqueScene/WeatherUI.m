@@ -7,6 +7,7 @@
 //
 
 #import "WeatherUI.h"
+#import "defines.h"
 
 @implementation weatherDataItem
 //@synthesize city,cityNumber,mainTemperature,upTemperature,downTemperature,humidity,wind;
@@ -24,7 +25,7 @@
         _humidity = 0;
         _wind = 0;
     }
-    NSLog(@"self:%@",self);
+//    PSLog(@"self:%@",self);
     return self;
 }
 -(id)initByItem:(weatherDataItem*)item
@@ -112,7 +113,7 @@
         
         if (_dataItem == nil) {
             _dataItem = [[weatherDataItem alloc] init];
-            NSLog(@"[[weatherDataItem alloc] init]:%@",[[weatherDataItem alloc] init]);
+//            PSLog(@"[[weatherDataItem alloc] init]:%@",[[weatherDataItem alloc] init]);
         }
         self.dataItem = item;
         [self initAllViews];

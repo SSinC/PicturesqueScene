@@ -8,6 +8,7 @@
 
 #import "StanGlassScrollView.h"
 #import "FXBlurView.h"
+#import "defines.h"
 
 @implementation UIView (rn_Screenshot)
 
@@ -154,6 +155,9 @@
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(handleSideBarDismiss) name:@"sideBarDismiss" object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleSideBarShowed) name:@"sideBarShowed" object:nil];
+        
     }
     return self;
 }
@@ -174,6 +178,13 @@
     [self dismissMovieView];
 }
 
+- (void)handleSideBarShowed
+{
+    if(_headerViewShowed){
+        [self headerViewDismissAfterDelay:0.0f];
+    }
+}
+
 - (void)handleSideBarDismiss
 {
     if(_infoViewShowed){
@@ -181,6 +192,9 @@
     }
     else if(_cityViewShowed){
         [self cityViewDismissAnimate:YES];
+    }
+    if(_scrollViewShowed){
+        [self headerViewShowAfterDelay:0.25f];
     }
 }
 
@@ -347,7 +361,7 @@
         _backgroundView = movieView;
         _backgroundView.alpha = 0.0;
         _backgroundView.frame = CGRectMake(0, 0, 1024 + 300, 785);
-        //NSLog(@"123 width is: %f, height is:%f",self.frame.size.width,self.frame.size.height);
+        //PSLog(@"123 width is: %f, height is:%f",self.frame.size.width,self.frame.size.height);
         [_backgroundView setTranslatesAutoresizingMaskIntoConstraints:NO];
         [_backgroundView setContentMode:UIViewContentModeScaleToFill];
         
@@ -365,7 +379,7 @@
                 //            if(_isRetina){
                 //               [blur.underlyingView setFrame:CGRectMake(0,0,2030,1550)];
                 //            }
-//                NSLog(@"blur.underlyingView width is: %f, height is:%f",blur.underlyingView.frame.size.width,blur.underlyingView.frame.size.height);
+//                PSLog(@"blur.underlyingView width is: %f, height is:%f",blur.underlyingView.frame.size.width,blur.underlyingView.frame.size.height);
                 blur.tintColor = [UIColor clearColor];
                 blur.blurEnabled = YES;
                 blur.dynamic  = YES;
@@ -476,7 +490,7 @@
 {
     _foregroundContainerView = [[UIView alloc] initWithFrame:self.frame];
     [self addSubview:_foregroundContainerView];
-    //    NSLog(@"123 width is: %f, height is:%f",self.frame.size.width,self.frame.size.height);
+    //    PSLog(@"123 width is: %f, height is:%f",self.frame.size.width,self.frame.size.height);
     _foregroundScrollView = [[UIScrollView alloc] initWithFrame:self.frame];
     [_foregroundScrollView setDelegate:self];
     [_foregroundScrollView setShowsVerticalScrollIndicator:NO];
@@ -494,7 +508,7 @@
     [_foregroundScrollView addSubview:_foregroundView];
     
     [_foregroundScrollView setContentSize:CGSizeMake(self.frame.size.width, _foregroundView.frame.origin.y + _foregroundView.frame.size.height)];
-    //     NSLog(@"_foregroundScrollView.contentOffset.y : %f",_foregroundScrollView.contentOffset.y);
+    //     PSLog(@"_foregroundScrollView.contentOffset.y : %f",_foregroundScrollView.contentOffset.y);
 }
 
 //stan
@@ -565,7 +579,7 @@
 #pragma mark - Button
 - (void)foregroundTapped:(UITapGestureRecognizer *)tapRecognizer{
     CGPoint tappedPoint = [tapRecognizer locationInView:self];
-    //    NSLog(@"x is: %f, y is:%f",tappedPoint.x,tappedPoint.y);
+    //    PSLog(@"x is: %f, y is:%f",tappedPoint.x,tappedPoint.y);
     
     if (! CGRectContainsPoint(_foregroundView.frame, tappedPoint)) {
         //         CGFloat ratio = _foregroundScrollView.contentOffset.y == -_foregroundScrollView.contentInset.top? 1:0;
@@ -634,11 +648,11 @@
           initialSpringVelocity:0.5
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         //                                 NSLog(@"_foregroundScrollView.contentOffset.y : %f",_foregroundScrollView.contentOffset.y);
+                         //                                 PSLog(@"_foregroundScrollView.contentOffset.y : %f",_foregroundScrollView.contentOffset.y);
                          //                                 _foregroundView.center = CGPointMake(_foregroundView.center.x, _foregroundView.center.y + self.frame.size.height - _viewDistanceFromBottom );
                          [_foregroundScrollView setContentOffset:CGPointMake(0, 0)];
                          _blurredBackgroundImageView.alpha = 0.0;
-                         //                                  NSLog(@"_foregroundScrollView.contentOffset.y : %f",_foregroundScrollView.contentOffset.y);
+                         //                                  PSLog(@"_foregroundScrollView.contentOffset.y : %f",_foregroundScrollView.contentOffset.y);
                      } completion:^(BOOL finished) {
                      }];
     
@@ -704,9 +718,9 @@
     if(animate){
         [self popOverViewDimsmissAnimate:NO];
         [self scrollViewDismiss];
-        if(!_headerViewShowed){
-            [self headerViewShowAfterDelay:0.2];
-        }
+//        if(!_headerViewShowed){
+//            [self headerViewShowAfterDelay:0.2];
+//        }
         //    [self headerViewDismissAfterDelay:0.1];
         [UIView animateWithDuration:0.8
                               delay:.0
@@ -756,9 +770,9 @@
     if(animate){
         [self popOverViewDimsmissAnimate:NO];
         [self scrollViewDismiss];
-        if(!_headerViewShowed){
-            [self headerViewShowAfterDelay:0.2];
-        }
+//        if(!_headerViewShowed){
+//            [self headerViewShowAfterDelay:0.2];
+//        }
         //    [self headerViewDismissAfterDelay:0.1];
         [UIView animateWithDuration:0.8
                               delay:.0
@@ -840,7 +854,7 @@
     
     //set alpha
     [_blurredBackgroundImageView setAlpha:ratio];
-//    NSLog(@"ratio:%f",ratio);
+//    PSLog(@"ratio:%f",ratio);
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset

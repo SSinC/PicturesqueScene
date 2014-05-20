@@ -41,7 +41,7 @@
         self.latitude = latitude;
         self.lastCoordinate = CLLocationCoordinate2DMake(longitude,latitude);
         self.lastCity = [standard objectForKey:PSLastCity];
-        NSLog(@"lastcity:%@",self.lastCity);
+        PSLog(@"lastcity:%@",self.lastCity);
         self.lastAddress=[standard objectForKey:PSLastAddress];
     }
     return self;
@@ -97,7 +97,7 @@
 }
 
 - (void) getCity:(NSStringBlock)cityBlock
-{   NSLog(@"getCity");
+{   PSLog(@"getCity");
     self.cityBlock = [cityBlock copy];
     [self startLocation];
 }
@@ -111,7 +111,7 @@
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    NSLog(@"in 1");
+    PSLog(@"in 1");
     CLLocation * newLocation = userLocation.location;
     self.lastCoordinate=mapView.userLocation.location.coordinate;
     
@@ -123,7 +123,7 @@
     CLGeocoder *clGeoCoder = [[CLGeocoder alloc] init];
     CLGeocodeCompletionHandler handle = ^(NSArray *placemarks,NSError *error)
     {
-        NSLog(@"in 2");
+        PSLog(@"in 2");
         for (CLPlacemark * placeMark in placemarks)
         {
             NSDictionary *addressDic=placeMark.addressDictionary;
@@ -164,7 +164,7 @@
 
 -(void)startLocation
 {
-    NSLog(@"startLocation");
+    PSLog(@"startLocation");
     if (_mapView) {
         _mapView = nil;
     }

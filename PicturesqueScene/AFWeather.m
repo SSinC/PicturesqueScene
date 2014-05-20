@@ -7,6 +7,7 @@
 //
 
 #import "AFWeather.h"
+#import "defines.h"
 
 @interface AFWeather ()
 

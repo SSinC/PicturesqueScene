@@ -10,6 +10,7 @@
 
 #import "STANSideBar.h"
 #import <QuartzCore/QuartzCore.h>
+#import "defines.h"
 
 #pragma mark - Categories
 
@@ -40,15 +41,15 @@
 {
     // Check pre-conditions.
     if (self.size.width < 1 || self.size.height < 1) {
-        NSLog (@"*** error: invalid size: (%.2f x %.2f). Both dimensions must be >= 1: %@", self.size.width, self.size.height, self);
+        PSLog (@"*** error: invalid size: (%.2f x %.2f). Both dimensions must be >= 1: %@", self.size.width, self.size.height, self);
         return nil;
     }
     if (!self.CGImage) {
-        NSLog (@"*** error: image must be backed by a CGImage: %@", self);
+        PSLog (@"*** error: image must be backed by a CGImage: %@", self);
         return nil;
     }
     if (maskImage && !maskImage.CGImage) {
-        NSLog (@"*** error: maskImage must be backed by a CGImage: %@", maskImage);
+        PSLog (@"*** error: maskImage must be backed by a CGImage: %@", maskImage);
         return nil;
     }
     
@@ -195,7 +196,8 @@
     
     CGFloat inset = self.bounds.size.height/2;
 //    self.imageView.frame = CGRectMake(0, 0, inset, inset);
-    self.imageView.frame = CGRectMake(0, 0, inset+12, inset+12);
+    self.imageView.frame = CGRectMake(0, 0, 42, 42);
+//    PSLog(@"imageView.width:%f,height:%f",self.imageView.frame.size.width,self.imageView.frame.size.height);
     self.imageView.center = CGPointMake(inset, inset);
 }
 
@@ -269,7 +271,7 @@ static STANSideBar *rn_frostedMenu;
         
         _width = 50;
         _animationDuration = 0.55f;
-        _itemSize = CGSizeMake(_width/2, _width/2);
+        _itemSize = CGSizeMake(_width/2 + 10, _width/2 + 10);
         _itemViews = [NSMutableArray array];
         _tintColor = [UIColor colorWithWhite:0.2 alpha:0.73];
         _borderWidth = 2;
@@ -409,14 +411,15 @@ static STANSideBar *rn_frostedMenu;
     CGFloat parentWidth = self.view.bounds.size.width;
     
     CGRect contentFrame = self.view.bounds;
-    contentFrame.origin.x = _showFromRight ? parentWidth : -_width;
+    contentFrame.origin.x = _showFromRight ? parentWidth - _width : 0;
+//    contentFrame.origin.x = _showFromRight ? parentWidth : -0;
     contentFrame.size.width = _width;
     //stan
 //    contentFrame.origin.y -= 310;
     contentFrame.size.height -= 310;
 
     self.contentView.frame = contentFrame;
-    NSLog(@"height is:%f",self.contentView.frame.size.height);
+//    PSLog(@"height is:%f",self.contentView.frame.size.height);
 
     self.view.frame = controller.view.bounds;
     
@@ -481,18 +484,18 @@ static STANSideBar *rn_frostedMenu;
 }
 
 - (void)showAnimated:(BOOL)animated {
-//     NSLog(@"in showAnimated");
+//     PSLog(@"in showAnimated");
     UIViewController *controller = [UIApplication sharedApplication].keyWindow.rootViewController;
     while (controller.presentedViewController != nil) {
         controller = controller.presentedViewController;
     }
-//    NSLog(@"before showInViewController");
+//    PSLog(@"before showInViewController");
     [self showInViewController:controller animated:animated];
-//    NSLog(@"after showInViewController");
+//    PSLog(@"after showInViewController");
 }
 
 - (void)show {
-//    NSLog(@"in show");
+//    PSLog(@"in show");
     [self showAnimated:YES];
 }
 
@@ -569,7 +572,7 @@ static STANSideBar *rn_frostedMenu;
         return;
     }
     CGPoint location = [recognizer locationInView:self.view];
-//    NSLog(@"tap location.x:%f , y:%f",location.x,location.y);
+//    PSLog(@"tap location.x:%f , y:%f",location.x,location.y);
 
     if (! CGRectContainsPoint(self.contentView.frame, location)) {
         [self dismissAnimated:YES completion:nil];
@@ -670,7 +673,7 @@ static STANSideBar *rn_frostedMenu;
     CGFloat leftPadding = (self.width - self.itemSize.width)/2;
     CGFloat topPadding = leftPadding;
     [self.itemViews enumerateObjectsUsingBlock:^(RNCalloutItemView *view, NSUInteger idx, BOOL *stop) {
-        CGRect frame = CGRectMake(leftPadding, self.contentView.frame.size.height - topPadding*idx - self.itemSize.height*idx - topPadding *4.5 - 13* idx, self.itemSize.width, self.itemSize.height);
+        CGRect frame = CGRectMake(leftPadding, self.contentView.frame.size.height - topPadding*idx - self.itemSize.height*idx - topPadding * 9.5 - 20 * idx, self.itemSize.width, self.itemSize.height);
         view.frame = frame;
         view.layer.cornerRadius = frame.size.width/2.f;
     }];
