@@ -85,7 +85,7 @@
             
             //            NSString *targetName = [addressString substringToIndex:(addressString.length-1)];
             NSString *targetName = addressString;
-            NSLog(@"city name :%@",targetName);
+            PSLog(@"city name :%@",targetName);
             
             //寻找路径
             NSString *doc_path=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
@@ -101,14 +101,14 @@
                 NSError *err = nil;
                 
                 if([fm copyItemAtPath:orignFilePath toPath:sqlPath error:&err] == NO){
-                    NSLog(@"open database error %@",[err localizedDescription]);
+                    PSLog(@"open database error %@",[err localizedDescription]);
                 }
             }
             
             FMDatabase *db=[FMDatabase databaseWithPath:sqlPath];
             
             if (![db open]) {
-                NSLog(@"Init DB failed");
+                PSLog(@"Init DB failed");
             }
             
             FMResultSet *resultSet=[db executeQuery:@"select * from citys"];
@@ -124,24 +124,24 @@
                 if (tempName.length<5) {
                     if ([tempName isEqualToString:targetName ]) {
                         cityNumber = tempNumber;
-                        NSLog(@"DB search case a");
+                        PSLog(@"DB search case a");
                     }
                 }else{
                     NSString *cityName = [nameArray objectAtIndex:1];
                     if ([cityName isEqualToString:targetName ]) {
                         cityNumber = tempNumber;
-                        NSLog(@"DB search case b");
+                        PSLog(@"DB search case b");
                     }
                 }
             }
             [db close];
             
             if (cityNumber == nil) {
-                NSLog(@"city Number is Nil,uses PSLastCityNumber");
+                PSLog(@"city Number is Nil,uses PSLastCityNumber");
 //                cityNumber = @"101210101";
                 cityNumber = [_userDefaults objectForKey:PSLastCityNumber];
             }else{
-                NSLog(@"cityNumber:%@",cityNumber);
+                PSLog(@"cityNumber:%@",cityNumber);
                 [_userDefaults setObject:cityNumber forKey:PSLastCityNumber];
             }
             
@@ -150,7 +150,7 @@
             NSString *weatherURLString = @"";
             weatherURLString = [weatherURLString stringByAppendingFormat:@"%@%@%@",string1,cityNumber,string3];
             
-            NSLog(@"URL is :%@",weatherURLString);
+            PSLog(@"URL is :%@",weatherURLString);
             
             [self getWeather:weatherURLString];
             
@@ -192,7 +192,7 @@
         }
         
         if(nil == json){
-            NSLog(@"json is nil");
+            PSLog(@"json is nil");
             NSString *lastMainWeather = [_userDefaults objectForKey:PSLastMainWeather];
             if ([self.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
                 [self.delegate gotWeatherInfo:lastMainWeather];
@@ -202,7 +202,7 @@
         
         // print all the info obtained
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:nil];
-        NSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
+        PSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
         
         NSDictionary *json1 = [json objectForKey:[[json allKeys]objectAtIndex:0]];
         NSArray *keyArray1 = [json1 allKeys];
@@ -217,8 +217,8 @@
         //        text8 = [json1 objectForKey:[keyArray1 objectAtIndex:8]];
         //        text9 = [json1 objectForKey:[keyArray1 objectAtIndex:9]];
         
-        //         NSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
-        //         NSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ",text0,text1,text2,text3,text4,text5,text6,text7);
+        //         PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
+        //         PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ",text0,text1,text2,text3,text4,text5,text6,text7);
         
         [_userDefaults setObject:text4 forKey:PSLastMainWeather];
         if ([self.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
@@ -233,12 +233,12 @@
     //                          options:kNilOptions
     //                          error:&error];
     //    if(nil == json){
-    //        NSLog(@"json is nil");
+    //        PSLog(@"json is nil");
     //    }
     //
     //    NSDictionary *json1 = [json valueForKey:[[json allKeys]objectAtIndex:0]];
     //    NSArray * keyArray1 = [json1 allKeys];
-    //    NSLog(@"length: %i",keyArray1.count);
+    //    PSLog(@"length: %i",keyArray1.count);
     //    NSString *text0 = [json1 objectForKey:[keyArray1 objectAtIndex:0]];
     //    NSString *text1 = [json1 objectForKey:[keyArray1 objectAtIndex:1]];
     //    NSString *text2 = [json1 objectForKey:[keyArray1 objectAtIndex:2]];
@@ -258,7 +258,7 @@
     ////
     ////    NSString *text2 = [a objectForKey:[keyArray objectAtIndex:0]];
     //
-    //    NSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
+    //    PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
     
     return text4;
 }
@@ -270,7 +270,7 @@
     [[AFWeather sharedClient]fetchForecastOfLocationWithName:cityName andCompletionBlock:^(NSDictionary *response, NSError *error) {
         if (!error) {
             NSData *data = [NSJSONSerialization dataWithJSONObject:response options:NSJSONWritingPrettyPrinted error:nil];
-            NSLog(@"jsonData %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+            PSLog(@"jsonData %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
             
             NSDictionary *jsonData = [response objectForKey:@"data"];
             NSArray *jsonCurrentCondition = [jsonData valueForKey:@"current_condition"];
@@ -279,10 +279,10 @@
             
             NSString *text0,*text1;
             text0 = [currentDetails objectForKey:@"temp_C"];
-            NSLog(@"temp_C: %@",text0);
+            PSLog(@"temp_C: %@",text0);
             
             text1 = [[[currentDetails objectForKey:@"weatherDesc"] objectAtIndex:0] valueForKey:@"value"];
-            NSLog(@"weatherDesc: %@",text1);
+            PSLog(@"weatherDesc: %@",text1);
         }
     }];
 }

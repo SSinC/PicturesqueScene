@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>C8D71C9A-08D1-438D-BDC3-C2D1CBF30073</string>
+	<string>E02E8104-6522-4346-AF2E-AC6E06FE2C7A</string>
 	<key>IDESourceControlProjectName</key>
 	<string>PicturesqueScene</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>AB677C46-DE67-4F19-B2D7-81C62BC923F2</key>
-		<string>https://github.com/wktzjz/PicturesqueScene.git</string>
+		<key>3272EFAD-099E-445B-9B4D-44E9823A1391</key>
+		<string>https://github.com/SSinC/PicturesqueScene.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>PicturesqueScene.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>AB677C46-DE67-4F19-B2D7-81C62BC923F2</key>
+		<key>3272EFAD-099E-445B-9B4D-44E9823A1391</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/wktzjz/PicturesqueScene.git</string>
+	<string>https://github.com/SSinC/PicturesqueScene.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>AB677C46-DE67-4F19-B2D7-81C62BC923F2</string>
+	<string>3272EFAD-099E-445B-9B4D-44E9823A1391</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>AB677C46-DE67-4F19-B2D7-81C62BC923F2</string>
+			<string>3272EFAD-099E-445B-9B4D-44E9823A1391</string>
 			<key>IDESourceControlWCCName</key>
 			<string>PicturesqueScene</string>
 		</dict>

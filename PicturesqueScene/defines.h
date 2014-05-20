@@ -18,4 +18,12 @@
 #define  PSLastCityNumber   @"PSLastCityNumber"
 #define  PSLastMainWeather  @"PSLastMainWeather"
 
+#define ENABLE_LOGGING_DEBUG 1
+
+#if ENABLE_LOGGING_DEBUG
+#define PSLog NSLog
+#else
+#define PSLog(...)
+#endif
+
 #endif

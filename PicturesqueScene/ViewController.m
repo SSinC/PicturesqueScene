@@ -14,6 +14,7 @@
 #import "CheckNetwork.h"
 #import "JSONKit.h"
 #import "FXBlurView.h"
+#import "defines.h"
 
 #import <objc/runtime.h>
 //#import <AVFoundation/AVFoundation.h>
@@ -29,7 +30,7 @@
 //@implementation InspectionLayer
 //- (void)addAnimation:(CAAnimation *)anim forKey:(NSString *)key
 //{
-//    NSLog(@"adding animation: %@", [anim debugDescription]);
+//    PSLog(@"adding animation: %@", [anim debugDescription]);
 //    [super addAnimation:anim forKey:key];
 //}
 //@end
@@ -140,16 +141,6 @@ typedef enum {
     weatherInstance.delegate = self;
     [weatherInstance obtainWeaterInfoLocationBased];
     
-//    NSArray *testArray = @[@"1",@"2",@"3",@"2",@"5"];
-//    NSIndexSet *areaIndexes = [testArray indexesOfObjectsWithOptions:NSEnumerationConcurrent
-//                                                             passingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-//                                                                 if ([(NSString *)obj isEqualToString:@"2"]) {
-//                                                                     return YES;
-//                                                                 }
-//                                                                 return NO;
-//                                                             }];
-//    NSLog(@"areaIndexed :%@",areaIndexes);
-    
     // 初始化的menu选择效果
     //    self.optionIndices = [NSMutableIndexSet indexSetWithIndex:1];
     
@@ -186,7 +177,7 @@ typedef enum {
     UIView *painterView = [self createPainterViewWithFrame:CGRectMake(originX, originY ,width, 50) painter:@"文森特.威廉.梵高(Vincent Willem van Gogh, 1853 - 1890)" details:@"荷兰后印象派画家，他是表现主义的先驱，并深深影响了二十\n世纪艺术，尤其是野兽派与表现主义"];
     
     [self.view insertSubview:painterView belowSubview:_contentView];
-    //    NSLog(@"add completed");
+    //    PSLog(@"add completed");
     
     
     /*************************************
@@ -234,7 +225,7 @@ typedef enum {
     
 //    __block UIView *popOverView1;
 //    __weak id wself = self;
-//    NSLog(@"out self.view,width :%f,height:%f",self.view.frame.size.width,self.view.frame.size.height);
+//    PSLog(@"out self.view,width :%f,height:%f",self.view.frame.size.width,self.view.frame.size.height);
 //    dispatch_group_t dispatchGroup = dispatch_group_create();
 ////    dispatch_group_async(dispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 //    dispatch_group_async(dispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -250,10 +241,10 @@ typedef enum {
 //            r.size.height = width;
 //            strongSelf.view.frame = r;
 //        }
-//        NSLog(@"in self.view,oringin.x:%f,oringin.y:%f,width:%f,height:%f",strongSelf.view.frame.origin.x,strongSelf.view.frame.origin.y,strongSelf.view.frame.size.width,strongSelf.view.frame.size.height);
+//        PSLog(@"in self.view,oringin.x:%f,oringin.y:%f,width:%f,height:%f",strongSelf.view.frame.origin.x,strongSelf.view.frame.origin.y,strongSelf.view.frame.size.width,strongSelf.view.frame.size.height);
 //        
 //         _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:strongSelf.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[strongSelf createForegroundView] popOverView:popOverView1  headerView:[strongSelf headerView] citySwitchView:[strongSelf createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[strongSelf createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
-//         NSLog(@"in _contentView,oringin.x:%f,oringin.y:%f,width:%f,height:%f",_contentView.frame.origin.x,_contentView.frame.origin.y,_contentView.frame.size.width,_contentView.frame.size.height);
+//         PSLog(@"in _contentView,oringin.x:%f,oringin.y:%f,width:%f,height:%f",_contentView.frame.origin.x,_contentView.frame.origin.y,_contentView.frame.size.width,_contentView.frame.size.height);
 //        CGRect r = _contentView.frame;
 ////        r.origin.x -= 256;
 //        _contentView.frame = r;
@@ -262,13 +253,13 @@ typedef enum {
 //
 //
 //    });
-    weatherDataItem* data = [[weatherDataItem alloc]initWithCity:@"杭州" weather:Sunny mainTemp:18 upTemp:22 downTemp:16 humidity:56 wind:12];
-
-    weatherInfoDetailView* pop = [[weatherInfoDetailView alloc]initWithFrame:CGRectMake(0, 0, 360, 360) withDataItem:data];
+//    weatherDataItem* data = [[weatherDataItem alloc]initWithCity:@"杭州" weather:Sunny mainTemp:18 upTemp:22 downTemp:16 humidity:56 wind:12];
+//
+//    weatherInfoDetailView* pop = [[weatherInfoDetailView alloc]initWithFrame:CGRectMake(0, 0, 360, 360) withDataItem:data];
     
    // pop.dataItem = data;
 
-    _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop  headerView:[self headerViewWithCityName:@"杭州" temp:23 mainweather:sunny] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
+    _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"杭州" image:@"sunny_big" mainTemp:23 upTemp:26 downTemp:10 humidity:10 wind:14 ]  headerView:[self headerViewWithCityName:@"杭州" temp:23 mainweather:sunny] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
 
     _glassScrollView2 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"cloudy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"cloudy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"武汉" image:@"cloudy_big" mainTemp:18 upTemp:22 downTemp:16 humidity:10 wind:14 ] headerView:[self headerViewWithCityName:@"武汉" temp:18 mainweather:cloudy] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
 
@@ -278,7 +269,7 @@ typedef enum {
     
     _glassScrollView5 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"foggy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"foggy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"北京" image:@"foggy_big" mainTemp:12 upTemp:14 downTemp:10 humidity:10 wind:14 ] headerView:[self headerViewWithCityName:@"北京" temp:12 mainweather:foggy] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
 
-//    NSLog(@"add sceollView1");
+//    PSLog(@"add sceollView1");
     [_viewScroller addSubview:_glassScrollView1];
     [_glassScrollView1 showMovieView:self.moviePlayer.view];
 
@@ -295,10 +286,10 @@ typedef enum {
 //    InspectionView *testView = [[InspectionView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
 //    
 //    [UIView animateWithDuration:0.5 delay:0.1 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-//        NSLog(@"testView : %@",testView);
+//        PSLog(@"testView : %@",testView);
 ////        [testView setFrame:CGRectMake(0,0,200,200 )];
 //        testView.alpha = 0.0;
-////        NSLog(@"inside animation block: %@",
+////        PSLog(@"inside animation block: %@",
 ////              [testView actionForLayer:_contentView.layer forKey:@"position"] );
 //    } completion:^(BOOL finished) {
 //    }];
@@ -340,6 +331,16 @@ typedef enum {
 //    
 //    // Add both effects to your view
 //    [_contentView addMotionEffect:group];
+    
+//    NSArray *testArray = @[@"1",@"2",@"3",@"2",@"5"];
+//    NSIndexSet *areaIndexes = [testArray indexesOfObjectsWithOptions:NSEnumerationConcurrent
+//                                                             passingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+//                                                                 if ([(NSString *)obj isEqualToString:@"2"]) {
+//                                                                     return YES;
+//                                                                 }
+//                                                                 return NO;
+//                                                             }];
+//    PSLog(@"areaIndexed :%@",areaIndexes);
 }
 
 
@@ -388,7 +389,7 @@ typedef enum {
                 break;
         }
     }
-//    NSLog(@"point.x :%f",page);
+//    PSLog(@"point.x :%f",page);
     //    [self playMovieNumber:(int)ratio];
 }
 
@@ -396,7 +397,7 @@ typedef enum {
 {
     if(noti.object == self.moviePlayer){
         if(self.moviePlayer.readyForDisplay == YES){
-            NSLog(@"readyForDisplay YES");
+            PSLog(@"readyForDisplay YES");
         }
     }
 }
@@ -405,8 +406,8 @@ typedef enum {
 {
     if (sender.buttonStyle == kFRDLivelyButtonStyleHamburger) {
         NSArray *images = @[
-                            [UIImage imageNamed:@"city_icon"],
-                            [UIImage imageNamed:@"info_icon"],
+                            [UIImage imageNamed:@"city_icon1"],
+                            [UIImage imageNamed:@"info_icon1"],
                             ];
         NSArray *colors = @[
                             [UIColor colorWithWhite:0.7 alpha:1],
@@ -468,7 +469,7 @@ typedef enum {
 - (void)movieTimedOut
 {
     //    [self playLocalFile];
-    NSLog(@"movieTimedOut");
+    PSLog(@"movieTimedOut");
 }
 
 - (void)playMovieNumber:(int)index
@@ -489,7 +490,7 @@ typedef enum {
 #pragma mark - weatherDelegate
 - (BOOL)gotWeatherInfo:(NSString *)weather
 {
-    NSLog(@"get weather:%@",weather);
+    PSLog(@"get weather:%@",weather);
     return YES;
 }
 
@@ -522,13 +523,14 @@ typedef enum {
           initialSpringVelocity:0.5
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         //                         NSLog(@"show before x:%f, y:%f",_contentView.center.x , _contentView.center.y);
+                         //                         PSLog(@"show before x:%f, y:%f",_contentView.center.x , _contentView.center.y);
                          _contentView.center = CGPointMake(_contentView.center.x + 50, _contentView.center.y - 50);
                      }
                      completion:^(BOOL finished) {
+                         [[NSNotificationCenter defaultCenter] postNotificationName:@"sideBarShowed" object:self];
                          [_button setStyle:kFRDLivelyButtonStylePlus animated:YES];
-                         [_button addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-                         //                          NSLog(@"show after x:%f, y:%f",_contentView.center.x , _contentView.center.y);
+//                         [_button addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
+                         //                          PSLog(@"show after x:%f, y:%f",_contentView.center.x , _contentView.center.y);
                          _sideBarShowed = YES;
 //                         [[NSNotificationCenter defaultCenter] postNotificationName:@"sideBarShowCompleted" object:self];
                          _callout.sideBarShowsOnParentView = YES;
@@ -539,6 +541,8 @@ typedef enum {
 
 - (void)sidebar:(STANSideBar *)sidebar willDismissFromScreenAnimated:(BOOL)animatedYesOrNo
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"sideBarDismiss" object:self];
+
     if(_sideBarShowed){
         _sideBarShowed = NO;
         [UIView animateWithDuration:0.55
@@ -547,7 +551,7 @@ typedef enum {
               initialSpringVelocity:0.5
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             //                             NSLog(@"dismiss before x:%f, y:%f",_contentView.center.x , _contentView.center.y);
+                             //                             PSLog(@"dismiss before x:%f, y:%f",_contentView.center.x , _contentView.center.y);
                              _contentView.center = CGPointMake(_contentView.center.x - 50, _contentView.center.y + 50);
                              //                             [_button setStyle:kFRDLivelyButtonStyleHamburger animated:YES];
                              //                             if (_moviePlaying) {
@@ -557,8 +561,7 @@ typedef enum {
                          }
                          completion:^(BOOL finished) {
                              [_button setStyle:kFRDLivelyButtonStyleHamburger animated:YES];
-                             [[NSNotificationCenter defaultCenter] postNotificationName:@"sideBarDismiss" object:self];
-                             //                         NSLog(@"dismiss after x:%f, y:%f",_contentView.center.x , _contentView.center.y);
+                             //                         PSLog(@"dismiss after x:%f, y:%f",_contentView.center.x , _contentView.center.y);
                          }];
     }
 }
@@ -586,7 +589,7 @@ typedef enum {
     //    //you MUST use [ALMoviePlayerController setFrame:] to adjust frame, NOT [ALMoviePlayerController.view setFrame:]
     //    [self.moviePlayer setFrame:self.defaultFrame];
     
-    //     NSLog(@"player before x:%f, y:%f",self.moviePlayer.view.center.x , self.moviePlayer.view.center.y);
+    //     PSLog(@"player before x:%f, y:%f",self.moviePlayer.view.center.x , self.moviePlayer.view.center.y);
     //
     CGPoint p;
     if(self.view.bounds.size.width>self.view.bounds.size.height)
@@ -612,7 +615,7 @@ typedef enum {
               initialSpringVelocity:0.5
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             //                             NSLog(@"self.view.center.x:%f, self.view.center.y:%f",self.view.center.x , self.view.center.y);
+                             //                             PSLog(@"self.view.center.x:%f, self.view.center.y:%f",self.view.center.x , self.view.center.y);
                              _contentView.center = p;
                          }
                          completion:^(BOOL finished) {
@@ -671,13 +674,13 @@ typedef enum {
     if(orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight){
         self.view.frame = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
     }
-    //    NSLog(@"width is: %f, height is:%f",self.view.frame.size.width,self.view.frame.size.height);
+    //    PSLog(@"width is: %f, height is:%f",self.view.frame.size.width,self.view.frame.size.height);
     if (!SIMPLE_SAMPLE) {
         int page = _page; // resize scrollview can cause setContentOffset off for no reason and screw things up
         
         CGFloat blackSideBarWidth = 2;
         [_viewScroller setFrame:CGRectMake(0, 0, self.view.frame.size.width + 2*blackSideBarWidth, self.view.frame.size.height)];
-        //        NSLog(@"_viewScroll width:%f",_viewScroller.frame.size.width);
+        //        PSLog(@"_viewScroll width:%f",_viewScroller.frame.size.width);
         [_viewScroller setContentSize:CGSizeMake(5*_viewScroller.frame.size.width, self.view.frame.size.height)];
         
         [_glassScrollView1 setFrame:self.view.frame];
@@ -728,13 +731,13 @@ typedef enum {
                                options:kNilOptions
                                error:&connectionError];
          if(nil == json){
-             NSLog(@"json is nil");
+             PSLog(@"json is nil");
              return ;
          }
          
          NSDictionary *json1 = [json valueForKey:[[json allKeys]objectAtIndex:0]];
          NSArray * keyArray1 = [json1 allKeys];
-         //        NSLog(@"length: %i",keyArray1.count);
+         //        PSLog(@"length: %i",keyArray1.count);
          NSString *text0 = [json1 objectForKey:[keyArray1 objectAtIndex:0]];
          NSString *text1 = [json1 objectForKey:[keyArray1 objectAtIndex:1]];
          NSString *text2 = [json1 objectForKey:[keyArray1 objectAtIndex:2]];
@@ -746,8 +749,8 @@ typedef enum {
          NSString *text8 = [json1 objectForKey:[keyArray1 objectAtIndex:8]];
          NSString *text9 = [json1 objectForKey:[keyArray1 objectAtIndex:9]];
          
-         NSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
-         //        NSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ",text0,text1,text2,text3,text4,text5,text6,text7);
+         PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
+         //        PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ",text0,text1,text2,text3,text4,text5,text6,text7);
      }];
     
     return text;
@@ -947,7 +950,7 @@ typedef enum {
     UIView *lineView = nil;
     if(title==nil || title.length==0)
     {
-        NSLog(@"drawRect title == nil");
+        PSLog(@"drawRect title == nil");
     }
     else
     {
@@ -1184,7 +1187,7 @@ typedef enum {
     UIView *lineView = nil;
     if(title==nil || title.length==0)
     {
-        NSLog(@"drawRect title == nil");
+        PSLog(@"drawRect title == nil");
     }
     else
     {
@@ -1272,7 +1275,7 @@ typedef enum {
     UIView *lineView = nil;
     if(title==nil || title.length==0)
     {
-        NSLog(@"drawRect title == nil");
+        PSLog(@"drawRect title == nil");
     }
     else
     {
