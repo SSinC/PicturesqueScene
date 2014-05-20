@@ -448,12 +448,13 @@
         _weather = -1;
         _isios7Later = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? YES : NO;
         
+        [self createAllSubviews];
+
         self.title = title;
         self.weather = weather;
         self.upTemperature = upTmp;
         self.downTemperature = downTmp;
         
-        [self createAllSubviews];
     }
     
     return self;

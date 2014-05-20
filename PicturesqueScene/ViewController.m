@@ -771,6 +771,8 @@ typedef enum {
     int random2 = arc4random_uniform(4);
     int random3 = arc4random_uniform(4);
     int random4 = arc4random_uniform(4);
+    
+    weatherForecastView *fview = [[weatherForecastView alloc] initWithFrame:r1 Title:@"hello" weather:random1 upTemperature:((NSNumber *)upWeather[0]).intValue downTemperature:((NSNumber *)downWeather[0]).intValue];
     UIView *view1 = [self createSmallWeatherViewWithFrame:r1 Title:@"明天" mainWeather:random1 upperWeather:((NSNumber *)upWeather[0]).intValue downWeather:((NSNumber *)downWeather[0]).intValue];
     UIView *view2 = [self createSmallWeatherViewWithFrame:r2 Title:@"后天" mainWeather:random2 upperWeather:((NSNumber *)upWeather[1]).intValue downWeather:((NSNumber *)downWeather[1]).intValue];
     UIView *view3 = [self createSmallWeatherViewWithFrame:r3 Title:@"12月10号" mainWeather:random3 upperWeather:((NSNumber *)upWeather[2]).intValue downWeather:((NSNumber *)downWeather[2]).intValue];
@@ -779,7 +781,7 @@ typedef enum {
 //    UIView *view3 = [self createSmallWeatherViewWithFrame:r3 Title:@"12月10号" mainWeather:weather[2] upperWeather:10 downWeather:10];
 //    UIView *view4 = [self createSmallWeatherViewWithFrame:r4 Title:@"12月11号" mainWeather:weather[3] upperWeather:21 downWeather:14];
     
-    [view addSubview:view1];
+    [view addSubview:fview];
     [view addSubview:view2];
     [view addSubview:view3];
     [view addSubview:view4];
