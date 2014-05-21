@@ -106,7 +106,8 @@
         _isRetina = [self _detectScreenScale] == 2.0f;
         
 //        if (blurredImage) {
-        if(!_isRetina){
+//        if(!_isRetina){
+        if(0){
             _blurredBackgroundImage = blurredImage;
         }else{
             if ([_delegate respondsToSelector:@selector(glassScrollView:blurForImage:)]) {
@@ -371,7 +372,8 @@
         [_constraitView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_backgroundView]|" options:0 metrics:0 views:NSDictionaryOfVariableBindings(_backgroundView)]];
         
         if(!_blurredBackgroundImageView){
-            if(!_isRetina){
+//            if(!_isRetina){
+            if(0){
                 FXBlurView *blur = [[FXBlurView alloc] initWithFrame:_backgroundView.frame];
                 blur.underlyingView = [[UIImageView alloc]initWithImage:_blurredBackgroundImage];
                 [blur.underlyingView setContentMode:UIViewContentModeScaleAspectFill];

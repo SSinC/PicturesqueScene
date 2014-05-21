@@ -79,7 +79,7 @@
         return;
     }
     _iconHighLighted = YES;
-    [self performSelector:@selector(delayButtonClick:) withObject:nil afterDelay:0.2];
+   // [self performSelector:@selector(delayButtonClick:) withObject:nil afterDelay:0.2];
 
     
 }
@@ -91,14 +91,18 @@
 }
 @end
 
+NSString *reuseId = @"collectionViewCellReuseId";
+
 @interface CityCollectionViewController ()
 {
     UIImageView*        _titieIcon;
     UILabel*            _titleLabel;
     UIView *            _line;
-    UICollectionView*   _collectionView;
+//    UICollectionView*   _collectionView;
+    cityCollectoinView *      _cityCollectionview;
 }
 @end
+
 
 @implementation CityCollectionViewController
 
@@ -110,43 +114,67 @@
     }
     return self;
 }
-- (id)init
-{
-    self = [super init];
-    
-    if (self) {
-        //todo
-        self.view.layer.cornerRadius = self.view.frame.size.width/4.f;
-        self.view.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.65];
-        
-        _titieIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"city_icon.png"]];
-        _titieIcon.frame = CGRectMake(122.0f, 24.0f, 22.0f, 22.0f);
-        
-        _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = [UIFont systemFontOfSize:18.0];
-        [_titleLabel setText:@"城市管理"];
-     //   CGSize sz = [_titleLabel.text sizeWithAttributes:@{NSFontAttributeName:labelTitle.font}];
-      //  _titleLabel.frame = CGRectMake(cityIcon.frame.origin.x + cityIcon.frame.size.width + 5.0, 24, sz.width,sz.height );
-        [_titleLabel setTextColor:[UIColor whiteColor]];
-        //    [labelTitle setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:20]];
-        _titleLabel.textAlignment = NSTextAlignmentCenter;
-        
-        _line = [[UIView alloc]initWithFrame:CGRectMake(18, 68, self.view.frame.size.width - 36, 1)];
-        _line.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.4];
-    }
-    
-    return self;
-}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    
+    self.view.layer.cornerRadius = 343/4.f;
+    self.view.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.65];
+    
+    _titieIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"city_icon.png"]];
+    _titieIcon.frame = CGRectMake(122.0f, 24.0f, 22.0f, 22.0f);
+    
+    _titleLabel = [[UILabel alloc] init];
+    _titleLabel.font = [UIFont systemFontOfSize:18.0];
+    [_titleLabel setText:@"城市管理"];
+    CGSize sz = [_titleLabel.text sizeWithAttributes:@{NSFontAttributeName:_titleLabel.font}];
+     _titleLabel.frame = CGRectMake(_titieIcon.frame.origin.x + _titieIcon.frame.size.width + 5.0, 24, sz.width,sz.height );
+    [_titleLabel setTextColor:[UIColor whiteColor]];
+    //    [labelTitle setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:20]];
+    _titleLabel.textAlignment = NSTextAlignmentCenter;
+    
+    _line = [[UIView alloc]initWithFrame:CGRectMake(18, 68, self.view.frame.size.width - 36, 1)];
+    _line.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.4];
+    
+    
+    UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
+    flowLayout.itemSize=CGSizeMake(100,20);
+    
+    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, _line.frame.origin.y + _line.frame.size.height + 10 , 300, 300)  collectionViewLayout:flowLayout];
+   // _collectionView.dataSource = self;
+   // _collectionView.delegate = self;
+    _collectionView.backgroundColor = [UIColor grayColor];
+    
+    [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseId];
+    NSLog(@"          1    _collectionView:%@",_collectionView);
+
+    _collectionView.alwaysBounceHorizontal = YES;
+    
+    
+    _cityCollectionview = [[cityCollectoinView alloc]initWithFrame:CGRectMake(10, _line.frame.origin.y + _line.frame.size.height + 10 , 300, 200) collectionViewLayout:flowLayout];
+    
+    
+    [self.view addSubview:_titieIcon];
+    [self.view addSubview:_titleLabel];
+    [self.view addSubview:_line];
+   // [self.view addSubview:_collectionView];
+    [self.view addSubview:_cityCollectionview];
+    
+
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"_collectionView:%@",_collectionView);
+
 }
 
 /*
@@ -160,10 +188,83 @@
 }
 */
 #pragma mark - collection view datasource
+//- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
+//{
+//    NSLog(@"numberOfItemsInSection");
+//    NSLog(@"_collectionView:%@",_collectionView);
+//
+//    return 5;
+//}
+//
+//- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+//{
+//    NSLog(@"cellForItemAtIndexPath");
+//    NSLog(@"_collectionView:%@",_collectionView);
+//
+//    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
+//    cell.contentView.backgroundColor = [UIColor greenColor];
+//    //cell.title = @"test cell";
+//    return cell;
+//}
+//
+//#pragma mark - collection view delefate
+//- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
+//{
+//    NSLog(@"didHighlightItemAtIndexPath");
+//
+//}
+//
+#pragma mark - CityIconClickDelegate
 
+- (void) ButtonClicked :(id)sender;
+{
+    
+}
+@end
 
+@implementation cityCollectoinView
+- (id)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout
+{
+    self = [super initWithFrame:frame collectionViewLayout:layout];
+    if (self) {
+        
+//        UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
+//        flowLayout.itemSize=CGSizeMake(20,20);
+//        
+//        self.collectionViewLayout = flowLayout;
+        self.backgroundColor = [UIColor grayColor];
+        
+        [self registerClass:[CityCollectionViewCell class] forCellWithReuseIdentifier:reuseId];
+        
+        self.alwaysBounceHorizontal = YES;
+
+        self.dataSource = self;
+        self.delegate = self;
+    }
+    return self;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
+{
+    
+    return 5;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+{
+       
+    CityCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
+    cell.contentView.backgroundColor = [UIColor greenColor];
+    cell.title = @"test cell";
+    return cell;
+}
 
 #pragma mark - collection view delefate
+- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
+{
+    NSLog(@"didHighlightItemAtIndexPath");
+    
+}
 
 
 

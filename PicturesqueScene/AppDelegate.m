@@ -12,6 +12,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //这个dispatch_async中提交的工作会在app主线程启动后的下一个run lopp中运行，此时app已经完成了载入并且将要显示第一帧画面，也就是系统会运行到`-[UIApplication _reportAppLaunchFinished]`之前。
+    //用这个来在画面显示后，再发出通知执行后续的网络操作等等
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"Lauched in %f seconds.", CFAbsoluteTimeGetCurrent());
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationFinishedLaunching" object:self];
+    });
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 //    [application setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:YES];
     _viewController = [[ViewController alloc] init];

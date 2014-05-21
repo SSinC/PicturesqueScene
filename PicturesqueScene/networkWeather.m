@@ -19,7 +19,8 @@
 @implementation networkWeather
 {
     NSUserDefaults *_userDefaults;
-    BOOL            _sendWeatherInfoCompleted;
+    BOOL           _sendWeatherInfoCompleted;
+    __weak id      _wself ;
 }
 
 + (instancetype)sharedInstance
@@ -38,6 +39,7 @@
 {
     if (self = [super init]) {
         _userDefaults = [NSUserDefaults standardUserDefaults];
+        _wself        = self;
         
     }
     return self;
@@ -83,6 +85,7 @@
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
+            networkWeather *strongSelf = _wself;
             //            NSString *targetName = [addressString substringToIndex:(addressString.length-1)];
             NSString *targetName = addressString;
             PSLog(@"city name :%@",targetName);
@@ -152,7 +155,7 @@
             
             PSLog(@"URL is :%@",weatherURLString);
             
-            [self getWeather:weatherURLString];
+            [strongSelf getWeather:weatherURLString];
             
         });//end of dispatch_async
         
@@ -167,6 +170,8 @@
 - (NSString *)getWeather:(NSString *)URLString
 {
     if(![CheckNetwork isExistenceNetwork]) return nil;
+    
+    networkWeather *strongSelf = _wself;
     
     //    NSURL *url1 =  [NSURL URLWithString:@"http://www.weather.com.cn/data/cityinfo/101210101.html"];
     NSURL *url1 = [NSURL URLWithString:URLString];
@@ -221,8 +226,8 @@
         //         PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ",text0,text1,text2,text3,text4,text5,text6,text7);
         
         [_userDefaults setObject:text4 forKey:PSLastMainWeather];
-        if ([self.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
-            _sendWeatherInfoCompleted = [self.delegate gotWeatherInfo:text4];
+        if ([strongSelf.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
+            _sendWeatherInfoCompleted = [strongSelf.delegate gotWeatherInfo:text4];
         }
     }];
     

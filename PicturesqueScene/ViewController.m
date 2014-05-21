@@ -137,9 +137,9 @@ typedef enum {
     /*************************************
      Netwokr weather instance
      *************************************/
-    networkWeather *weatherInstance = [networkWeather sharedInstance];
-    weatherInstance.delegate = self;
-    [weatherInstance obtainWeaterInfoLocationBased];
+//    networkWeather *weatherInstance = [networkWeather sharedInstance];
+//    weatherInstance.delegate = self;
+//    [weatherInstance obtainWeaterInfoLocationBased];
     
     // 初始化的menu选择效果
     //    self.optionIndices = [NSMutableIndexSet indexSetWithIndex:1];
@@ -283,6 +283,14 @@ typedef enum {
     _moviePlaying  = NO;
     _page = 0;
     
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationFinishedLaunching) name:@"ApplicationFinishedLaunching" object:nil];
+
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            [self onApplicationFinishedLaunching];
+    });
+
 //    InspectionView *testView = [[InspectionView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
 //    
 //    [UIView animateWithDuration:0.5 delay:0.1 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -341,6 +349,18 @@ typedef enum {
 //                                                                 return NO;
 //                                                             }];
 //    PSLog(@"areaIndexed :%@",areaIndexes);
+}
+
+#pragma mark - Lazy Loading
+- (void)onApplicationFinishedLaunching
+{
+    PSLog(@"onApplicationFinishedLaunching");
+    /*************************************
+     Netwokr weather instance
+     *************************************/
+    networkWeather *weatherInstance = [networkWeather sharedInstance];
+    weatherInstance.delegate = self;
+    [weatherInstance obtainWeaterInfoLocationBased];
 }
 
 
@@ -434,13 +454,14 @@ typedef enum {
 //these files are in the public domain and no longer have property rights
 - (void)playLocalFile:(NSString *)name
 {
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH , 0), ^{
-        [self.moviePlayer stop];
-    self.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-    [self.moviePlayer setRepeatMode:MPMovieRepeatModeOne];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH , 0), ^{
+            [self.moviePlayer stop];
+            self.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+            [self.moviePlayer setRepeatMode:MPMovieRepeatModeOne];
 //     self.moviePlayer.initialPlaybackTime = -0.1;
-    [self.moviePlayer prepareToPlay];
-//            dispatch_async(dispatch_get_main_queue(), ^{
+            [self.moviePlayer prepareToPlay];
+        
+            dispatch_async(dispatch_get_main_queue(), ^{
             [self.moviePlayer setContentURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:name ofType:@"mp4"]]];
              [self.moviePlayer play];
             [UIView animateWithDuration:0.4 delay:0.0 options:0 animations:^{
@@ -448,11 +469,10 @@ typedef enum {
             } completion:^(BOOL finished) {
                 _moviePlaying = YES;
            }];
-//        });
-//    });
-
-    
+        });
+    });
 }
+
 #pragma mark - ALMoviePlayerControllerDelegate
 
 //IMPORTANT!

@@ -169,9 +169,18 @@
         _mapView = nil;
     }
     
-    _mapView = [[MKMapView alloc] init];
-    _mapView.delegate = self;
-    _mapView.showsUserLocation = YES;
+//mapView 必须在主线程种创建
+    __weak id wself = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        LocationManager *strongSelf = wself;
+        _mapView = [[MKMapView alloc] init];
+        _mapView.delegate = strongSelf;
+        _mapView.showsUserLocation = YES;
+    });
+    
+//    _mapView = [[MKMapView alloc] init];
+//    _mapView.delegate = self;
+//    _mapView.showsUserLocation = YES;
 }
 
 -(void)stopLocation
