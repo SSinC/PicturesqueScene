@@ -517,6 +517,8 @@ typedef enum {
 
 - (void)sidebar:(STANSideBar *)sidebar willShowOnScreenAnimated:(BOOL)animatedYesOrNo
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"sideBarShowed" object:self];
+
     [UIView animateWithDuration:0.75
                           delay:0
          usingSpringWithDamping:0.3
@@ -527,7 +529,6 @@ typedef enum {
                          _contentView.center = CGPointMake(_contentView.center.x + 50, _contentView.center.y - 50);
                      }
                      completion:^(BOOL finished) {
-                         [[NSNotificationCenter defaultCenter] postNotificationName:@"sideBarShowed" object:self];
                          [_button setStyle:kFRDLivelyButtonStylePlus animated:YES];
 //                         [_button addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
                          //                          PSLog(@"show after x:%f, y:%f",_contentView.center.x , _contentView.center.y);

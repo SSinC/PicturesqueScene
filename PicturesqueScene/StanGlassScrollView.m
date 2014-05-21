@@ -181,7 +181,7 @@
 - (void)handleSideBarShowed
 {
     if(_headerViewShowed){
-        [self headerViewDismissAfterDelay:0.0f];
+        [self headerViewDismissAfterDelay:0.1f];
     }
 }
 
@@ -193,7 +193,7 @@
     else if(_cityViewShowed){
         [self cityViewDismissAnimate:YES];
     }
-    if(_scrollViewShowed){
+    if(!_popOverViewShowed){
         [self headerViewShowAfterDelay:0.25f];
     }
 }
