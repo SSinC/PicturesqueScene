@@ -98,19 +98,28 @@ NSString *reuseId = @"collectionViewCellReuseId";
     UIImageView*        _titieIcon;
     UILabel*            _titleLabel;
     UIView *            _line;
-//    UICollectionView*   _collectionView;
+    UICollectionView*   _collectionView;
     cityCollectoinView *      _cityCollectionview;
+   
 }
 @end
 
 
 @implementation CityCollectionViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+//{
+//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+//    if (self) {
+//        // Custom initialization
+//    }
+//    return self;
+//}
+
+- (instancetype)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    if (self = [super init]) {
+        
     }
     return self;
 }
@@ -120,7 +129,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    
+     _contentView = [[UIView alloc]initWithFrame:self.view.frame];
     self.view.layer.cornerRadius = 343/4.f;
     self.view.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.65];
     
@@ -144,8 +153,8 @@ NSString *reuseId = @"collectionViewCellReuseId";
     flowLayout.itemSize=CGSizeMake(100,20);
     
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, _line.frame.origin.y + _line.frame.size.height + 10 , 300, 300)  collectionViewLayout:flowLayout];
-   // _collectionView.dataSource = self;
-   // _collectionView.delegate = self;
+    _collectionView.dataSource = self;
+    _collectionView.delegate = self;
     _collectionView.backgroundColor = [UIColor grayColor];
     
     [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseId];
@@ -156,12 +165,17 @@ NSString *reuseId = @"collectionViewCellReuseId";
     
     _cityCollectionview = [[cityCollectoinView alloc]initWithFrame:CGRectMake(10, _line.frame.origin.y + _line.frame.size.height + 10 , 300, 200) collectionViewLayout:flowLayout];
     
+    [self.view addSubview:_contentView];
     
     [self.view addSubview:_titieIcon];
     [self.view addSubview:_titleLabel];
     [self.view addSubview:_line];
-   // [self.view addSubview:_collectionView];
-    [self.view addSubview:_cityCollectionview];
+    [self.view addSubview:_collectionView];
+//    [_contentView addSubview:_titieIcon];
+//    [_contentView addSubview:_titleLabel];
+//    [_contentView addSubview:_line];
+//    [_contentView addSubview:_collectionView];
+   // [self.view addSubview:_cityCollectionview];
     
 
 }
@@ -188,32 +202,32 @@ NSString *reuseId = @"collectionViewCellReuseId";
 }
 */
 #pragma mark - collection view datasource
-//- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
-//{
-//    NSLog(@"numberOfItemsInSection");
-//    NSLog(@"_collectionView:%@",_collectionView);
-//
-//    return 5;
-//}
-//
-//- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
-//{
-//    NSLog(@"cellForItemAtIndexPath");
-//    NSLog(@"_collectionView:%@",_collectionView);
-//
-//    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
-//    cell.contentView.backgroundColor = [UIColor greenColor];
-//    //cell.title = @"test cell";
-//    return cell;
-//}
-//
-//#pragma mark - collection view delefate
-//- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
-//{
-//    NSLog(@"didHighlightItemAtIndexPath");
-//
-//}
-//
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
+{
+    NSLog(@"numberOfItemsInSection");
+    NSLog(@"_collectionView:%@",_collectionView);
+
+    return 5;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+{
+    NSLog(@"cellForItemAtIndexPath");
+    NSLog(@"_collectionView:%@",_collectionView);
+
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
+    cell.contentView.backgroundColor = [UIColor greenColor];
+    //cell.title = @"test cell";
+    return cell;
+}
+
+#pragma mark - collection view delefate
+- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
+{
+    NSLog(@"didHighlightItemAtIndexPath");
+
+}
+
 #pragma mark - CityIconClickDelegate
 
 - (void) ButtonClicked :(id)sender;

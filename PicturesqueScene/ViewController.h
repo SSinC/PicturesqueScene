@@ -11,6 +11,7 @@
 #import "networkWeather.h"
 #import "ALMoviePlayerController.h"
 #import "WeatherUI.h"
+#import "CityCollectionViewController.h"
 @interface ViewController : UIViewController
 <STANSideBarDelegate,UIScrollViewDelegate,weatherDelegate>
 

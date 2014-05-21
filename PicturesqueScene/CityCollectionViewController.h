@@ -25,9 +25,9 @@
 
 
 
-@interface CityCollectionViewController : UIViewController <CityIconClickDelegate>
-@property(nonatomic,strong)    UICollectionView*   collectionView;
-
+@interface CityCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,CityIconClickDelegate>
+//@property(nonatomic,strong)    UICollectionView*   collectionView;
+@property (nonatomic, strong) UIView* contentView;
 @end
 
 
