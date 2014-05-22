@@ -15,6 +15,7 @@
 #import "JSONKit.h"
 #import "FXBlurView.h"
 #import "defines.h"
+#import "UITestViewController.h"
 
 #import <objc/runtime.h>
 //#import <AVFoundation/AVFoundation.h>
@@ -124,11 +125,18 @@ typedef enum {
     StanGlassScrollView *_glassScrollView4;
     StanGlassScrollView *_glassScrollView5;
     int _page;
-    
+    CityCollectionViewController *cv;
+    UITestViewController *testController;
 }
+
+//-(void)loadView
+//{
+//    
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    NSLog(@"[UIScreen mainScreen] applicationFrame].width:%f,height:%f",[[UIScreen mainScreen] applicationFrame].size.width,[[UIScreen mainScreen] applicationFrame].size.height);
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     if(orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight){
         self.view.frame = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
@@ -259,10 +267,14 @@ typedef enum {
     
    // pop.dataItem = data;
 
-    __strong CityCollectionViewController *cv = [[CityCollectionViewController alloc] init];
-    cv.contentView.frame = CGRectMake(341,198,343,343);
-//    _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"杭州" image:@"sunny_big" mainTemp:23 upTemp:26 downTemp:10 humidity:10 wind:14 ]  headerView:[self headerViewWithCityName:@"杭州" temp:23 mainweather:sunny] citySwitchView:cv.contentView infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
-    _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"杭州" image:@"sunny_big" mainTemp:23 upTemp:26 downTemp:10 humidity:10 wind:14 ]  headerView:[self headerViewWithCityName:@"杭州" temp:23 mainweather:sunny] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
+    cv = [[CityCollectionViewController alloc] init];
+//    cv.contentView.frame = CGRectMake(341,198,343,343);
+    
+    UITestViewController *testController1 = [[UITestViewController alloc] init];
+    testController = [[UITestViewController alloc] init];
+    NSLog(@"testController1 %@",testController1);
+    _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"杭州" image:@"sunny_big" mainTemp:23 upTemp:26 downTemp:10 humidity:10 wind:14 ]  headerView:[self headerViewWithCityName:@"杭州" temp:23 mainweather:sunny] citySwitchView:testController1.view infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
+//    _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"杭州" image:@"sunny_big" mainTemp:23 upTemp:26 downTemp:10 humidity:10 wind:14 ]  headerView:[self headerViewWithCityName:@"杭州" temp:23 mainweather:sunny] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
 
     _glassScrollView2 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"cloudy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"cloudy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"武汉" image:@"cloudy_big" mainTemp:18 upTemp:22 downTemp:16 humidity:10 wind:14 ] headerView:[self headerViewWithCityName:@"武汉" temp:18 mainweather:cloudy] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
 
@@ -288,7 +300,7 @@ typedef enum {
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationFinishedLaunching) name:@"ApplicationFinishedLaunching" object:nil];
 
-    double delayInSeconds = 0.5;
+    double delayInSeconds = 1.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             [self onApplicationFinishedLaunching];

@@ -199,8 +199,8 @@
         if(nil == json){
             PSLog(@"json is nil");
             NSString *lastMainWeather = [_userDefaults objectForKey:PSLastMainWeather];
-            if ([self.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
-                [self.delegate gotWeatherInfo:lastMainWeather];
+            if ([strongSelf.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
+                [strongSelf.delegate gotWeatherInfo:lastMainWeather];
             }
             return ;
         }

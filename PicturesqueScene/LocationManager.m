@@ -162,6 +162,7 @@
     [clGeoCoder reverseGeocodeLocation:newLocation completionHandler:handle];
 }
 
+
 -(void)startLocation
 {
     PSLog(@"startLocation");
@@ -191,6 +192,7 @@
 
 - (void)mapView:(MKMapView *)mapView didFailToLocateUserWithError:(NSError *)error
 {
+    PSLog(@"didFailToLocateUserWithError");
     [self stopLocation];
 }
 

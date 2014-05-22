@@ -48,6 +48,7 @@
 		F61194A8192B26AC00A874DA /* city_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = F61194A6192B26AC00A874DA /* city_icon1.png */; };
 		F61194A9192B26AC00A874DA /* info_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = F61194A7192B26AC00A874DA /* info_icon1.png */; };
 		F623EE95192CAC2700FD505E /* CityCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F623EE94192CAC2700FD505E /* CityCollectionViewController.m */; };
+		F623EE99192DDE5C00FD505E /* UITestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F623EE98192DDE5C00FD505E /* UITestViewController.m */; };
 		F62D112A18FE78E80041CEFE /* networkWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = F62D112918FE78E80041CEFE /* networkWeather.m */; };
 		F62D112E18FF6CCB0041CEFE /* weatherData.m in Sources */ = {isa = PBXBuildFile; fileRef = F62D112D18FF6CCB0041CEFE /* weatherData.m */; };
 		F62D113C190766310041CEFE /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = F62D113B190766310041CEFE /* FXBlurView.m */; };
@@ -221,6 +222,8 @@
 		F61194A7192B26AC00A874DA /* info_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info_icon1.png; sourceTree = "<group>"; };
 		F623EE93192CAC2700FD505E /* CityCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityCollectionViewController.h; sourceTree = "<group>"; };
 		F623EE94192CAC2700FD505E /* CityCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityCollectionViewController.m; sourceTree = "<group>"; };
+		F623EE97192DDE5C00FD505E /* UITestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITestViewController.h; sourceTree = "<group>"; };
+		F623EE98192DDE5C00FD505E /* UITestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITestViewController.m; sourceTree = "<group>"; };
 		F62D112818FE78E80041CEFE /* networkWeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = networkWeather.h; sourceTree = "<group>"; };
 		F62D112918FE78E80041CEFE /* networkWeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = networkWeather.m; sourceTree = "<group>"; };
 		F62D112C18FF6CCB0041CEFE /* weatherData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = weatherData.h; sourceTree = "<group>"; };
@@ -475,6 +478,8 @@
 				F6A8D663192616D900B6E1D9 /* WeatherUI.m */,
 				F623EE93192CAC2700FD505E /* CityCollectionViewController.h */,
 				F623EE94192CAC2700FD505E /* CityCollectionViewController.m */,
+				F623EE97192DDE5C00FD505E /* UITestViewController.h */,
+				F623EE98192DDE5C00FD505E /* UITestViewController.m */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -973,6 +978,7 @@
 				F69A090618EEA72D00D88D85 /* ALButton.m in Sources */,
 				F69A088518EEA66600D88D85 /* AppDelegate.m in Sources */,
 				3D89099418F955640052C34C /* UIImage+ImageEffects.m in Sources */,
+				F623EE99192DDE5C00FD505E /* UITestViewController.m in Sources */,
 				F682A2E718FE51AC00F0F7D1 /* CheckNetwork.m in Sources */,
 				F682A2E618FE51AC00F0F7D1 /* Reachability.m in Sources */,
 				F682A2EA18FE5E8400F0F7D1 /* JSONKit.m in Sources */,
