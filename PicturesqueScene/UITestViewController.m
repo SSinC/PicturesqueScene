@@ -13,6 +13,10 @@
 @end
 
 @implementation UITestViewController
+{
+    CATransform3D _initialTransformationFromLeft;
+    CATransform3D _initialTransformationFromRight;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,6 +46,17 @@
     scrollView.dataSource = self;
 
     [self.view addSubview:scrollView];
+    
+    CGPoint offsetPositioning = CGPointMake(-100, 0);
+    CATransform3D transform = CATransform3DIdentity;
+    transform = CATransform3DTranslate(transform, offsetPositioning.x, offsetPositioning.y, 0.0);
+    _initialTransformationFromLeft = transform;
+    
+    offsetPositioning = CGPointMake(100, 0);
+    CATransform3D transform1 = CATransform3DIdentity;
+    transform1 = CATransform3DTranslate(transform1, offsetPositioning.x, offsetPositioning.y, 0.0);
+    _initialTransformationFromRight = transform1;
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -50,7 +65,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+#pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSLog(@"tableView numberOfRowsInSection");
@@ -71,10 +86,31 @@
         cell.contentView.backgroundColor = [UIColor greenColor];
     }
 
-    
-    
     return cell;
 }
+
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //    if (![self.shownIndexes containsObject:indexPath]) {
+    //    [self.shownIndexes addObject:indexPath];
+    NSInteger i = indexPath.row;
+    UIView *card = cell.contentView;
+    
+    if( floor(i/2) == floor((i - 1)/2) ){
+        card.layer.transform = _initialTransformationFromLeft;
+    }else{
+        card.layer.transform = _initialTransformationFromRight;
+    }
+    card.layer.opacity = 0.8;
+    
+    [UIView animateWithDuration:0.6 animations:^{
+        card.layer.transform = CATransform3DIdentity;
+        card.layer.opacity = 1;
+    }];
+    //    }
+}
+
 
 /*
 #pragma mark - Navigation

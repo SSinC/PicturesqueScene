@@ -624,7 +624,8 @@
     }
 }
 
-- (void)popOverViewDimsmissAnimate:(BOOL)animate{
+- (void)popOverViewDimsmissAnimate:(BOOL)animate
+{
     _popOverViewShowed = NO;
     if(animate){
         _popOverView.layer.transform = CATransform3DMakeScale(1.2, 1.2, 1);

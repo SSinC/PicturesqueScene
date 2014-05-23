@@ -7,6 +7,7 @@
 //
 
 #import "LocationManager.h"
+#import "TSMessage.h"
 
 @interface LocationManager ()
 
@@ -193,6 +194,7 @@
 - (void)mapView:(MKMapView *)mapView didFailToLocateUserWithError:(NSError *)error
 {
     PSLog(@"didFailToLocateUserWithError");
+    [TSMessage showNotificationWithTitle:@"Warning" subtitle:@"There is a problem getting your location automatically.Please choose your city if you want" type:TSMessageNotificationTypeWarning];
     [self stopLocation];
 }
 

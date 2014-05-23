@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "TSMessage.h"
 
 @implementation AppDelegate
 
@@ -32,6 +33,9 @@
     self.window.rootViewController = _viewController;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+     [TSMessage setDefaultViewController: self.window.rootViewController];
+    
     return YES;
 }
 							
