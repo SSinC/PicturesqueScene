@@ -14,6 +14,12 @@
 - (void) ButtonClicked :(id)sender;
 @end
 
+
+@interface CityCollectionViewDataItem : NSObject
+@property(nonatomic) BOOL enable;
+@property(nonatomic) NSString*  city;
+@end
+
 @interface CityCollectionViewCell : UICollectionViewCell
 
 @property(nonatomic) BOOL enable;
@@ -24,13 +30,12 @@
 
 
 
-
-@interface CityCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,CityIconClickDelegate>
+@interface CityCollectionViewController : UIViewController <CityIconClickDelegate>
 //@property(nonatomic,strong)    UICollectionView*   collectionView;
-@property (nonatomic, strong) UIView* contentView;
+//@property (nonatomic, strong) UIView* contentView;
 @end
 
 
 @interface cityCollectoinView : UICollectionView <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
-
+@property(nonatomic)NSMutableArray *dataArray;
 @end
