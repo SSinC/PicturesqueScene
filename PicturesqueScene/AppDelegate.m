@@ -17,6 +17,13 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"Lauched in %f seconds.", CFAbsoluteTimeGetCurrent());
 //        [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationFinishedLaunching" object:self];
+//        static NSNotification *notification = nil;
+//        static dispatch_once_t onceToken;
+//        dispatch_once(&onceToken, ^{
+//            notification = [NSNotification notificationWithName:@"ApplicationFinishedLaunching" object:nil];
+//        });
+//        [[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostASAP coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+
     });
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

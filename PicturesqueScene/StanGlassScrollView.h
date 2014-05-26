@@ -44,7 +44,7 @@
 //- (void)showMovieView:(UIView *)movieView afterDelay:(float)delay;
 - (void)showMovieView:(UIView *)movieView;
 - (void)dismissMovieView;
-- (id)initWithFrame:(CGRect)frame BackgroundImage:(UIImage *)backgroundImage BackgroundView:(UIView *)backgroundView blurredImage:(UIImage *)blurredImage viewDistanceFromBottom:(CGFloat)viewDistanceFromBottom foregroundView:(UIView *)foregroundView popOverView:(UIView *)popOverView headerView:(UIView *)headerView citySwitchView:(UIView *)citySwitchView infoView:(UIView *)infoView;
+- (id)initWithFrame:(CGRect)frame BackgroundImage:(UIImage *)backgroundImage BackgroundView:(UIView *)backgroundView blurredImage:(UIImage *)blurredImage viewDistanceFromBottom:(CGFloat)viewDistanceFromBottom foregroundView:(UIView *)foregroundView popOverView:(UIView *)popOverView headerView:(UIView *)headerView citySwitchView:(UIView *)citySwitchView infoView:(UIView *)infoView testViewController:(UIViewController *)testViewController;
 
 
 - (id)initWithFrame:(CGRect)frame BackgroundImage:(UIImage *)backgroundImage blurredImage:(UIImage *)blurredImage viewDistanceFromBottom:(CGFloat)viewDistanceFromBottom foregroundView:(UIView *)foregroundView popOverView:(UIView *)popOverView;

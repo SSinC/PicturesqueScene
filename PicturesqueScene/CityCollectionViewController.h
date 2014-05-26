@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 @protocol CityIconClickDelegate <NSObject>
 
 @required
@@ -18,6 +19,9 @@
 @interface CityCollectionViewDataItem : NSObject
 @property(nonatomic) BOOL enable;
 @property(nonatomic) NSString*  city;
+
+- (void)setWithCityName:(NSString *)city enable:(BOOL)enable;
+
 @end
 
 @interface CityCollectionViewCell : UICollectionViewCell
@@ -30,12 +34,8 @@
 
 
 
-@interface CityCollectionViewController : UIViewController <CityIconClickDelegate>
-//@property(nonatomic,strong)    UICollectionView*   collectionView;
-//@property (nonatomic, strong) UIView* contentView;
+@interface CityCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,CityIconClickDelegate>
+@property(nonatomic)NSMutableArray *cityDataList;
+
 @end
 
-
-@interface cityCollectoinView : UICollectionView <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
-@property(nonatomic)NSMutableArray *dataArray;
-@end
