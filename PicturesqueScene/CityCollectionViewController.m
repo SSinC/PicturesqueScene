@@ -199,6 +199,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
 {
     CityCollectionViewDataItem * dataItem0 = [[CityCollectionViewDataItem alloc] initWithCityName:@"杭州" enable:YES];
     [_cityDataList addObject:dataItem0];
+
     
     CityCollectionViewDataItem * dataItem1 = [[CityCollectionViewDataItem alloc] initWithCityName:@"北京" enable:YES];
     [_cityDataList addObject:dataItem1];
@@ -210,8 +211,9 @@ NSString *reuseId = @"collectionViewCellReuseId";
     [_cityDataList addObject:dataItem4];
     CityCollectionViewDataItem * dataItem5 = [[CityCollectionViewDataItem alloc] initWithCityName:@"智利" enable:YES];
     [_cityDataList addObject:dataItem5];
+    
 
-
+  
     
 }
 
@@ -251,7 +253,6 @@ NSString *reuseId = @"collectionViewCellReuseId";
     cell.contentView.backgroundColor = [UIColor redColor];
     
     CityCollectionViewDataItem* data = [_cityDataList objectAtIndex:indexPath.row];
-
     cell.title = data.city;
     cell.enable = data.enable;
     return cell;
@@ -316,11 +317,11 @@ NSString *reuseId = @"collectionViewCellReuseId";
         _iconButton.backgroundColor = [UIColor clearColor];
         [_iconButton setImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
         [_iconButton addTarget:self action:@selector(_onButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-                
+        
         _titleLabel = [[UILabel alloc]init];
         _titleLabel.font = [UIFont systemFontOfSize:18.0f];
         _titleLabel.textColor = [UIColor whiteColor];
-     
+        
         [self addSubview:_iconButton];
         [self addSubview:_titleLabel];
     }
@@ -351,7 +352,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
     CGRect rcIcon,rcTitle;
     
     CGSize textsz = _isios7Later ? [_titleLabel.text sizeWithAttributes:@{NSFontAttributeName:_titleLabel.font}] : [_titleLabel.text sizeWithFont:_titleLabel.font];
-
+    
     rcIcon = CGRectMake(10, (rc.size.height - 24)/2 , 24, 24);
     rcTitle = CGRectMake(rcIcon.origin.x + rcIcon.size.width + 10, (rc.size.height - textsz.height)/2, textsz.width, textsz.height);
     
@@ -365,10 +366,10 @@ NSString *reuseId = @"collectionViewCellReuseId";
         return;
     }
     NSLog(@"CityIconClickDelegate  ButtonClicked ");
-
+    
     _iconHighLighted = YES;
     [self performSelector:@selector(delayButtonClick:) withObject:nil afterDelay:0.2];
-
+    
     
 }
 - (void)delayButtonClick :(id)sender
@@ -388,7 +389,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
     UILabel*            _titleLabel;
     UIView *            _line;
     cityCollectoinView *      _cityCollectionview;
-   
+    
 }
 @end
 
@@ -419,6 +420,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
     
    //  _contentView = [[UIView alloc]initWithFrame:self.view.frame];
 
+    
     self.view.layer.cornerRadius = 343/4.f;
     self.view.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.65];
     
@@ -451,20 +453,25 @@ NSString *reuseId = @"collectionViewCellReuseId";
 
 }
 
+
+
+    
+    
+
 //- (void)lazyLoad
 //{
 //    UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
 //    flowLayout.itemSize=CGSizeMake(100,20);
-//    
+//
 //    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, _line.frame.origin.y + _line.frame.size.height + 10 , 300, 300)  collectionViewLayout:flowLayout];
 //    _collectionView.dataSource = self;
 //    _collectionView.delegate = self;
 //    _collectionView.backgroundColor = [UIColor grayColor];
-//    
+//
 //    [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseId];
-//    
+//
 //    _collectionView.alwaysBounceHorizontal = YES;
-//    
+//
 //    [self.view addSubview:_collectionView];
 //
 //
@@ -478,18 +485,20 @@ NSString *reuseId = @"collectionViewCellReuseId";
 - (void)viewWillAppear:(BOOL)animated
 {
 
+    
 }
 
 /*
-#pragma mark - Navigation
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+ {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 
 
@@ -498,7 +507,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
 {
     NSLog(@"numberOfItemsInSection");
     NSLog(@"_collectionView:%@",_collectionView);
-
+    
     return 5;
 }
 
@@ -506,7 +515,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
 {
     NSLog(@"cellForItemAtIndexPath");
     NSLog(@"_collectionView:%@",_collectionView);
-
+    
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
     cell.contentView.backgroundColor = [UIColor greenColor];
     cell.title = @"test cell";
@@ -517,7 +526,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
 {
     NSLog(@"didHighlightItemAtIndexPath");
-
+    
 }
 
 #pragma mark - CityIconClickDelegate

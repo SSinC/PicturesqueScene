@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Stan. All rights reserved.
 //
 
+
+
+
 #import <UIKit/UIKit.h>
 
 
@@ -36,6 +39,5 @@
 
 @interface CityCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,CityIconClickDelegate>
 @property(nonatomic)NSMutableArray *cityDataList;
-
 @end
 
