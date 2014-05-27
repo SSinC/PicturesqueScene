@@ -330,6 +330,7 @@ static STANSideBar *rn_frostedMenu;
     [self.view addSubview:self.contentView];
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self.view addGestureRecognizer:self.tapGesture];
+//    [self.contentView addGestureRecognizer:self.tapGesture];
 }
 
 - (BOOL)shouldAutorotate {
@@ -419,9 +420,11 @@ static STANSideBar *rn_frostedMenu;
     contentFrame.size.height -= 310;
 
     self.contentView.frame = contentFrame;
-//    PSLog(@"height is:%f",self.contentView.frame.size.height);
+    PSLog(@"self.contentView: %f, %f",self.contentView.frame.size.width,self.contentView.frame.size.height);
 
-    self.view.frame = controller.view.bounds;
+// change the view frame to meet the need of gesture-control of other views;
+//    self.view.frame = controller.view.bounds;
+    self.view.frame = contentFrame;
     
     [self layoutItems];
     
@@ -587,6 +590,7 @@ static STANSideBar *rn_frostedMenu;
     
     NSLog(@"STANSideBar self.view.frame : x %f y: %f w:%f  h:%f ",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
 
+
     if(CGRectContainsPoint(self.contentView.frame, location)){
         NSInteger tapIndex = [self indexOfTap:[recognizer locationInView:self.contentView]];
         if (tapIndex != NSNotFound) {
@@ -601,7 +605,7 @@ static STANSideBar *rn_frostedMenu;
         {
             [self.view.superview hitTest:location withEvent:nil];
         }
-        
+
     }
 }
 
