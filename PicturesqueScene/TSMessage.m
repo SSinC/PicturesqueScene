@@ -281,6 +281,7 @@ __weak static UIViewController *_defaultViewController;
                          completion:completionBlock];
     } else {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+//stan changed usingSpringWithDamping and initialSpringVelocity
         [UIView animateWithDuration:kTSMessageAnimationDuration + 0.1
                               delay:0
              usingSpringWithDamping:0.5   /*0.8*/

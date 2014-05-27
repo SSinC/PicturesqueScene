@@ -330,6 +330,7 @@ static STANSideBar *rn_frostedMenu;
     [self.view addSubview:self.contentView];
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self.view addGestureRecognizer:self.tapGesture];
+//    [self.contentView addGestureRecognizer:self.tapGesture];
 }
 
 - (BOOL)shouldAutorotate {
@@ -419,9 +420,11 @@ static STANSideBar *rn_frostedMenu;
     contentFrame.size.height -= 310;
 
     self.contentView.frame = contentFrame;
-//    PSLog(@"height is:%f",self.contentView.frame.size.height);
+    PSLog(@"self.contentView: %f, %f",self.contentView.frame.size.width,self.contentView.frame.size.height);
 
-    self.view.frame = controller.view.bounds;
+// change the view frame to meet the need of gesture-control of other views;
+//    self.view.frame = controller.view.bounds;
+    self.view.frame = contentFrame;
     
     [self layoutItems];
     
@@ -574,13 +577,23 @@ static STANSideBar *rn_frostedMenu;
     CGPoint location = [recognizer locationInView:self.view];
 //    PSLog(@"tap location.x:%f , y:%f",location.x,location.y);
 
-    if (! CGRectContainsPoint(self.contentView.frame, location)) {
-        [self dismissAnimated:YES completion:nil];
-    }
-    else {
+//    if (! CGRectContainsPoint(self.contentView.frame, location)) {
+//        [self dismissAnimated:YES completion:nil];
+//    }else {
+//        NSInteger tapIndex = [self indexOfTap:[recognizer locationInView:self.contentView]];
+//        if (tapIndex != NSNotFound) {
+//            [self didTapItemAtIndex:tapIndex];
+//        }
+//    }
+    if(CGRectContainsPoint(self.contentView.frame, location)){
         NSInteger tapIndex = [self indexOfTap:[recognizer locationInView:self.contentView]];
         if (tapIndex != NSNotFound) {
             [self didTapItemAtIndex:tapIndex];
+        }
+    }else{
+        CGRect r = CGRectMake(0, self.contentView.frame.size.height, self.contentView.frame.size.width, self.contentView.frame.size.height);
+        if(CGRectContainsPoint(r, location)){
+            [self dismissAnimated:YES completion:nil];
         }
     }
 }

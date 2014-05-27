@@ -10,7 +10,7 @@
 
 #import "AppDelegate.h"
 
-CFAbsoluteTime StartTime;
+//CFAbsoluteTime StartTime;
 
 int main(int argc, char * argv[])
 {
