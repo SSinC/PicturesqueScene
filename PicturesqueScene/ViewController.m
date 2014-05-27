@@ -302,9 +302,11 @@ typedef enum {
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationFinishedLaunching) name:@"ApplicationFinishedLaunching" object:nil];
 
     double delayInSeconds = 1.0;
+    __weak id wself = self;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            [self onApplicationFinishedLaunching];
+        ViewController *strongSelf = wself;
+        [strongSelf onApplicationFinishedLaunching];
     });
 
 //    InspectionView *testView = [[InspectionView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
@@ -387,43 +389,82 @@ typedef enum {
     CGFloat page = point.x / _viewScroller.frame.size.width;
     
     if(_page != page){
-        _page = page;
         
-//        [self.moviePlayer stop];
+        _page = page;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"viewScrolled" object:nil];
         
-        switch ((int)page) {
-            case 0:{
-                [self playMovieNumber:0];
-//                [_glassScrollView2 dismissMovieView];
-                [_glassScrollView1 showMovieView:self.moviePlayer.view];
-                break;
+        double delayInSeconds = 1.0;
+        __weak id wself = self;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        
+        dispatch_after(popTime, dispatch_get_main_queue(), ^{
+            ViewController *strongSelf = wself;
+            switch ((int)page) {
+                case 0:{
+                    [strongSelf playMovieNumber:0];
+                    //                [_glassScrollView2 dismissMovieView];
+                    [_glassScrollView1 showMovieView:self.moviePlayer.view];
+                    break;
+                }
+                case 1:{
+                    [strongSelf playMovieNumber:1];
+                    //                [_glassScrollView1 dismissMovieView];
+                    [_glassScrollView2 showMovieView:self.moviePlayer.view];
+                    break;
+                }
+                case 2:{
+                    [strongSelf playMovieNumber:2];
+                    //                [_glassScrollView1 dismissMovieView];
+                    [_glassScrollView3 showMovieView:self.moviePlayer.view];
+                    break;
+                }
+                case 3:{
+                    [strongSelf playMovieNumber:3];
+                    [_glassScrollView4 showMovieView:self.moviePlayer.view];
+                    break;
+                }
+                case 4:{
+                    [strongSelf playMovieNumber:4];
+                    [_glassScrollView5 showMovieView:self.moviePlayer.view];
+                    break;
+                }
+                default:
+                    break;
             }
-            case 1:{
-                [self playMovieNumber:1];
-//                [_glassScrollView1 dismissMovieView];
-                [_glassScrollView2 showMovieView:self.moviePlayer.view];
-                break;
-            }
-            case 2:{
-                [self playMovieNumber:2];
-                //                [_glassScrollView1 dismissMovieView];
-                [_glassScrollView3 showMovieView:self.moviePlayer.view];
-                break;
-            }
-            case 3:{
-                [self playMovieNumber:3];
-                 [_glassScrollView4 showMovieView:self.moviePlayer.view];
-                break;
-            }
-            case 4:{
-                [self playMovieNumber:4];
-                 [_glassScrollView5 showMovieView:self.moviePlayer.view];
-                break;
-            }
-            default:
-                break;
-        }
+
+        });
+//        switch ((int)page) {
+//            case 0:{
+//                [self playMovieNumber:0];
+////                [_glassScrollView2 dismissMovieView];
+//                [_glassScrollView1 showMovieView:self.moviePlayer.view];
+//                break;
+//            }
+//            case 1:{
+//                [self playMovieNumber:1];
+////                [_glassScrollView1 dismissMovieView];
+//                [_glassScrollView2 showMovieView:self.moviePlayer.view];
+//                break;
+//            }
+//            case 2:{
+//                [self playMovieNumber:2];
+//                //                [_glassScrollView1 dismissMovieView];
+//                [_glassScrollView3 showMovieView:self.moviePlayer.view];
+//                break;
+//            }
+//            case 3:{
+//                [self playMovieNumber:3];
+//                 [_glassScrollView4 showMovieView:self.moviePlayer.view];
+//                break;
+//            }
+//            case 4:{
+//                [self playMovieNumber:4];
+//                 [_glassScrollView5 showMovieView:self.moviePlayer.view];
+//                break;
+//            }
+//            default:
+//                break;
+//        }
     }
 //    PSLog(@"point.x :%f",page);
     //    [self playMovieNumber:(int)ratio];

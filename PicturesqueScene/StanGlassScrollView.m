@@ -411,9 +411,9 @@
     
     float delay;
     if(!_isRetina){
-        delay = 4.5;
+        delay = 3.5;
     }else{
-        delay = 5.0;
+        delay = 4.0;
     }
         [_constraitView bringSubviewToFront:_blurredBackgroundImageView];
         [UIView animateWithDuration:delay animations:^{

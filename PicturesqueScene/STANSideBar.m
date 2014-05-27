@@ -588,7 +588,7 @@ static STANSideBar *rn_frostedMenu;
    // NSLog(@"contentview frame : x %f y: %f w:%f  h:%f ",self.contentView.frame.origin.x,self.contentView.frame.origin.y,self.contentView.frame.size.width,self.contentView.frame.size.height);
     
     
-    NSLog(@"STANSideBar self.view.frame : x %f y: %f w:%f  h:%f ",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
+//    NSLog(@"STANSideBar self.view.frame : x %f y: %f w:%f  h:%f ",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
 
 
     if(CGRectContainsPoint(self.contentView.frame, location)){
@@ -601,11 +601,7 @@ static STANSideBar *rn_frostedMenu;
         if(CGRectContainsPoint(r, location)){
             [self dismissAnimated:YES completion:nil];
         }
-        else
-        {
-           // [self.view.superview hitTest:location withEvent:nil];
-        }
-
+       
     }
 }
 
