@@ -99,13 +99,14 @@
 
 - (void)_onButtonClicked :(id)sender
 {
-    if (_iconHighLighted) {
-        return;
-    }
-    NSLog(@"CityIconClickDelegate  ButtonClicked ");
+//    if (_iconHighLighted) {
+//        return;
+//    }
+    NSLog(@" 1  _onButtonClicked  ButtonClicked ");
     
     _iconHighLighted = YES;
-    [self performSelector:@selector(delayButtonClick:) withObject:nil afterDelay:0.2];
+    [_delegate  ButtonClicked:sender ];
+// [self performSelector:@selector(delayButtonClick:) withObject:nil afterDelay:0.2];
     
     
 }
@@ -115,11 +116,12 @@
     _iconHighLighted = NO;
 }
 
-- (UIView*)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-{
-    NSLog(@"cell hitTest");
-    return [super hitTest:point withEvent:event];;
-}
+//- (UIView*)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+//{
+//    NSLog(@"cell hitTest");
+//    
+//    return self;
+//}
 @end
 
 
@@ -186,6 +188,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
     _collectionView.backgroundColor = [UIColor grayColor];
+    
     
     [self.view addSubview:_titieIcon];
     [self.view addSubview:_titleLabel];
@@ -255,6 +258,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
     CityCollectionViewDataItem* data = [_cityDataList objectAtIndex:indexPath.row];
     cell.title = data.city;
     cell.enable = data.enable;
+    cell.delegate = self;
     return cell;
 }
 

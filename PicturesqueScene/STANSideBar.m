@@ -603,7 +603,7 @@ static STANSideBar *rn_frostedMenu;
         }
         else
         {
-            [self.view.superview hitTest:location withEvent:nil];
+           // [self.view.superview hitTest:location withEvent:nil];
         }
 
     }
