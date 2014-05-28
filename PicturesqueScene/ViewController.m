@@ -117,17 +117,23 @@ typedef enum {
 {
     BOOL _sideBarShowed;
     BOOL _sideBarAnimating;
+    STANSideBar         *_callout;
+    
     BOOL _moviePlaying;
-    STANSideBar *_callout;
-    UIScrollView *_viewScroller;
+    
+    UIScrollView        *_viewScroller;
     StanGlassScrollView *_glassScrollView1;
     StanGlassScrollView *_glassScrollView2;
     StanGlassScrollView *_glassScrollView3;
     StanGlassScrollView *_glassScrollView4;
     StanGlassScrollView *_glassScrollView5;
-    int _page;
+    NSMutableArray      *_scrollViewArray;
+    
+    int                  _page;
     CityCollectionViewController *cv;
-    UITestViewController *testController;
+    UITestViewController         *testController;
+    
+    __weak id           _wself;
 }
 
 //-(void)loadView
@@ -138,11 +144,12 @@ typedef enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    NSLog(@"[UIScreen mainScreen] applicationFrame].width:%f,height:%f",[[UIScreen mainScreen] applicationFrame].size.width,[[UIScreen mainScreen] applicationFrame].size.height);
+    NSLog(@"[UIScreen mainScreen] applicationFrame].width:%f,height:%f",[[UIScreen mainScreen] applicationFrame].size.width,[[UIScreen mainScreen] applicationFrame].size.height);
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     if(orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight){
         self.view.frame = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
     }
+    _wself = self;
     
     /*************************************
      Netwokr weather instance
@@ -223,6 +230,8 @@ typedef enum {
     [_viewScroller setShowsHorizontalScrollIndicator:NO];
     [_contentView addSubview:_viewScroller];
     
+    _scrollViewArray = [[NSMutableArray alloc] init];
+    
     NSMutableArray* cityarray = [[NSMutableArray alloc]initWithArray:@[@"杭州",@"北京",@"上海",@"深圳",@"武汉",@"智利"]];
     NSArray *mainWeather = @[@(sunny),@(rainy),@(foggy),@(snowy)];
     NSArray *downWeahter = @[@(10.),@(11),@(12),@(13)];
@@ -274,7 +283,7 @@ typedef enum {
     
     UITestViewController *testController1 = [[UITestViewController alloc] init];
 //    testController = testController1;
-    NSLog(@"testController1 %@",testController1);
+//    NSLog(@"testController1 %@",testController1);
     _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"杭州" image:@"sunny_big" mainTemp:23 upTemp:26 downTemp:10 humidity:10 wind:14 ]  headerView:[self headerViewWithCityName:@"杭州" temp:23 mainweather:sunny] citySwitchView:cv.view infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."] testViewController:nil];
 //    _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"杭州" image:@"sunny_big" mainTemp:23 upTemp:26 downTemp:10 humidity:10 wind:14 ]  headerView:[self headerViewWithCityName:@"杭州" temp:23 mainweather:sunny] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
 
@@ -295,6 +304,11 @@ typedef enum {
     [_viewScroller addSubview:_glassScrollView4];
     [_viewScroller addSubview:_glassScrollView5];
     
+    [_scrollViewArray addObject:_glassScrollView1];
+    [_scrollViewArray addObject:_glassScrollView2];
+    [_scrollViewArray addObject:_glassScrollView3];
+    [_scrollViewArray addObject:_glassScrollView4];
+    [_scrollViewArray addObject:_glassScrollView5];
     
     _sideBarShowed     = NO;
     _sideBarAnimating  = NO;
@@ -381,6 +395,8 @@ typedef enum {
     networkWeather *weatherInstance = [networkWeather sharedInstance];
     weatherInstance.delegate = self;
     [weatherInstance obtainWeaterInfoLocationBased];
+    
+    [self addScrollView];
 }
 
 
@@ -396,77 +412,48 @@ typedef enum {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"viewScrolled" object:nil];
         
         double delayInSeconds = 1.0;
-        __weak id wself = self;
+//        __weak id wself = self;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         
         dispatch_after(popTime, dispatch_get_main_queue(), ^{
-            ViewController *strongSelf = wself;
-            switch ((int)page) {
-                case 0:{
-                    [strongSelf playMovieNumber:0];
-                    //                [_glassScrollView2 dismissMovieView];
-                    [_glassScrollView1 showMovieView:self.moviePlayer.view];
-                    break;
-                }
-                case 1:{
-                    [strongSelf playMovieNumber:1];
-                    //                [_glassScrollView1 dismissMovieView];
-                    [_glassScrollView2 showMovieView:self.moviePlayer.view];
-                    break;
-                }
-                case 2:{
-                    [strongSelf playMovieNumber:2];
-                    //                [_glassScrollView1 dismissMovieView];
-                    [_glassScrollView3 showMovieView:self.moviePlayer.view];
-                    break;
-                }
-                case 3:{
-                    [strongSelf playMovieNumber:3];
-                    [_glassScrollView4 showMovieView:self.moviePlayer.view];
-                    break;
-                }
-                case 4:{
-                    [strongSelf playMovieNumber:4];
-                    [_glassScrollView5 showMovieView:self.moviePlayer.view];
-                    break;
-                }
-                default:
-                    break;
-            }
+            ViewController *strongSelf = _wself;
+//            switch ((int)page) {
+//                case 0:{
+//                    [strongSelf playMovieNumber:0];
+//                    //                [_glassScrollView2 dismissMovieView];
+//                    [_glassScrollView1 showMovieView:self.moviePlayer.view];
+//                    break;
+//                }
+//                case 1:{
+//                    [strongSelf playMovieNumber:1];
+//                    //                [_glassScrollView1 dismissMovieView];
+//                    [_glassScrollView2 showMovieView:self.moviePlayer.view];
+//                    break;
+//                }
+//                case 2:{
+//                    [strongSelf playMovieNumber:2];
+//                    //                [_glassScrollView1 dismissMovieView];
+//                    [_glassScrollView3 showMovieView:self.moviePlayer.view];
+//                    break;
+//                }
+//                case 3:{
+//                    [strongSelf playMovieNumber:3];
+//                    [_glassScrollView4 showMovieView:self.moviePlayer.view];
+//                    break;
+//                }
+//                case 4:{
+//                    [strongSelf playMovieNumber:4];
+//                    [_glassScrollView5 showMovieView:self.moviePlayer.view];
+//                    break;
+//                }
+//                default:
+//                    break;
+//            }
+            [strongSelf playMovieNumber:_page];
+            [_scrollViewArray[_page] showMovieView:_moviePlayer.view];
 
         });
-//        switch ((int)page) {
-//            case 0:{
-//                [self playMovieNumber:0];
-////                [_glassScrollView2 dismissMovieView];
-//                [_glassScrollView1 showMovieView:self.moviePlayer.view];
-//                break;
-//            }
-//            case 1:{
-//                [self playMovieNumber:1];
-////                [_glassScrollView1 dismissMovieView];
-//                [_glassScrollView2 showMovieView:self.moviePlayer.view];
-//                break;
-//            }
-//            case 2:{
-//                [self playMovieNumber:2];
-//                //                [_glassScrollView1 dismissMovieView];
-//                [_glassScrollView3 showMovieView:self.moviePlayer.view];
-//                break;
-//            }
-//            case 3:{
-//                [self playMovieNumber:3];
-//                 [_glassScrollView4 showMovieView:self.moviePlayer.view];
-//                break;
-//            }
-//            case 4:{
-//                [self playMovieNumber:4];
-//                 [_glassScrollView5 showMovieView:self.moviePlayer.view];
-//                break;
-//            }
-//            default:
-//                break;
-//        }
+
     }
 //    PSLog(@"point.x :%f",page);
     //    [self playMovieNumber:(int)ratio];
@@ -481,6 +468,7 @@ typedef enum {
     }
 }
 
+#pragma mark - menu click
 - (void)onClick:(FRDLivelyButton *)sender
 {
     if(_sideBarAnimating) return;
@@ -512,28 +500,23 @@ typedef enum {
     }
 }
 
-//- (void)handleTap1:(UITapGestureRecognizer *)recognizer {
-//    CGPoint location = [recognizer locationInView:self.view];
-//    if ( CGRectContainsPoint(_button.frame, location)) {
-//        [self onClick:nil];
-//    }
-//   }
+
 #pragma mark - play movie
 //these files are in the public domain and no longer have property rights
 - (void)playLocalFile:(NSString *)name
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH , 0), ^{
-            [self.moviePlayer stop];
-            self.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-            [self.moviePlayer setRepeatMode:MPMovieRepeatModeOne];
+            [_moviePlayer stop];
+            _moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+            [_moviePlayer setRepeatMode:MPMovieRepeatModeOne];
 //     self.moviePlayer.initialPlaybackTime = -0.1;
-            [self.moviePlayer prepareToPlay];
+            [_moviePlayer prepareToPlay];
         
             dispatch_async(dispatch_get_main_queue(), ^{
-            [self.moviePlayer setContentURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:name ofType:@"mp4"]]];
-             [self.moviePlayer play];
+            [_moviePlayer setContentURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:name ofType:@"mp4"]]];
+             [_moviePlayer play];
             [UIView animateWithDuration:0.4 delay:0.0 options:0 animations:^{
-                self.moviePlayer.view.alpha = 1.f;
+                _moviePlayer.view.alpha = 1.f;
             } completion:^(BOOL finished) {
                 _moviePlaying = YES;
            }];
@@ -570,8 +553,10 @@ typedef enum {
         [self playLocalFile:@"snowy"];
     }else if(index == 3){
         [self playLocalFile:@"rainy"];
-    }else{
+    }else if(index == 4){
         [self playLocalFile:@"foggy"];
+    }else{
+        [self playLocalFile:@"snowy"];
     }
 }
 
@@ -586,27 +571,8 @@ typedef enum {
 
 - (void)sidebar:(STANSideBar *)sidebar didTapItemAtIndex:(NSUInteger)index
 {
-    StanGlassScrollView *sendObject;
-    switch (_page) {
-        case 0:
-            sendObject = _glassScrollView1;
-            break;
-        case 1:
-            sendObject = _glassScrollView2;
-            break;
-        case 2:
-            sendObject = _glassScrollView3;
-            break;
-        case 3:
-            sendObject = _glassScrollView4;
-            break;
-        case 4:
-            sendObject = _glassScrollView5;
-            break;
-            
-        default:
-            break;
-    }
+    StanGlassScrollView *sendObject = _scrollViewArray[_page];
+    
     if (index == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"cityButtonClick1" object:sendObject];
     }
@@ -784,43 +750,77 @@ So we must NOT execute dismiss before showing the bar.
 #pragma mark - viewWillAppear
 - (void)viewWillAppear:(BOOL)animated
 {
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    if(orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight){
-        self.view.frame = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
+
+    [self adjustScrollView];
+}
+
+#pragma mark - adjustScrollView
+- (void)adjustScrollView
+{
+//    PSLog(@"before width is: %f, height is:%f",self.view.frame.size.width,self.view.frame.size.height);
+//     PSLog(@"bounds width is: %f, height is:%f",self.view.bounds.size.width,self.view.bounds.size.height);
+//    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+//    if(orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight){
+    if( self.view.bounds.size.width < 1024){
+        self.view.bounds = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
     }
-    //    PSLog(@"width is: %f, height is:%f",self.view.frame.size.width,self.view.frame.size.height);
-    if (!SIMPLE_SAMPLE) {
+//        PSLog(@"after width is: %f, height is:%f",self.view.frame.size.width,self.view.frame.size.height);
+    
         int page = _page; // resize scrollview can cause setContentOffset off for no reason and screw things up
         
         CGFloat blackSideBarWidth = 2;
-        [_viewScroller setFrame:CGRectMake(0, 0, self.view.frame.size.width + 2*blackSideBarWidth, self.view.frame.size.height)];
+        [_viewScroller setFrame:CGRectMake(0, 0, self.view.bounds.size.width + 2*blackSideBarWidth, self.view.bounds.size.height)];
         //        PSLog(@"_viewScroll width:%f",_viewScroller.frame.size.width);
-        [_viewScroller setContentSize:CGSizeMake(5*_viewScroller.frame.size.width, self.view.frame.size.height)];
-        
-        [_glassScrollView1 setFrame:self.view.frame];
-        [_glassScrollView2 setFrame:self.view.frame];
-        [_glassScrollView3 setFrame:self.view.frame];
-        [_glassScrollView4 setFrame:self.view.frame];
-        [_glassScrollView5 setFrame:self.view.frame];
-        
-        [_glassScrollView2 setFrame:CGRectOffset(_glassScrollView2.bounds, _viewScroller.frame.size.width, 0)];
-        [_glassScrollView3 setFrame:CGRectOffset(_glassScrollView3.bounds, 2*_viewScroller.frame.size.width, 0)];
-        [_glassScrollView4 setFrame:CGRectOffset(_glassScrollView4.bounds, 3*_viewScroller.frame.size.width, 0)];
-        [_glassScrollView5 setFrame:CGRectOffset(_glassScrollView5.bounds, 4*_viewScroller.frame.size.width, 0)];
-        
-        [_viewScroller setContentOffset:CGPointMake(page * _viewScroller.frame.size.width, _viewScroller.contentOffset.y)];
-        _page = page;
-    }
+        [_viewScroller setContentSize:CGSizeMake(_scrollViewArray.count * _viewScroller.frame.size.width, self.view.bounds.size.height)];
+//        
+//        [_glassScrollView1 setFrame:self.view.frame];
+//        [_glassScrollView2 setFrame:self.view.frame];
+//        [_glassScrollView3 setFrame:self.view.frame];
+//        [_glassScrollView4 setFrame:self.view.frame];
+//        [_glassScrollView5 setFrame:self.view.frame];
+//        
+//        [_glassScrollView2 setFrame:CGRectOffset(_glassScrollView2.bounds, _viewScroller.frame.size.width, 0)];
+//        [_glassScrollView3 setFrame:CGRectOffset(_glassScrollView3.bounds, 2*_viewScroller.frame.size.width, 0)];
+//        [_glassScrollView4 setFrame:CGRectOffset(_glassScrollView4.bounds, 3*_viewScroller.frame.size.width, 0)];
+//        [_glassScrollView5 setFrame:CGRectOffset(_glassScrollView5.bounds, 4*_viewScroller.frame.size.width, 0)];
     
-    //show animation trick
-    double delayInSeconds = 2.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        // [_glassScrollView1 setBackgroundImage:[UIImage imageNamed:@"background"] overWriteBlur:YES animated:YES duration:1];
-    });
+     [_scrollViewArray enumerateObjectsUsingBlock:^(StanGlassScrollView *subScrollView, NSUInteger idx, BOOL *stop) {
+         [subScrollView setFrame:self.view.bounds];
+     }];
+    
+     [_scrollViewArray enumerateObjectsUsingBlock:^(StanGlassScrollView *subScrollView, NSUInteger idx, BOOL *stop) {
+        if(idx != 0){
+            [subScrollView setFrame:CGRectOffset(subScrollView.bounds, idx * _viewScroller.frame.size.width, 0)];
+        }
+     }];
+    
+    
+    [_viewScroller setContentOffset:CGPointMake(page * _viewScroller.frame.size.width, _viewScroller.contentOffset.y)];
+    _page = page;
+
 }
 
-
+#pragma mark - add scrollView
+- (void)addScrollView
+{
+    NSMutableArray* cityarray = [[NSMutableArray alloc]initWithArray:@[@"杭州",@"北京",@"上海",@"深圳",@"武汉",@"智利"]];
+    NSArray *mainWeather = @[@(sunny),@(rainy),@(foggy),@(snowy)];
+    NSArray *downWeahter = @[@(10.),@(11),@(12),@(13)];
+    NSArray *upWeahter   = @[@(20),@(21),@(22),@(23)];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        StanGlassScrollView  *addingScrollView = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"snow_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"snow_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"Heaven" image:@"snow_big" mainTemp:12 upTemp:14 downTemp:10 humidity:10 wind:14 ] headerView:[self headerViewWithCityName:@"Heaven" temp:12 mainweather:foggy] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."] testViewController:nil];
+        
+        [_scrollViewArray addObject:addingScrollView];
+        
+        [_viewScroller addSubview:addingScrollView];
+        
+        [self adjustScrollView];
+        
+    });
+    
+}
 
 #pragma mark - network
 // upper and down temperature HZ http://www.weather.com.cn/data/cityinfo/101210101.html
