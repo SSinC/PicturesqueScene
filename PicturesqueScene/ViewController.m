@@ -116,6 +116,7 @@ typedef enum {
 @implementation ViewController
 {
     BOOL _sideBarShowed;
+    BOOL _sideBarAnimating;
     BOOL _moviePlaying;
     STANSideBar *_callout;
     UIScrollView *_viewScroller;
@@ -295,9 +296,10 @@ typedef enum {
     [_viewScroller addSubview:_glassScrollView5];
     
     
-    _sideBarShowed = NO;
-    _moviePlaying  = NO;
-    _page = 0;
+    _sideBarShowed     = NO;
+    _sideBarAnimating  = NO;
+    _moviePlaying      = NO;
+    _page              = 0;
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onApplicationFinishedLaunching) name:@"ApplicationFinishedLaunching" object:nil];
 
@@ -481,7 +483,14 @@ typedef enum {
 
 - (void)onClick:(FRDLivelyButton *)sender
 {
-    if (sender.buttonStyle == kFRDLivelyButtonStyleHamburger) {
+    if(_sideBarAnimating) return;
+//    if (sender.buttonStyle == kFRDLivelyButtonStyleHamburger) {
+    
+    if(!_sideBarShowed){
+        
+//        _sideBarShowed    = YES;
+        _sideBarAnimating = YES;
+        
         NSArray *images = @[
                             [UIImage imageNamed:@"city_icon1"],
                             [UIImage imageNamed:@"info_icon1"],
@@ -497,6 +506,8 @@ typedef enum {
         [_callout show];
         
     } else {
+//        _sideBarShowed    = NO;
+        _sideBarAnimating = YES;
         [_callout dismiss];
     }
 }
@@ -575,11 +586,32 @@ typedef enum {
 
 - (void)sidebar:(STANSideBar *)sidebar didTapItemAtIndex:(NSUInteger)index
 {
+    StanGlassScrollView *sendObject;
+    switch (_page) {
+        case 0:
+            sendObject = _glassScrollView1;
+            break;
+        case 1:
+            sendObject = _glassScrollView2;
+            break;
+        case 2:
+            sendObject = _glassScrollView3;
+            break;
+        case 3:
+            sendObject = _glassScrollView4;
+            break;
+        case 4:
+            sendObject = _glassScrollView5;
+            break;
+            
+        default:
+            break;
+    }
     if (index == 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"cityButtonClick1" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"cityButtonClick1" object:sendObject];
     }
     if (index == 1) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"infoButtonClick1" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"infoButtonClick1" object:sendObject];
     }
 }
 
@@ -596,22 +628,22 @@ typedef enum {
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"sideBarShowed" object:self];
 
+//    PSLog(@"sidebar show");
     [UIView animateWithDuration:0.75
                           delay:0
          usingSpringWithDamping:0.3
           initialSpringVelocity:0.5
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         //                         PSLog(@"show before x:%f, y:%f",_contentView.center.x , _contentView.center.y);
+//                         PSLog(@"show before x:%f, y:%f",_contentView.center.x , _contentView.center.y);
                          _contentView.center = CGPointMake(_contentView.center.x + 50, _contentView.center.y - 50);
                      }
                      completion:^(BOOL finished) {
                          [_button setStyle:kFRDLivelyButtonStylePlus animated:YES];
-//                         [_button addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-                         //                          PSLog(@"show after x:%f, y:%f",_contentView.center.x , _contentView.center.y);
-                         _sideBarShowed = YES;
-//                         [[NSNotificationCenter defaultCenter] postNotificationName:@"sideBarShowCompleted" object:self];
+//                         PSLog(@"show after x:%f, y:%f",_contentView.center.x , _contentView.center.y);
                          _callout.sideBarShowsOnParentView = YES;
+                         _sideBarAnimating = NO;
+                         _sideBarShowed    = YES;
 
                      }];
     
@@ -619,27 +651,31 @@ typedef enum {
 
 - (void)sidebar:(STANSideBar *)sidebar willDismissFromScreenAnimated:(BOOL)animatedYesOrNo
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"sideBarDismiss" object:self];
-
+/******************************
+When sideBar shows,it will call [rn_frostedMenu dismissAnimated:NO completion:nil] which
+calls delegate: sidebar:(STANSideBar *)sidebar willDismissFromScreenAnimated:
+So we must NOT execute dismiss before showing the bar.
+ ******************************/
+    
     if(_sideBarShowed){
-        _sideBarShowed = NO;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"sideBarDismiss" object:self];
+//        PSLog(@"sidebar dismiss");
+        
         [UIView animateWithDuration:0.55
                               delay:0.25
              usingSpringWithDamping:0.9
               initialSpringVelocity:0.5
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             //                             PSLog(@"dismiss before x:%f, y:%f",_contentView.center.x , _contentView.center.y);
+//                                PSLog(@"dismiss before x:%f, y:%f",_contentView.center.x , _contentView.center.y);
                              _contentView.center = CGPointMake(_contentView.center.x - 50, _contentView.center.y + 50);
-                             //                             [_button setStyle:kFRDLivelyButtonStyleHamburger animated:YES];
-                             //                             if (_moviePlaying) {
-                             //                                 self.defaultFrame = _contentView.frame;
-                             //                                 [self.moviePlayer setFrame:self.defaultFrame];
-                             //                             }
                          }
                          completion:^(BOOL finished) {
                              [_button setStyle:kFRDLivelyButtonStyleHamburger animated:YES];
-                             //                         PSLog(@"dismiss after x:%f, y:%f",_contentView.center.x , _contentView.center.y);
+                             _sideBarAnimating = NO;
+                             _sideBarShowed    = NO;
+//                             PSLog(@"dismiss after x:%f, y:%f",_contentView.center.x , _contentView.center.y);
                          }];
     }
 }

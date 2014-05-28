@@ -149,10 +149,10 @@
         [self createInfoView];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleInfoButtonClick1) name:@"infoButtonClick1" object:nil];
+                                                 selector:@selector(handleInfoButtonClick1:) name:@"infoButtonClick1" object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleCityButtonClick1) name:@"cityButtonClick1" object:nil];
+                                                 selector:@selector(handleCityButtonClick1:) name:@"cityButtonClick1" object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(handleViewScrolled) name:@"viewScrolled" object:nil];
@@ -696,8 +696,11 @@
                      }];
 }
 
-- (void)handleInfoButtonClick1
+- (void)handleInfoButtonClick1:(NSNotification *)notification
 {
+    if(notification.object && notification.object!= self){
+        return;
+    }
     if(!_infoViewShowed){
         [self infoViewShowAnimate:YES];
     }else{
@@ -706,8 +709,11 @@
     
 }
 
-- (void)handleCityButtonClick1
+- (void)handleCityButtonClick1:(NSNotification *)notification
 {
+    if(notification.object && notification.object!= self){
+        return;
+    }
     if(!_cityViewShowed){
         [self cityViewShowAnimate:YES];
     }else{
