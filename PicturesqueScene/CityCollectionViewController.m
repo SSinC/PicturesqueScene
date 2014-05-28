@@ -83,6 +83,13 @@
     _title = title;
     [_titleLabel setText:_title];
 }
+
+- (void)setButtonTag:(NSInteger)Tag
+{
+    _buttonTag = Tag;
+    _iconButton.tag = Tag;
+}
+
 - (void)layoutSubviews
 {
     CGRect rc = self.bounds;
@@ -99,13 +106,16 @@
 
 - (void)_onButtonClicked :(id)sender
 {
-    if (_iconHighLighted) {
-        return;
-    }
+//    if (_iconHighLighted) {
+//        return;
+//    }
     NSLog(@" 1  _onButtonClicked  ButtonClicked ");
     
     _iconHighLighted = YES;
-    [self performSelector:@selector(delayButtonClick:) withObject:nil afterDelay:0.2];
+//    __strong UIButton *button = (UIButton *)sender;
+   // [_delegate  ButtonClicked:button ];
+
+    [self performSelector:@selector(delayButtonClick:) withObject:sender afterDelay:0.2];
     
     
 }
@@ -250,13 +260,12 @@ NSString *reuseId = @"collectionViewCellReuseId";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 {
-    
     CityCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
-    cell.contentView.backgroundColor = [UIColor redColor];
-    
+    //cell.contentView.backgroundColor = [UIColor redColor];
     CityCollectionViewDataItem* data = [_cityDataList objectAtIndex:indexPath.item];
     cell.title = data.city;
     cell.enable = data.enable;
+    cell.buttonTag = indexPath.item;
     cell.delegate = self;
     return cell;
 }
@@ -271,7 +280,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
     return  5;//cell的最小列间距
 }
 
-#pragma mark - collection view delefate
+#pragma mark - collection view delegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"didSelectItemAtIndexPath ");
@@ -284,12 +293,18 @@ NSString *reuseId = @"collectionViewCellReuseId";
 
 #pragma mark - CityIconClickDelegate
 
-- (void) ButtonClicked :(id)sender;
+- (void)ButtonClicked :(id)sender;
 {
     NSLog(@"CityIconClickDelegate  ButtonClicked ");
     
     //todo
     //add city to show
+    UIButton * button = (UIButton*)sender;
+    NSInteger buttonTag = button.tag;
+    CityCollectionViewDataItem* data = [_cityDataList objectAtIndex:buttonTag];
+    data.enable = !data.enable;
+    CityCollectionViewCell *cell = (CityCollectionViewCell *) [_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:buttonTag inSection:0]];
+    cell.enable = data.enable;
 }
 @end
 

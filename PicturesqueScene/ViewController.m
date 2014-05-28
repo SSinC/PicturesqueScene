@@ -835,7 +835,14 @@ So we must NOT execute dismiss before showing the bar.
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        StanGlassScrollView  *addingScrollView = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"snow_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"snow_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"Heaven" image:@"snow_big" mainTemp:12 upTemp:14 downTemp:10 humidity:10 wind:14 ] headerView:[self headerViewWithCityName:@"Heaven" temp:12 mainweather:foggy] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."] testViewController:nil];
+//    if( self.view.frame.size.width < 1024){
+//        self.view.frame = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
+//    }
+//        
+//        PSLog(@"out width is: %f, height is:%f",self.view.bounds.size.width,self.view.bounds.size.height);
+//        PSLog(@"out width is: %f, height is:%f",self.view.frame.size.width,self.view.frame.size.height);
+
+        StanGlassScrollView  *addingScrollView = [[StanGlassScrollView alloc] initWithFrame:self.view.bounds BackgroundImage:[UIImage imageNamed:@"snowy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"snowy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"天堂" image:@"snowy_big" mainTemp:12 upTemp:14 downTemp:10 humidity:10 wind:14 ] headerView:[self headerViewWithCityName:@"天堂" temp:12 mainweather:foggy] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."] testViewController:nil];
         
         [_scrollViewArray addObject:addingScrollView];
         
