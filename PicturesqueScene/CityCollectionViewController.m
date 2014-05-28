@@ -72,7 +72,7 @@
         return;
     }
     _enable = enable;
-    [_iconButton setImage:_enable ? [UIImage imageNamed:@"delete.png.png" ] : [UIImage imageNamed:@"add.png"] forState:UIControlStateNormal];
+    [_iconButton setImage:_enable ? [UIImage imageNamed:@"button1.png" ] : [UIImage imageNamed:@"button2.png"] forState:UIControlStateNormal];
 }
 
 - (void)setTitle:(NSString *)title
@@ -99,14 +99,13 @@
 
 - (void)_onButtonClicked :(id)sender
 {
-//    if (_iconHighLighted) {
-//        return;
-//    }
+    if (_iconHighLighted) {
+        return;
+    }
     NSLog(@" 1  _onButtonClicked  ButtonClicked ");
     
     _iconHighLighted = YES;
-    [_delegate  ButtonClicked:sender ];
-// [self performSelector:@selector(delayButtonClick:) withObject:nil afterDelay:0.2];
+    [self performSelector:@selector(delayButtonClick:) withObject:nil afterDelay:0.2];
     
     
 }
@@ -255,7 +254,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
     CityCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
     cell.contentView.backgroundColor = [UIColor redColor];
     
-    CityCollectionViewDataItem* data = [_cityDataList objectAtIndex:indexPath.row];
+    CityCollectionViewDataItem* data = [_cityDataList objectAtIndex:indexPath.item];
     cell.title = data.city;
     cell.enable = data.enable;
     cell.delegate = self;
@@ -273,9 +272,11 @@ NSString *reuseId = @"collectionViewCellReuseId";
 }
 
 #pragma mark - collection view delefate
-- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"didHighlightItemAtIndexPath");
+    NSLog(@"didSelectItemAtIndexPath ");
+    CityCollectionViewCell* cell = (CityCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    
     
 }
 
@@ -518,7 +519,6 @@ NSString *reuseId = @"collectionViewCellReuseId";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 {
     NSLog(@"cellForItemAtIndexPath");
-    NSLog(@"_collectionView:%@",_collectionView);
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseId forIndexPath:indexPath];
     cell.contentView.backgroundColor = [UIColor greenColor];
@@ -527,12 +527,14 @@ NSString *reuseId = @"collectionViewCellReuseId";
 }
 
 #pragma mark - collection view delefate
-- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
-{
-    NSLog(@"didHighlightItemAtIndexPath");
-    
-}
 
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"didSelectItemAtIndexPath ");
+    
+
+}
 #pragma mark - CityIconClickDelegate
 
 - (void) ButtonClicked :(id)sender;

@@ -585,3 +585,170 @@
 }
 
 @end
+
+
+@interface weatherHeaderView()
+{
+    UIImageView *       _cityIcon;
+    UILabel *           _cityLabel;
+    UIImageView *       _tempIcon;
+    UILabel *           _tempLabel;
+    FBShimmeringView *  _shimmeringViewUp;
+    UILabel *           _labelC;
+    UIImageView *       _weatherIcon;
+    UILabel *           _weatherLabel;
+}
+@end
+
+@implementation weatherHeaderView
+- (instancetype) initWithFrame:(CGRect)frame city:(NSString *)city temperature:(NSInteger)temperature weather:(weatherType)weather
+{
+    self = [super initWithFrame:frame];
+    
+    if (self)
+    {
+        self.layer.cornerRadius = self.frame.size.height/4.f;
+        self.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.65];
+       
+        _cityIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"city"]];
+        
+        _cityLabel = [[UILabel alloc] init];
+        _cityLabel.text = city;
+        _cityLabel.textColor = [UIColor whiteColor];
+        _cityLabel.font = [UIFont systemFontOfSize:22.0f];
+        _cityLabel.textAlignment = NSTextAlignmentCenter;
+        _cityLabel.adjustsFontSizeToFitWidth = YES;
+        
+        _tempIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"t_icon"]];
+        
+        _tempLabel = [[UILabel alloc] init];
+        _tempLabel.text = [NSString stringWithFormat:@"%i",temperature];
+        _tempLabel.textColor = [UIColor whiteColor];
+        _tempLabel.font = [UIFont boldSystemFontOfSize:24];
+        _tempLabel.textAlignment = NSTextAlignmentCenter;
+        _tempLabel.adjustsFontSizeToFitWidth = YES;
+        _shimmeringViewUp = [[FBShimmeringView alloc] init];
+        _shimmeringViewUp.contentView = _tempLabel;
+        _shimmeringViewUp.shimmeringSpeed = 70;
+        _shimmeringViewUp.shimmering = YES;
+        
+        _labelC = [[UILabel alloc] init];
+        _labelC.text = @"℃";
+        _labelC.textColor = [UIColor whiteColor];
+        _labelC.font = [UIFont systemFontOfSize:15.0];
+        _labelC.textAlignment = NSTextAlignmentCenter;
+        _labelC.adjustsFontSizeToFitWidth = YES;
+        
+        _weatherLabel = [[UILabel alloc] init];
+        _weatherLabel.textColor = [UIColor whiteColor];
+        _weatherLabel.font = [UIFont systemFontOfSize:22.0];
+        _weatherLabel.textAlignment = NSTextAlignmentCenter;
+        _weatherLabel.adjustsFontSizeToFitWidth = YES;
+
+        switch (weather) {
+            case Sunny:
+                _weatherIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"sunny_icon"]];
+                _weatherLabel.text = @"晴天";
+                break;
+            case Rainy:
+                _weatherIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"rainy_icon"]];
+                _weatherLabel.text = @"下雨";
+                break;
+            case Cloudy:
+                _weatherIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"cloudy_icon"]];
+                _weatherLabel.text = @"阴天";
+                break;
+            case Snowy:
+                _weatherIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"snowy_icon"]];
+                _weatherLabel.text = @"下雪";
+                break;
+            case Foggy:
+                _weatherIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"foggy_icon"]];
+                _weatherLabel.text = @"雾霾";
+                break;
+            default:
+                break;
+        }
+        
+        
+        [self addSubview:_cityIcon];
+        [self addSubview:_cityLabel];
+        [self addSubview:_tempIcon];
+        [self addSubview:_shimmeringViewUp];
+        [self addSubview:_labelC];
+        [self addSubview:_weatherIcon];
+        [self addSubview:_weatherLabel];
+
+
+    }
+    
+    return self;
+}
+- (void)layoutSubviews
+{
+    CGRect rc  = self.frame;
+    CGRect rcCityIcon,rcCityL,rcteIcon,rcteLabel,rccLabel,rcwIcon,rcwL;
+    
+    rcCityIcon = CGRectMake(13, (rc.size.height - 24)/2, 20, 24);
+    
+    CGSize sz = [_cityLabel.text sizeWithFont:_cityLabel.font];
+    rcCityL = CGRectMake(rcCityIcon.origin.x + rcCityIcon.size.width + 6, (rc.size.height - sz.height)/2, sz.width , sz.height);
+    rcteIcon = CGRectMake(rcCityL.origin.x + rcCityL.size.width + 26.0f,(rc.size.height - 24)/2 , 20, 24);
+    CGSize szt = [_tempLabel.text sizeWithFont:_tempLabel.font];
+    rcteLabel = CGRectMake(rcteIcon.origin.x + rcteIcon.size.width + 5.0f,(rc.size.height - szt.height)/2, szt.width, szt.height);
+    sz = [_labelC.text sizeWithFont:_labelC.font];
+    rccLabel = CGRectMake(rcteLabel.origin.x + rcteLabel.size.width + 3, rcteLabel.origin.y + 3, sz.width, sz.height);
+    rcwIcon = CGRectMake(rccLabel.origin.x + rccLabel.size.width + 22, (rc.size.height - 24)/2, 28., 24.);
+    sz = [_weatherLabel.text sizeWithFont:_weatherLabel.font];
+    rcwL = CGRectMake(rcwIcon.origin.x + rcwIcon.size.width + 5, (rc.size.height - sz.height)/2, sz.width, sz.height);
+
+    _cityIcon.frame = rcCityIcon;
+    _cityLabel.frame = rcCityL;
+    _tempIcon.frame = rcteIcon;
+    _tempLabel.frame = rcteLabel;
+    _shimmeringViewUp.frame = rcteLabel;
+    _labelC.frame = rccLabel;
+    _weatherIcon.frame = rcwIcon;
+    _weatherLabel.frame = rcwL;
+    
+}
+
+@end
+
+@interface aboutUSView()
+{
+    UIView *        _lineView;
+    UIImageView *   _wholeAbout;
+}
+
+@end
+@implementation aboutUSView
+
+- (instancetype) initWithFrame:(CGRect)frame title:(NSString *)title text:(NSString *)text
+{
+    self = [super initWithFrame:frame];
+    
+    if (self) {
+        self.layer.cornerRadius = self.frame.size.width/4.f;
+        self.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.65];
+        
+        if(title==nil || title.length==0)
+        {
+            PSLog(@"drawRect title == nil");
+        }
+        else
+        {
+            _lineView = [[UIView alloc]initWithFrame:CGRectMake(18, 54, self.frame.size.width - 36, 1)];
+            _lineView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.4];
+        }
+        [self addSubview:_lineView];
+        
+        _wholeAbout = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"aboutus"]];
+        _wholeAbout.frame = CGRectMake(30, 15, 279, 308);
+        
+        [self addSubview:_wholeAbout];
+    }
+    return self;
+}
+
+@end

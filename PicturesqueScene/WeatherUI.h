@@ -81,3 +81,13 @@ typedef NS_ENUM(NSUInteger, weatherType) {
 - (id)initWithFrame:(CGRect)frame Title:(NSString *)title weather:(weatherType)weather upTemperature:(NSInteger)upTmp downTemperature:(NSInteger)downTmp;
 
 @end
+
+@interface weatherHeaderView : UIView
+- (instancetype) initWithFrame:(CGRect)frame city:(NSString *)city temperature:(NSInteger)temperature weather:(weatherType)weather;
+
+@end
+
+@interface aboutUSView : UIView
+- (instancetype) initWithFrame:(CGRect)frame title:(NSString *)title text:(NSString *)text;
+
+@end

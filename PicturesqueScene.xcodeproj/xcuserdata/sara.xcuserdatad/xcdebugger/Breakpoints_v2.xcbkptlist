@@ -90,12 +90,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PicturesqueScene/ViewController.m"
-            timestampString = "422786187.730659"
+            timestampString = "422963105.51873"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "575"
-            endingLineNumber = "575"
-            landmarkName = "-sidebar:willShowOnScreenAnimated:"
+            startingLineNumber = "598"
+            endingLineNumber = "598"
+            landmarkName = "-playMovieNumber:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -122,12 +122,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PicturesqueScene/ViewController.m"
-            timestampString = "422876513.186976"
+            timestampString = "422963105.51873"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "441"
-            endingLineNumber = "441"
-            landmarkName = "-onClick:"
+            startingLineNumber = "464"
+            endingLineNumber = "464"
+            landmarkName = "-scrollViewWillEndDragging:withVelocity:targetContentOffset:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PicturesqueScene/CityCollectionViewController.m"
-            timestampString = "422877977.328925"
+            timestampString = "422964054.16002"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
             landmarkName = "-ButtonClicked:"
             landmarkType = "5">
          </BreakpointContent>
