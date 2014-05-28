@@ -420,7 +420,7 @@ static STANSideBar *rn_frostedMenu;
     contentFrame.size.height -= 310;
 
     self.contentView.frame = contentFrame;
-    PSLog(@"self.contentView: %f, %f",self.contentView.frame.size.width,self.contentView.frame.size.height);
+//    PSLog(@"self.contentView: %f, %f",self.contentView.frame.size.width,self.contentView.frame.size.height);
 
 // change the view frame to meet the need of gesture-control of other views;
 //    self.view.frame = controller.view.bounds;
@@ -577,18 +577,18 @@ static STANSideBar *rn_frostedMenu;
     CGPoint location = [recognizer locationInView:self.view];
     //    PSLog(@"tap location.%f , y:%f",location.x,location.y);
     
-    //    if (! CGRectContainsPoint(self.contentView.frame, location)) {
-    //        [self dismissAnimated:YES completion:nil];
-    //    }else {
-    //        NSInteger tapIndex = [self indexOfTap:[recognizer locationInView:self.contentView]];
-    //        if (tapIndex != NSNotFound) {
-    //            [self didTapItemAtIndex:tapIndex];
-    //        }
-    //    }
+//    if (! CGRectContainsPoint(self.contentView.frame, location)) {
+//        [self dismissAnimated:YES completion:nil];
+//    }else {
+//        NSInteger tapIndex = [self indexOfTap:[recognizer locationInView:self.contentView]];
+//        if (tapIndex != NSNotFound) {
+//            [self didTapItemAtIndex:tapIndex];
+//        }
+//    }
    // NSLog(@"contentview frame : x %f y: %f w:%f  h:%f ",self.contentView.frame.origin.x,self.contentView.frame.origin.y,self.contentView.frame.size.width,self.contentView.frame.size.height);
     
     
-    NSLog(@"STANSideBar self.view.frame : x %f y: %f w:%f  h:%f ",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
+//    NSLog(@"STANSideBar self.view.frame : x %f y: %f w:%f  h:%f ",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
 
 
     if(CGRectContainsPoint(self.contentView.frame, location)){
@@ -601,11 +601,7 @@ static STANSideBar *rn_frostedMenu;
         if(CGRectContainsPoint(r, location)){
             [self dismissAnimated:YES completion:nil];
         }
-        else
-        {
-           // [self.view.superview hitTest:location withEvent:nil];
-        }
-
+       
     }
 }
 

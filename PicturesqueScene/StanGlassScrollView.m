@@ -149,10 +149,10 @@
         [self createInfoView];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleInfoButtonClick1) name:@"infoButtonClick1" object:nil];
+                                                 selector:@selector(handleInfoButtonClick1:) name:@"infoButtonClick1" object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleCityButtonClick1) name:@"cityButtonClick1" object:nil];
+                                                 selector:@selector(handleCityButtonClick1:) name:@"cityButtonClick1" object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(handleViewScrolled) name:@"viewScrolled" object:nil];
@@ -411,9 +411,9 @@
     
     float delay;
     if(!_isRetina){
-        delay = 4.5;
+        delay = 3.5;
     }else{
-        delay = 5.0;
+        delay = 4.0;
     }
         [_constraitView bringSubviewToFront:_blurredBackgroundImageView];
         [UIView animateWithDuration:delay animations:^{
@@ -696,8 +696,11 @@
                      }];
 }
 
-- (void)handleInfoButtonClick1
+- (void)handleInfoButtonClick1:(NSNotification *)notification
 {
+    if(notification.object && notification.object!= self){
+        return;
+    }
     if(!_infoViewShowed){
         [self infoViewShowAnimate:YES];
     }else{
@@ -706,8 +709,11 @@
     
 }
 
-- (void)handleCityButtonClick1
+- (void)handleCityButtonClick1:(NSNotification *)notification
 {
+    if(notification.object && notification.object!= self){
+        return;
+    }
     if(!_cityViewShowed){
         [self cityViewShowAnimate:YES];
     }else{
