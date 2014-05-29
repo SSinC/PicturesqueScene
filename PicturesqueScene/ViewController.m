@@ -16,6 +16,7 @@
 #import "FXBlurView.h"
 #import "defines.h"
 #import "UITestViewController.h"
+#import "weatherViewContainer.h"
 
 #import <objc/runtime.h>
 //#import <AVFoundation/AVFoundation.h>
@@ -129,6 +130,8 @@ typedef enum {
     StanGlassScrollView *_glassScrollView5;
     NSMutableArray      *_scrollViewArray;
     
+    NSMutableArray      *_viewContainerArray;
+    
     int                  _page;
     CityCollectionViewController *cv;
     aboutUSView *   aboutUS1 ;
@@ -145,7 +148,7 @@ typedef enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"[UIScreen mainScreen] applicationFrame].width:%f,height:%f",[[UIScreen mainScreen] applicationFrame].size.width,[[UIScreen mainScreen] applicationFrame].size.height);
+//    PSLog(@"[UIScreen mainScreen] applicationFrame].width:%f,height:%f",[[UIScreen mainScreen] applicationFrame].size.width,[[UIScreen mainScreen] applicationFrame].size.height);
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     if(orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight){
         self.view.frame = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
@@ -231,7 +234,8 @@ typedef enum {
     [_viewScroller setShowsHorizontalScrollIndicator:NO];
     [_contentView addSubview:_viewScroller];
     
-    _scrollViewArray = [[NSMutableArray alloc] init];
+    _scrollViewArray    = [[NSMutableArray alloc] init];
+    _viewContainerArray = [[NSMutableArray alloc] init];
     
     NSMutableArray* cityarray = [[NSMutableArray alloc]initWithArray:@[@"杭州",@"北京",@"上海",@"深圳",@"武汉",@"智利"]];
     NSArray *mainWeather = @[@(sunny),@(rainy),@(foggy),@(snowy)];
@@ -278,9 +282,15 @@ typedef enum {
     cv.view.frame = CGRectMake(341,198,343,343);
     aboutUS1 = [[aboutUSView alloc]initWithFrame:CGRectMake(341,198,343,343) title:@"关于我们"  text:@"画境是... ..."];
 
-    weatherDataItem* data1 = [[weatherDataItem alloc]initWithCity:@"杭州" weather:Sunny mainTemp:18 upTemp:22 downTemp:16 humidity:56 wind:12];
+    weatherDataItem *data1 = [[weatherDataItem alloc] initWithCity:@"杭州" weather:Sunny mainTemp:18 upTemp:22 downTemp:16 humidity:56 wind:12];
     weatherInfoDetailView* pop1 = [[weatherInfoDetailView alloc]initWithFrame:CGRectMake(0, 0, 360, 360) withDataItem:data1];
     weatherHeaderView* headerView1 = [[weatherHeaderView alloc]initWithFrame:CGRectMake(725, 16, 291, 39) city:@"杭州" temperature:23 weather:Sunny];
+    
+    weatherViewContainer *container1 = [[weatherViewContainer alloc] init];
+    container1.weatherDataItem       = data1;
+    container1.weatherInfoDetailView = pop1;
+    [_viewContainerArray addObject:container1];
+    
     _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop1  headerView:headerView1 citySwitchView:cv.view infoView:aboutUS1 testViewController:nil];
     
     
@@ -424,6 +434,20 @@ typedef enum {
     [self addScrollView];
 }
 
+#pragma mark - weatherDelegate
+- (BOOL)gotWeatherInfo:(NSArray *)weather
+{
+    PSLog(@"get weather:%@",weather);
+    weatherViewContainer *viewContainer =(weatherViewContainer *)_viewContainerArray[0];
+    
+    viewContainer.weatherDataItem.mainTemperature = ((NSString *)weather[0]).intValue;
+    viewContainer.weatherDataItem.humidity        = ((NSString *)weather[1]).intValue;
+    viewContainer.weatherDataItem.cityNumber      = (NSString *)weather[2];
+    viewContainer.weatherInfoDetailView.dataItem  = viewContainer.weatherDataItem;
+    NSLog(@"cityNumber: %@", viewContainer.weatherInfoDetailView.dataItem.cityNumber);
+    [viewContainer.weatherInfoDetailView updateUIbyData:viewContainer.weatherDataItem];
+    return YES;
+}
 
 #pragma mark - ScrollView delegate
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
@@ -585,12 +609,6 @@ typedef enum {
     }
 }
 
-#pragma mark - weatherDelegate
-- (BOOL)gotWeatherInfo:(NSString *)weather
-{
-    PSLog(@"get weather:%@",weather);
-    return YES;
-}
 
 #pragma mark - STANSideBarDelegate
 
@@ -786,6 +804,7 @@ So we must NOT execute dismiss before showing the bar.
 //     PSLog(@"bounds width is: %f, height is:%f",self.view.bounds.size.width,self.view.bounds.size.height);
 //    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
 //    if(orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight){
+    
     if( self.view.bounds.size.width < 1024){
         self.view.bounds = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
     }

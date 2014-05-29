@@ -148,7 +148,7 @@
                 [_userDefaults setObject:cityNumber forKey:PSLastCityNumber];
             }
             
-            NSString *string1 = @"http://www.weather.com.cn/data/cityinfo/";
+            NSString *string1 = @"http://www.weather.com.cn/data/sk/";
             NSString *string3 = @".html";
             NSString *weatherURLString = @"";
             weatherURLString = [weatherURLString stringByAppendingFormat:@"%@%@%@",string1,cityNumber,string3];
@@ -225,9 +225,14 @@
         //         PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
         //         PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ",text0,text1,text2,text3,text4,text5,text6,text7);
         
-        [_userDefaults setObject:text4 forKey:PSLastMainWeather];
+        NSString *currentTemp = [json1 objectForKey:@"temp"];
+        NSString *humidity    = [json1 objectForKey:@"SD"];
+        NSString *cityID      = [json1 objectForKey:@"cityid"];
+        NSArray  *array       = @[currentTemp,humidity,cityID];
+        
+        [_userDefaults setObject:text4 forKey:PSLastCurrentTemp];
         if ([strongSelf.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
-            _sendWeatherInfoCompleted = [strongSelf.delegate gotWeatherInfo:text4];
+            _sendWeatherInfoCompleted = [strongSelf.delegate gotWeatherInfo:array];
         }
     }];
     

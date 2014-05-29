@@ -89,7 +89,10 @@
             break;
     }
 }
-
+- (void)setMainTemperature:(NSInteger)mainTemperature
+{
+    _mainTemperature = mainTemperature;
+}
 @end
 
 

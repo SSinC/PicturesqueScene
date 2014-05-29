@@ -17,6 +17,7 @@
 #define  PSLastAddress      @"PSLastAddress"
 #define  PSLastCityNumber   @"PSLastCityNumber"
 #define  PSLastMainWeather  @"PSLastMainWeather"
+#define  PSLastCurrentTemp  @"PSLastCurrentTemp"
 
 #define ENABLE_LOGGING_DEBUG 1
 
