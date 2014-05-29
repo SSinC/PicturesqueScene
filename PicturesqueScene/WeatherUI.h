@@ -8,15 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "FBShimmeringView.h"
-
-typedef NS_ENUM(NSUInteger, weatherType) {
-    
-    Sunny = 0,
-    Cloudy,
-    Rainy,
-    Snowy,
-    Foggy,
-};
+#import "weatherData.h"
 @interface weatherDataItem : NSObject
 //{
 //    NSString*   city;
@@ -67,7 +59,7 @@ typedef NS_ENUM(NSUInteger, weatherType) {
 }
 @property (strong)weatherDataItem* dataItem;
 -(id)initWithFrame:(CGRect)frame withDataItem:(weatherDataItem*)item;
-
+-(void)updateUIbyData:(id)item;
 @end
 
 

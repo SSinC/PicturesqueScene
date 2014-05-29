@@ -89,6 +89,11 @@
             break;
     }
 }
+- (void)setMainTemperature:(NSInteger)Temperature
+{
+    _mainTemperature = Temperature;
+    
+}
 
 @end
 
@@ -375,7 +380,6 @@
     
     
 }
-
 -(void)updateUIbyData:(id)item
 {
     _cityLabel.text = self.dataItem.city;

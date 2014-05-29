@@ -43,6 +43,7 @@
 		3DD5F53718FD5C2200E07EFA /* t_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DD5F53118FD5C2200E07EFA /* t_icon.png */; };
 		3DD5F53B18FD71DA00E07EFA /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DD5F53A18FD71DA00E07EFA /* line.png */; };
 		3DD5F53D18FD726500E07EFA /* line1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DD5F53C18FD726500E07EFA /* line1.png */; };
+		569EA17C193718F900BD989F /* CityChooseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569EA17B193718F900BD989F /* CityChooseViewController.m */; };
 		F61194A4192B26A300A874DA /* city_icon1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F61194A2192B26A300A874DA /* city_icon1@2x.png */; };
 		F61194A5192B26A300A874DA /* info_icon1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F61194A3192B26A300A874DA /* info_icon1@2x.png */; };
 		F61194A8192B26AC00A874DA /* city_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = F61194A6192B26AC00A874DA /* city_icon1.png */; };
@@ -237,6 +238,8 @@
 		3DD5F53118FD5C2200E07EFA /* t_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = t_icon.png; sourceTree = "<group>"; };
 		3DD5F53A18FD71DA00E07EFA /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
 		3DD5F53C18FD726500E07EFA /* line1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line1.png; sourceTree = "<group>"; };
+		569EA17A193718F900BD989F /* CityChooseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityChooseViewController.h; sourceTree = "<group>"; };
+		569EA17B193718F900BD989F /* CityChooseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityChooseViewController.m; sourceTree = "<group>"; };
 		F61194A2192B26A300A874DA /* city_icon1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "city_icon1@2x.png"; sourceTree = "<group>"; };
 		F61194A3192B26A300A874DA /* info_icon1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info_icon1@2x.png"; sourceTree = "<group>"; };
 		F61194A6192B26AC00A874DA /* city_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = city_icon1.png; sourceTree = "<group>"; };
@@ -526,6 +529,8 @@
 				F623EE94192CAC2700FD505E /* CityCollectionViewController.m */,
 				F623EE97192DDE5C00FD505E /* UITestViewController.h */,
 				F623EE98192DDE5C00FD505E /* UITestViewController.m */,
+				569EA17A193718F900BD989F /* CityChooseViewController.h */,
+				569EA17B193718F900BD989F /* CityChooseViewController.m */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -1108,6 +1113,7 @@
 				F63F1AEF1921F0B500122C99 /* LocationManager.m in Sources */,
 				F62D113C190766310041CEFE /* FXBlurView.m in Sources */,
 				F69A090618EEA72D00D88D85 /* ALButton.m in Sources */,
+				569EA17C193718F900BD989F /* CityChooseViewController.m in Sources */,
 				F69A088518EEA66600D88D85 /* AppDelegate.m in Sources */,
 				3D89099418F955640052C34C /* UIImage+ImageEffects.m in Sources */,
 				F623EE99192DDE5C00FD505E /* UITestViewController.m in Sources */,
@@ -1260,7 +1266,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: sara yao (YVX6JVYJFA)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PicturesqueScene/PicturesqueScene-Prefix.pch";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
@@ -1282,8 +1288,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: sara yao (YVX6JVYJFA)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PicturesqueScene/PicturesqueScene-Prefix.pch";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
