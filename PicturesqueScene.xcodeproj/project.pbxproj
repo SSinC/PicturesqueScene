@@ -71,6 +71,7 @@
 		F623EED9192F394200FD505E /* TSBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = F623EED6192F394200FD505E /* TSBlurView.m */; };
 		F623EEDA192F394200FD505E /* TSMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F623EED8192F394200FD505E /* TSMessageView.m */; };
 		F623EEDD192F3A2100FD505E /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = F623EEDC192F3A2100FD505E /* HexColor.m */; };
+		F623EEE019371B7E00FD505E /* weatherViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F623EEDF19371B7E00FD505E /* weatherViewContainer.m */; };
 		F62D112A18FE78E80041CEFE /* networkWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = F62D112918FE78E80041CEFE /* networkWeather.m */; };
 		F62D112E18FF6CCB0041CEFE /* weatherData.m in Sources */ = {isa = PBXBuildFile; fileRef = F62D112D18FF6CCB0041CEFE /* weatherData.m */; };
 		F62D113C190766310041CEFE /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = F62D113B190766310041CEFE /* FXBlurView.m */; };
@@ -273,6 +274,8 @@
 		F623EED8192F394200FD505E /* TSMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMessageView.m; sourceTree = "<group>"; };
 		F623EEDB192F3A2100FD505E /* HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexColor.h; sourceTree = "<group>"; };
 		F623EEDC192F3A2100FD505E /* HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexColor.m; sourceTree = "<group>"; };
+		F623EEDE19371B7E00FD505E /* weatherViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = weatherViewContainer.h; sourceTree = "<group>"; };
+		F623EEDF19371B7E00FD505E /* weatherViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = weatherViewContainer.m; sourceTree = "<group>"; };
 		F62D112818FE78E80041CEFE /* networkWeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = networkWeather.h; sourceTree = "<group>"; };
 		F62D112918FE78E80041CEFE /* networkWeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = networkWeather.m; sourceTree = "<group>"; };
 		F62D112C18FF6CCB0041CEFE /* weatherData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = weatherData.h; sourceTree = "<group>"; };
@@ -610,6 +613,8 @@
 				F62D112D18FF6CCB0041CEFE /* weatherData.m */,
 				F63F1AED1921F0B500122C99 /* LocationManager.h */,
 				F63F1AEE1921F0B500122C99 /* LocationManager.m */,
+				F623EEDE19371B7E00FD505E /* weatherViewContainer.h */,
+				F623EEDF19371B7E00FD505E /* weatherViewContainer.m */,
 			);
 			name = Weather;
 			sourceTree = "<group>";
@@ -1131,6 +1136,7 @@
 				3D8642D8191917AA00D985A2 /* AFWeather.m in Sources */,
 				F69A090318EEA72D00D88D85 /* ALMoviePlayerController.m in Sources */,
 				F69A088118EEA66600D88D85 /* main.m in Sources */,
+				F623EEE019371B7E00FD505E /* weatherViewContainer.m in Sources */,
 				F63F1B051921F17800122C99 /* FMDatabaseQueue.m in Sources */,
 				F63F1B031921F17800122C99 /* FMDatabaseAdditions.m in Sources */,
 				F623EEDA192F394200FD505E /* TSMessageView.m in Sources */,

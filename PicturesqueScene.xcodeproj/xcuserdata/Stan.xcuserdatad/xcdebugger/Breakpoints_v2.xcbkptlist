@@ -20,12 +20,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PicturesqueScene/ViewController.m"
-            timestampString = "422963666.159356"
+            timestampString = "423048128.824077"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "559"
-            endingLineNumber = "559"
-            landmarkName = "-playMovieNumber:"
+            startingLineNumber = "583"
+            endingLineNumber = "583"
+            landmarkName = "-moviePlayerWillMoveFromWindow"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -36,12 +36,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PicturesqueScene/ViewController.m"
-            timestampString = "422963492.956035"
+            timestampString = "423049734.545132"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "453"
-            endingLineNumber = "453"
-            landmarkName = "-scrollViewWillEndDragging:withVelocity:targetContentOffset:"
+            startingLineNumber = "446"
+            endingLineNumber = "446"
+            landmarkName = "-gotWeatherInfo:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PicturesqueScene/WeatherUI.m"
+            timestampString = "423049921.152526"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
+            landmarkName = "-updateUIbyData:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

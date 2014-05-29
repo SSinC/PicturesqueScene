@@ -20,8 +20,8 @@
 //    NSInteger   humidity;
 //    NSInteger   wind;
 //}
-@property(nonatomic) NSString*     city;
-@property(nonatomic) NSString*     cityNumber;
+@property(nonatomic,readwrite) NSString*     city;
+@property(nonatomic,readwrite) NSString*     cityNumber;
 @property(nonatomic,readwrite) weatherType   weather;
 @property(nonatomic,readwrite) NSInteger    mainTemperature;
 @property(nonatomic,readwrite) NSInteger    upTemperature;

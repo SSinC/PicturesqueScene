@@ -102,7 +102,7 @@
 - (id)initWithFrame:(CGRect)frame BackgroundImage:(UIImage *)backgroundImage BackgroundView:(UIView *)backgroundView blurredImage:(UIImage *)blurredImage viewDistanceFromBottom:(CGFloat)viewDistanceFromBottom foregroundView:(UIView *)foregroundView popOverView:(UIView *)popOverView headerView:(UIView *)headerView citySwitchView:(UIView *)citySwitchView infoView:(UIView *)infoView testViewController:(UIViewController *)testViewController
 {
     self = [super initWithFrame:frame];
-    PSLog(@" width is: %f, height is:%f",frame.size.width,frame.size.height);
+//    PSLog(@" width is: %f, height is:%f",frame.size.width,frame.size.height);
     
     if (self) {
         //initialize values
@@ -498,7 +498,7 @@
 {
     _foregroundContainerView = [[UIView alloc] initWithFrame:self.frame];
     [self addSubview:_foregroundContainerView];
-    PSLog(@"123 width is: %f, height is:%f",self.frame.size.width,self.frame.size.height);
+//    PSLog(@"123 width is: %f, height is:%f",self.frame.size.width,self.frame.size.height);
     _foregroundScrollView = [[UIScrollView alloc] initWithFrame:self.frame];
     [_foregroundScrollView setDelegate:self];
     [_foregroundScrollView setShowsVerticalScrollIndicator:NO];

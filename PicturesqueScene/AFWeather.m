@@ -90,7 +90,9 @@
         
         _locationType = AFWeatherLocationTypeName;
         
-        [NSURLConnection sendAsynchronousRequest:[self requestForLocationName:locationName orLatitude:nil andLongitude:nil] queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+        
+        [NSURLConnection sendAsynchronousRequest:[self requestForLocationName:locationName orLatitude:nil andLongitude:nil] queue:queue /*[NSOperationQueue mainQueue]*/ completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             
             if (!connectionError) {
                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];

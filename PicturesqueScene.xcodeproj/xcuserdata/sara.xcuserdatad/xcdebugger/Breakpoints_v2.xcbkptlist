@@ -95,7 +95,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "603"
             endingLineNumber = "603"
-            landmarkName = "-sidebar:didTapItemAtIndex:"
+            landmarkName = "-movieTimedOut"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

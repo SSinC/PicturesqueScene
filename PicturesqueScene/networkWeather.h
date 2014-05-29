@@ -10,7 +10,7 @@
 
 @protocol weatherDelegate <NSObject>
 @required
-- (BOOL)gotWeatherInfo:(NSString *)weather;
+- (BOOL)gotWeatherInfo:(NSArray *)weather;
 @end
 
 
