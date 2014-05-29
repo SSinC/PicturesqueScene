@@ -201,7 +201,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
     [_collectionView registerClass:[CityCollectionViewCell class] forCellWithReuseIdentifier:reuseId];
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
-    _collectionView.backgroundColor = [UIColor grayColor];
+    _collectionView.backgroundColor = [UIColor clearColor];
     
     
     _chooseCityButton = [UIButton buttonWithType:UIButtonTypeCustom];

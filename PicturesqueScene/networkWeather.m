@@ -86,8 +86,13 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
             networkWeather *strongSelf = _wself;
-            //            NSString *targetName = [addressString substringToIndex:(addressString.length-1)];
             NSString *targetName = addressString;
+            
+            if([[addressString substringFromIndex:addressString.length - 1] isEqualToString:@"市"]){
+                 targetName = [addressString substringToIndex:(addressString.length-1)];
+            }
+            
+        
             PSLog(@"city name :%@",targetName);
             
             //寻找路径
@@ -188,10 +193,11 @@
         
         NSDictionary *json;
         if(data){
+            
            json = [NSJSONSerialization
-                              JSONObjectWithData:data
-                              options:kNilOptions
-                              error:&connectionError];
+                               JSONObjectWithData:data
+                                          options:kNilOptions
+                                            error:&connectionError];
         }else{
             json = nil;
         }
@@ -199,8 +205,9 @@
         if(nil == json){
             PSLog(@"json is nil");
             NSString *lastMainWeather = [_userDefaults objectForKey:PSLastMainWeather];
+            NSArray  *array       = @[lastMainWeather];
             if ([strongSelf.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
-                [strongSelf.delegate gotWeatherInfo:lastMainWeather];
+                [strongSelf.delegate gotWeatherInfo:array];
             }
             return ;
         }
@@ -209,7 +216,7 @@
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:nil];
         PSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
         
-        NSDictionary *json1 = [json objectForKey:[[json allKeys]objectAtIndex:0]];
+        NSDictionary *json1 = [json objectForKey:[[json allKeys] objectAtIndex:0]];
         NSArray *keyArray1 = [json1 allKeys];
         text0 = [json1 objectForKey:[keyArray1 objectAtIndex:0]];
         text1 = [json1 objectForKey:[keyArray1 objectAtIndex:1]];
@@ -277,7 +284,7 @@
 
 -(void)showCityNameResponse:(NSString *)cityName
 {
-    [[AFWeather sharedClient]fetchForecastOfLocationWithName:cityName andCompletionBlock:^(NSDictionary *response, NSError *error) {
+    [[AFWeather sharedClient] fetchForecastOfLocationWithName:cityName andCompletionBlock:^(NSDictionary *response, NSError *error) {
         if (!error) {
             NSData *data = [NSJSONSerialization dataWithJSONObject:response options:NSJSONWritingPrettyPrinted error:nil];
             PSLog(@"jsonData %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);

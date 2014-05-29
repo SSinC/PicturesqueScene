@@ -20,11 +20,13 @@
     self = [super initWithFrame:frame];
     
     if (self) {
-        _cityLabel = [[UILabel alloc]initWithFrame:frame];
+        _cityLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+//        NSLog(@"citylabel x:%f y:%f w:%f h:%f",_cityLabel.frame.origin.x,_cityLabel.frame.origin.y,_cityLabel.frame.size.width,_cityLabel.frame.size.height);
         _cityLabel.backgroundColor = [UIColor clearColor];
         _cityLabel.font = [UIFont systemFontOfSize:18.0];
         _cityLabel.textColor = [UIColor whiteColor];
         _cityLabel.textAlignment = NSTextAlignmentCenter;
+        [self addSubview:_cityLabel];
     }
     
     return self;
@@ -74,7 +76,7 @@
         @throw [NSException exceptionWithName:@"Please set an array to stringsArray" reason:@"No array specified" userInfo:nil];
     }
     
-    _matchedStrings = [_stringsArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self beginswith[cd] %@",letters]];
+    _matchedStrings = [_stringsArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF BEGINSWITH[cd] %@",letters]];
     [self.tableView reloadData];
 }
 -(void)showPopOverListFor:(UITextField*)textField{
@@ -86,6 +88,13 @@
         [_popOver presentPopoverFromRect:textField.frame inView:textField.superview permittedArrowDirections:arrowDirection animated:YES];
         
     }
+}
+- (void)showSuggestionsFortextFieldDidBeginEditing:(UITextField *)textField;           // became first responder
+{
+    [self matchString:textField.text];
+    [self showPopOverListFor:textField];
+    _activeTextField = textField;
+
 }
 -(void)showSuggestionsFor:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     NSMutableString *rightText;
@@ -173,17 +182,19 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.frame = CGRectMake(0,0,343,343);;
+    self.view.frame = CGRectMake(341,198,343,343);;
     self.view.layer.cornerRadius = 343/4.f;
     self.view.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.65];
     
-    _cityList = [NSArray arrayWithObjects:@"安徽",@"北京",@"南京",@"杭州",@"合肥",@"常州",@"香港",@"上海",@"西安",@"连云港",@"沈阳",@"吉林",@"辽宁",@"广州",@"厦门",@"山东",@"河北",@"湖南",@"河北", nil];
-    _popularList = [NSArray arrayWithObjects:@"北京",@"南京",@"杭州",@"合肥",@"常州",@"香港",@"上海",@"西安",@"连云港",@"沈阳",@"吉林",@"厦门", nil];
+    _cityList = [NSArray arrayWithObjects:@"abc",@"安徽",@"南京",@"杭州",@"常熟",@"常州",@"香港",@"上海",@"ab",@"连云港",@"广西",@"吉林",@"辽宁",@"广州",@"厦门",@"山东",@"湖北",@"湖南",@"河北", nil];
+    _popularList = [NSArray arrayWithObjects:@"北京",@"南京",@"杭州",@"常州",@"香港",@"上海",@"连云港",@"沈阳",@"吉林",@"厦门", nil];
     _suggestList = [[SuggestionsTableController alloc]initWithArray:_cityList];
     
-    _typeField = [[UITextField alloc]initWithFrame:CGRectMake(10, 10, 200, 50)];
-    _typeField.backgroundColor = [UIColor greenColor];
+    _typeField = [[UITextField alloc]initWithFrame:CGRectMake((343 - 200)/2, 10, 200, 50)];
+    _typeField.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.5];
+    _typeField.borderStyle = UITextBorderStyleRoundedRect;
     _typeField.delegate = self;
+    [_typeField addTarget:self action:@selector(textFieldEditChanged:) forControlEvents:UIControlEventEditingChanged];
     
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.itemSize = CGSizeMake(76,24); //  76是4个18号字体的汉字的宽度
@@ -239,16 +250,17 @@
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
-    return  5;//cell的最小列间距
+    return  10;//cell的最小列间距
 }
 
 #pragma mark -- UITextField delegate
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    
-    [_suggestList showSuggestionsFor:textField shouldChangeCharactersInRange:range replacementString:string];
-    
-    return YES;
-}
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+//    
+//    [_suggestList showSuggestionsFor:textField shouldChangeCharactersInRange:range replacementString:string];
+//    
+//    return YES;
+//}
+
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -257,4 +269,9 @@
 	return YES;
 }
 
+#pragma mark -- observer //textfeield监听器
+- (void)textFieldEditChanged:(UITextField *)textField
+{
+    [_suggestList showSuggestionsFortextFieldDidBeginEditing:textField];
+}
 @end

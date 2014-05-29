@@ -298,7 +298,7 @@ typedef enum {
     data1.mainTemperature = 44;
     pop1.dataItem = data1;
     [pop1 updateUIbyData:data1];
-
+    NSLog(@"pop1: %@", pop1);
     weatherDataItem* data2 = [[weatherDataItem alloc]initWithCity:@"武汉" weather:Cloudy mainTemp:18 upTemp:22 downTemp:16 humidity:10 wind:14];
     weatherInfoDetailView* pop2 = [[weatherInfoDetailView alloc]initWithFrame:CGRectMake(0, 0, 360, 360) withDataItem:data2];
     weatherHeaderView* headerView2 = [[weatherHeaderView alloc]initWithFrame:CGRectMake(725, 16, 291, 39) city:@"武汉" temperature:18 weather:Cloudy];
@@ -440,7 +440,7 @@ typedef enum {
     [self addScrollView];
 }
 
-#pragma mark - weatherDelegate
+#pragma mark - weatherDelegate - NOT on main-thread
 - (BOOL)gotWeatherInfo:(NSArray *)weather
 {
     PSLog(@"get weather:%@",weather);
@@ -451,7 +451,17 @@ typedef enum {
     viewContainer.weatherDataItem.cityNumber      = (NSString *)weather[2];
     viewContainer.weatherInfoDetailView.dataItem  = viewContainer.weatherDataItem;
     NSLog(@"cityNumber: %@", viewContainer.weatherInfoDetailView.dataItem.cityNumber);
-    [viewContainer.weatherInfoDetailView updateUIbyData:viewContainer.weatherDataItem];
+    NSLog(@"cityNumber: %i", viewContainer.weatherInfoDetailView.dataItem.mainTemperature);
+    NSLog(@"cityNumber: %i", viewContainer.weatherInfoDetailView.dataItem.humidity);
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [viewContainer.weatherInfoDetailView updateUIbyData:viewContainer.weatherDataItem];
+    });
+    
+    
+//    _glassScrollView1.popOverView = viewContainer.weatherInfoDetailView;
+    
+//    [_glassScrollView1.popOverView setNeedsDisplay];
     return YES;
 }
 

@@ -96,6 +96,28 @@
 }
 @end
 
+@interface weatherInfoDetailView()
+{
+    UILabel*                        _cityLabel;
+    UIImageView*                    _weatherImageV;
+    UILabel*                        _contentOfmainTempView;
+    FBShimmeringView*               _mainTempView;
+    UILabel*                        _contentOfmainCView;
+    FBShimmeringView*               _mainCView;
+    
+    UIImageView*                    _line;
+    
+    UIImageView*                    _upTempIcon;
+    UIImageView*                    _downTempIcon;
+    UIImageView*                    _perecitationIcon;
+    UIImageView*                    _windPowerIcon;
+    
+    UILabel*                        _upTmpLabel;
+    UILabel*                        _downTmpLabel;
+    UILabel*                        _humidityLabel ;
+    UILabel*                        _windLabel;
+}
+@end
 
 @implementation weatherInfoDetailView
 //@synthesize dataItem = _dataItem;
@@ -142,6 +164,7 @@
     [self createWindLabel];
     
 }
+
 -(void)setDataItem:(weatherDataItem *)newitem
 {
     _dataItem.city = newitem.city;
@@ -152,6 +175,7 @@
     _dataItem.downTemperature = newitem.downTemperature;
     _dataItem.humidity = newitem.humidity;
     _dataItem.wind = newitem.wind;
+    
 }
 
 -(UILabel*)createCityLabel
@@ -379,25 +403,25 @@
     
     
 }
--(void)updateUIbyData:(id)item
+-(void)updateUIbyData:(weatherDataItem *)Item
 {
-    _cityLabel.text = self.dataItem.city;
-    [_weatherImageV setImage:self.dataItem.weatherImage];
+    _cityLabel.text = Item.city;
+    [_weatherImageV setImage:Item.weatherImage];
     
-    [_contentOfmainTempView setText:[NSString stringWithFormat:@"%i",self.dataItem.mainTemperature]];
+    [_contentOfmainTempView setText:[NSString stringWithFormat:@"%i",Item.mainTemperature]];
     //mainTempView.contentView = contentOfmainTempView;
     
-    _line = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"line1"]];
+    //_line = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"line1"]];
     
-    _upTempIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"upWeather"]];
-    _perecitationIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"precipitation_main"]];
-    _downTempIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"downWeather"]];
-    _windPowerIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"windPower_main"]];
+    //_upTempIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"upWeather"]];
+    //_perecitationIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"precipitation_main"]];
+    //_downTempIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"downWeather"]];
+    //_windPowerIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"windPower_main"]];
     
-    [_upTmpLabel setText:[NSString stringWithFormat:@"%d℃",self.dataItem.upTemperature]];
-    [_downTmpLabel setText:[NSString stringWithFormat:@"%d℃",self.dataItem.downTemperature]];
-    [_humidityLabel setText:[NSString stringWithFormat:@"%d%%",self.dataItem.humidity]];
-    [_windLabel setText:[NSString stringWithFormat:@"%dkm/h",self.dataItem.wind]];
+    [_upTmpLabel setText:[NSString stringWithFormat:@"%i℃",Item.upTemperature]];
+    [_downTmpLabel setText:[NSString stringWithFormat:@"%i℃",Item.downTemperature]];
+    [_humidityLabel setText:[NSString stringWithFormat:@"%i%%",Item.humidity]];
+    [_windLabel setText:[NSString stringWithFormat:@"%ikm/h",Item.wind]];
     
 }
 

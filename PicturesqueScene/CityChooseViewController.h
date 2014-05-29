@@ -18,6 +18,7 @@
 
 -(id)initWithArray:(NSArray*)array;
 -(void)showSuggestionsFor:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string;
+- (void)showSuggestionsFortextFieldDidBeginEditing:(UITextField *)textField;          
 
 
 @end

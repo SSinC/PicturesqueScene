@@ -37,29 +37,11 @@
 @end
 
 @interface weatherInfoDetailView : UIView
-{
-    UILabel*                        _cityLabel;
-    UIImageView*                    _weatherImageV;
-    UILabel*                        _contentOfmainTempView;
-    FBShimmeringView*               _mainTempView;
-    UILabel*                        _contentOfmainCView;
-    FBShimmeringView*               _mainCView;
-    
-    UIImageView*                    _line;
-    
-    UIImageView*                    _upTempIcon;
-    UIImageView*                    _downTempIcon;
-    UIImageView*                    _perecitationIcon;
-    UIImageView*                    _windPowerIcon;
-    
-    UILabel*                        _upTmpLabel;
-    UILabel*                        _downTmpLabel;
-    UILabel*                        _humidityLabel ;
-    UILabel*                        _windLabel;
-}
-@property (strong)weatherDataItem* dataItem;
+
+@property (nonatomic,strong)weatherDataItem* dataItem;
+
 -(id)initWithFrame:(CGRect)frame withDataItem:(weatherDataItem*)item;
--(void)updateUIbyData:(id)item;
+-(void)updateUIbyData:(weatherDataItem *)Item;
 @end
 
 
