@@ -83,6 +83,12 @@
     _title = title;
     [_titleLabel setText:_title];
 }
+
+- (void)setButtonTag:(NSInteger)newbuttonTag
+{
+    _iconButton.tag = newbuttonTag;
+}
+
 - (void)layoutSubviews
 {
     CGRect rc = self.bounds;
@@ -258,6 +264,7 @@ NSString *reuseId = @"collectionViewCellReuseId";
     cell.title = data.city;
     cell.enable = data.enable;
     cell.delegate = self;
+    cell.buttonTag = indexPath.item;
     return cell;
 }
 

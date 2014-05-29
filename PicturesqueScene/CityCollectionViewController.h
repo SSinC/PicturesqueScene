@@ -31,6 +31,7 @@
 
 @property(nonatomic) BOOL enable;
 @property(nonatomic) NSString* title;
+@property(nonatomic,readwrite)NSInteger buttonTag;
 @property(nonatomic) id <CityIconClickDelegate> delegate;
 
 @end
