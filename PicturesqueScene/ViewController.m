@@ -105,6 +105,8 @@ typedef enum {
     cloudy
 } weather;
 
+typedef void (^blk) (void);
+
 @interface ViewController () <ALMoviePlayerControllerDelegate>
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) UIView* contentView;
@@ -422,8 +424,67 @@ typedef enum {
 //                                                                 return NO;
 //                                                             }];
 //    PSLog(@"areaIndexed :%@",areaIndexes);
+    
+//    __block int val = 10;
+//     blk strongPointerBlock = ^{NSLog(@"val = %d", ++val);};
+//    NSLog(@"strongPointerBlock: %@", strongPointerBlock); //1
+//    
+//    __weak blk weakPointerBlock = ^{NSLog(@"val = %d", ++val);};
+//    NSLog(@"weakPointerBlock: %@", weakPointerBlock); //2
+//    
+//    NSLog(@"mallocBlock: %@", [weakPointerBlock copy]); //3
+//    
+//    NSLog(@"test %@", ^{NSLog(@"val = %d", ++val);}); //4
+    
+//    static int base = 100;
+//    __block NSArray * array = [[NSArray alloc] init];
+//    void (^sum)(NSArray *) = ^ (NSArray * a) {
+//        array = [a copy];
+//        NSLog(@"array:%@",array);
+//    };
+//     NSLog(@"block is %@", sum);
+//    base = 0;
+//    NSArray *a = @[@0,@1];
+//    sum(a);
+//    NSLog(@"array:%@",array);
+//    
+    [self testGlobalObj];
+     printf("global address: %p\n", &__globalString);
 }
 
+NSString *__globalString = nil;
+
+- (void)testGlobalObj
+{
+    __globalString = @"1";
+    void (^TestBlock)(void) = ^{
+        printf("global address: %p\n", &__globalString);
+        NSLog(@"string is :%@", __globalString);
+    };
+    
+    __globalString = @"2";
+    
+    TestBlock();
+}
+
+- (void)testLocalObj
+{//local 变量会被copy到block里，非引用。指针不一样
+    __block NSString *__localString = nil;
+    __localString = @"1";
+    
+    printf("local address: %p\n", &__localString);
+    
+    void (^TestBlock)(void) = ^{
+        
+        printf("local address: %p\n", &__localString);
+        
+        NSLog(@"string is : %@", __localString); //string is : 1
+    };
+    
+    __localString = @"2";
+    
+    TestBlock();
+}
 #pragma mark - Lazy Loading
 - (void)onApplicationFinishedLaunching
 {
