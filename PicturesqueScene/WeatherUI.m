@@ -90,10 +90,6 @@
     }
 }
 
-- (void)setMainTemperature:(NSInteger)mainTemperature
-{
-    _mainTemperature = mainTemperature;
-}
 @end
 
 @interface weatherInfoDetailView()
@@ -175,7 +171,7 @@
     _dataItem.downTemperature = newitem.downTemperature;
     _dataItem.humidity = newitem.humidity;
     _dataItem.wind = newitem.wind;
-    
+    _dataItem.cityNumber = newitem.cityNumber;
 }
 
 -(UILabel*)createCityLabel
@@ -327,7 +323,7 @@
     _windLabel = [[UILabel alloc]init];
     //_windLabel.backgroundColor = [UIColor redColor];
     
-    [_windLabel setText:[NSString stringWithFormat:@"%dkm/h",self.dataItem.wind]];
+    [_windLabel setText:[NSString stringWithFormat:@"%d级",self.dataItem.wind]];
     [_windLabel setTextColor:[UIColor whiteColor]];
     _windLabel.textAlignment = NSTextAlignmentCenter;
     _windLabel.adjustsFontSizeToFitWidth = YES;
@@ -405,24 +401,29 @@
 }
 -(void)updateUIbyData:(weatherDataItem *)Item
 {
-    _cityLabel.text = Item.city;
-    [_weatherImageV setImage:Item.weatherImage];
+   
+    [UIView animateWithDuration:1.0 animations:^{
+         _cityLabel.text = Item.city;
+        [_weatherImageV setImage:Item.weatherImage];
+        
+        [_contentOfmainTempView setText:[NSString stringWithFormat:@"%i",Item.mainTemperature]];
+        //mainTempView.contentView = contentOfmainTempView;
+        
+        //_line = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"line1"]];
+        
+        //_upTempIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"upWeather"]];
+        //_perecitationIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"precipitation_main"]];
+        //_downTempIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"downWeather"]];
+        //_windPowerIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"windPower_main"]];
+        
+        [_upTmpLabel setText:[NSString stringWithFormat:@"%i℃",Item.upTemperature]];
+        [_downTmpLabel setText:[NSString stringWithFormat:@"%i℃",Item.downTemperature]];
+        [_humidityLabel setText:[NSString stringWithFormat:@"%i%%",Item.humidity]];
+        [_windLabel setText:[NSString stringWithFormat:@"%i级",Item.wind]];
+
+    }];
     
-    [_contentOfmainTempView setText:[NSString stringWithFormat:@"%i",Item.mainTemperature]];
-    //mainTempView.contentView = contentOfmainTempView;
-    
-    //_line = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"line1"]];
-    
-    //_upTempIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"upWeather"]];
-    //_perecitationIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"precipitation_main"]];
-    //_downTempIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"downWeather"]];
-    //_windPowerIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"windPower_main"]];
-    
-    [_upTmpLabel setText:[NSString stringWithFormat:@"%i℃",Item.upTemperature]];
-    [_downTmpLabel setText:[NSString stringWithFormat:@"%i℃",Item.downTemperature]];
-    [_humidityLabel setText:[NSString stringWithFormat:@"%i%%",Item.humidity]];
-    [_windLabel setText:[NSString stringWithFormat:@"%ikm/h",Item.wind]];
-    
+    [self setDataItem:Item];
 }
 
 

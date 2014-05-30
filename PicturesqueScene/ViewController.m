@@ -17,6 +17,7 @@
 #import "defines.h"
 #import "UITestViewController.h"
 #import "weatherViewContainer.h"
+#import "RQShineLabel.h"
 
 #import <objc/runtime.h>
 //#import <AVFoundation/AVFoundation.h>
@@ -121,6 +122,8 @@ typedef enum {
     STANSideBar         *_callout;
     
     BOOL _moviePlaying;
+    RQShineLabel *_labelPainter;
+    RQShineLabel *_labelPainterDetails;
     
     UIScrollView        *_viewScroller;
     StanGlassScrollView *_glassScrollView1;
@@ -198,9 +201,9 @@ typedef enum {
     UIView *painterView = [self createPainterViewWithFrame:CGRectMake(originX, originY ,width, 50) painter:@"文森特.威廉.梵高(Vincent Willem van Gogh, 1853 - 1890)" details:@"荷兰后印象派画家，他是表现主义的先驱，并深深影响了二十\n世纪艺术，尤其是野兽派与表现主义"];
     
     [self.view insertSubview:painterView belowSubview:_contentView];
-    //    PSLog(@"add completed");
     
-    
+    [_labelPainter fadeOut];
+    [_labelPainterDetails fadeOut];
     /*************************************
      Movie Player
      *************************************/
@@ -294,11 +297,6 @@ typedef enum {
     
     _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop1  headerView:headerView1 citySwitchView:cv.view infoView:aboutUS1 testViewController:nil];
     
-    
-    data1.mainTemperature = 44;
-    pop1.dataItem = data1;
-    [pop1 updateUIbyData:data1];
-    NSLog(@"pop1: %@", pop1);
     weatherDataItem* data2 = [[weatherDataItem alloc]initWithCity:@"武汉" weather:Cloudy mainTemp:18 upTemp:22 downTemp:16 humidity:10 wind:14];
     weatherInfoDetailView* pop2 = [[weatherInfoDetailView alloc]initWithFrame:CGRectMake(0, 0, 360, 360) withDataItem:data2];
     weatherHeaderView* headerView2 = [[weatherHeaderView alloc]initWithFrame:CGRectMake(725, 16, 291, 39) city:@"武汉" temperature:18 weather:Cloudy];
@@ -441,29 +439,55 @@ typedef enum {
 }
 
 #pragma mark - weatherDelegate - NOT on main-thread
-- (BOOL)gotWeatherInfo:(NSArray *)weather
+- (BOOL)gotWeatherInfo:(NSDictionary *)weather
 {
-    PSLog(@"get weather:%@",weather);
     weatherViewContainer *viewContainer =(weatherViewContainer *)_viewContainerArray[0];
     
-    viewContainer.weatherDataItem.mainTemperature = ((NSString *)weather[0]).intValue;
-    viewContainer.weatherDataItem.humidity        = ((NSString *)weather[1]).intValue;
-    viewContainer.weatherDataItem.cityNumber      = (NSString *)weather[2];
-    viewContainer.weatherInfoDetailView.dataItem  = viewContainer.weatherDataItem;
-    NSLog(@"cityNumber: %@", viewContainer.weatherInfoDetailView.dataItem.cityNumber);
-    NSLog(@"cityNumber: %i", viewContainer.weatherInfoDetailView.dataItem.mainTemperature);
-    NSLog(@"cityNumber: %i", viewContainer.weatherInfoDetailView.dataItem.humidity);
+//    viewContainer.weatherDataItem.mainTemperature = ((NSString *)weather[0]).intValue;
+//    viewContainer.weatherDataItem.humidity        = ((NSString *)weather[1]).intValue;
+//    viewContainer.weatherDataItem.wind            = ((NSString *)weather[2]).intValue;
+//    viewContainer.weatherDataItem.cityNumber      = (NSString *)weather[3];
+    
+    if(weather[@"currentTemp"]){
+        viewContainer.weatherDataItem.mainTemperature = ((NSString *)weather[@"currentTemp"]).intValue;
+        viewContainer.weatherDataItem.humidity        = ((NSString *)weather[@"humidity"]).intValue;
+        viewContainer.weatherDataItem.wind            = ((NSString *)weather[@"windPower"]).intValue;
+        viewContainer.weatherDataItem.cityNumber      = (NSString *)(weather[@"cityID"]);
+    }else{
+        viewContainer.weatherDataItem.upTemperature   = ((NSString *)weather[@"maxTemp"]).intValue;
+        viewContainer.weatherDataItem.downTemperature = ((NSString *)weather[@"minTemp"]).intValue;
+        
+        NSString *mainWeather = (NSString *)weather[@"mainWeather"];
+        
+        if([mainWeather rangeOfString:@"晴"].length>0){
+            viewContainer.weatherDataItem.weather = Sunny;
+        }else if([mainWeather rangeOfString:@"雪"].length>0){
+            viewContainer.weatherDataItem.weather = Snowy;
+        }else if([mainWeather rangeOfString:@"雨"].length>0){
+            viewContainer.weatherDataItem.weather = Rainy;
+        }else if([mainWeather rangeOfString:@"阴"].length>0){
+            viewContainer.weatherDataItem.weather = Cloudy;
+        }else{
+            viewContainer.weatherDataItem.weather = Foggy;
+        }
+        
+        PSLog(@"mainWeather: %@", mainWeather);
+    }
+
+    
+//    PSLog(@"viewContainer.weatherInfoDetailView.dataItem:%@",viewContainer.weatherInfoDetailView.dataItem);
+//    PSLog(@"viewContainer.weatherDataItem:%@",viewContainer.weatherDataItem);
+
+//    PSLog(@"cityNumber: %@", viewContainer.weatherDataItem.cityNumber);
     
     dispatch_async(dispatch_get_main_queue(), ^{
+//        viewContainer.weatherInfoDetailView.dataItem  = viewContainer.weatherDataItem;
         [viewContainer.weatherInfoDetailView updateUIbyData:viewContainer.weatherDataItem];
     });
     
-    
-//    _glassScrollView1.popOverView = viewContainer.weatherInfoDetailView;
-    
-//    [_glassScrollView1.popOverView setNeedsDisplay];
     return YES;
 }
+
 
 #pragma mark - ScrollView delegate
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
@@ -472,7 +496,6 @@ typedef enum {
     CGFloat page = point.x / _viewScroller.frame.size.width;
     
     if(_page != page){
-        
         _page = page;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"viewScrolled" object:nil];
         
@@ -482,6 +505,9 @@ typedef enum {
         
         dispatch_after(popTime, dispatch_get_main_queue(), ^{
             ViewController *strongSelf = _wself;
+            
+            [strongSelf playMovieNumber:_page];
+            [_scrollViewArray[_page] showMovieView:_moviePlayer.view];
 //            switch ((int)page) {
 //                case 0:{
 //                    [strongSelf playMovieNumber:0];
@@ -514,14 +540,93 @@ typedef enum {
 //                default:
 //                    break;
 //            }
-            [strongSelf playMovieNumber:_page];
-            [_scrollViewArray[_page] showMovieView:_moviePlayer.view];
-
         });
 
     }
 //    PSLog(@"point.x :%f",page);
     //    [self playMovieNumber:(int)ratio];
+}
+
+#pragma mark - viewWillAppear
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self adjustScrollView];
+}
+
+#pragma mark - adjustScrollView
+- (void)adjustScrollView
+{
+    //    PSLog(@"before width is: %f, height is:%f",self.view.frame.size.width,self.view.frame.size.height);
+    //     PSLog(@"bounds width is: %f, height is:%f",self.view.bounds.size.width,self.view.bounds.size.height);
+    //    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    //    if(orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight){
+    
+    if( self.view.bounds.size.width < 1024){
+        self.view.bounds = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
+    }
+    //        PSLog(@"after width is: %f, height is:%f",self.view.frame.size.width,self.view.frame.size.height);
+    
+    int page = _page; // resize scrollview can cause setContentOffset off for no reason and screw things up
+    
+    CGFloat blackSideBarWidth = 2;
+    [_viewScroller setFrame:CGRectMake(0, 0, self.view.bounds.size.width + 2*blackSideBarWidth, self.view.bounds.size.height)];
+    //        PSLog(@"_viewScroll width:%f",_viewScroller.frame.size.width);
+    [_viewScroller setContentSize:CGSizeMake(_scrollViewArray.count * _viewScroller.frame.size.width, self.view.bounds.size.height)];
+    //
+    //        [_glassScrollView1 setFrame:self.view.frame];
+    //        [_glassScrollView2 setFrame:self.view.frame];
+    //        [_glassScrollView3 setFrame:self.view.frame];
+    //        [_glassScrollView4 setFrame:self.view.frame];
+    //        [_glassScrollView5 setFrame:self.view.frame];
+    //
+    //        [_glassScrollView2 setFrame:CGRectOffset(_glassScrollView2.bounds, _viewScroller.frame.size.width, 0)];
+    //        [_glassScrollView3 setFrame:CGRectOffset(_glassScrollView3.bounds, 2*_viewScroller.frame.size.width, 0)];
+    //        [_glassScrollView4 setFrame:CGRectOffset(_glassScrollView4.bounds, 3*_viewScroller.frame.size.width, 0)];
+    //        [_glassScrollView5 setFrame:CGRectOffset(_glassScrollView5.bounds, 4*_viewScroller.frame.size.width, 0)];
+    
+    [_scrollViewArray enumerateObjectsUsingBlock:^(StanGlassScrollView *subScrollView, NSUInteger idx, BOOL *stop) {
+        [subScrollView setFrame:self.view.bounds];
+    }];
+    
+    [_scrollViewArray enumerateObjectsUsingBlock:^(StanGlassScrollView *subScrollView, NSUInteger idx, BOOL *stop) {
+        if(idx != 0){
+            [subScrollView setFrame:CGRectOffset(subScrollView.bounds, idx * _viewScroller.frame.size.width, 0)];
+        }
+    }];
+    
+    
+    [_viewScroller setContentOffset:CGPointMake(page * _viewScroller.frame.size.width, _viewScroller.contentOffset.y)];
+    _page = page;
+    
+}
+
+#pragma mark - add scrollView
+- (void)addScrollView
+{
+    NSMutableArray* cityarray = [[NSMutableArray alloc]initWithArray:@[@"杭州",@"北京",@"上海",@"深圳",@"武汉",@"智利"]];
+    NSArray *mainWeather = @[@(sunny),@(rainy),@(foggy),@(snowy)];
+    NSArray *downWeahter = @[@(10.),@(11),@(12),@(13)];
+    NSArray *upWeahter   = @[@(20),@(21),@(22),@(23)];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        //    if( self.view.frame.size.width < 1024){
+        //        self.view.frame = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
+        //    }
+        //
+        //        PSLog(@"out width is: %f, height is:%f",self.view.bounds.size.width,self.view.bounds.size.height);
+        //        PSLog(@"out width is: %f, height is:%f",self.view.frame.size.width,self.view.frame.size.height);
+        
+        StanGlassScrollView  *addingScrollView = [[StanGlassScrollView alloc] initWithFrame:self.view.bounds BackgroundImage:[UIImage imageNamed:@"snowy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"snowy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"天堂" image:@"snowy_big" mainTemp:12 upTemp:14 downTemp:10 humidity:10 wind:14 ] headerView:[self headerViewWithCityName:@"天堂" temp:12 mainweather:foggy] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."] testViewController:nil];
+        
+        [_scrollViewArray addObject:addingScrollView];
+        
+        [_viewScroller addSubview:addingScrollView];
+        
+        [self adjustScrollView];
+        
+    });
+    
 }
 
 -(void)onPlayerDisplayChanged:(NSNotification *)noti
@@ -669,7 +774,8 @@ typedef enum {
                          _callout.sideBarShowsOnParentView = YES;
                          _sideBarAnimating = NO;
                          _sideBarShowed    = YES;
-
+                         [_labelPainter shine];
+                         [_labelPainterDetails shine];
                      }];
     
 }
@@ -686,6 +792,8 @@ So we must NOT execute dismiss before showing the bar.
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"sideBarDismiss" object:self];
 //        PSLog(@"sidebar dismiss");
+        [_labelPainter fadeOut];
+        [_labelPainterDetails fadeOut];
         
         [UIView animateWithDuration:0.55
                               delay:0.25
@@ -700,7 +808,8 @@ So we must NOT execute dismiss before showing the bar.
                              [_button setStyle:kFRDLivelyButtonStyleHamburger animated:YES];
                              _sideBarAnimating = NO;
                              _sideBarShowed    = NO;
-//                             PSLog(@"dismiss after x:%f, y:%f",_contentView.center.x , _contentView.center.y);
+//                             [_labelPainter fadeOut];
+//                             [_labelPainterDetails fadeOut];
                          }];
     }
 }
@@ -806,136 +915,6 @@ So we must NOT execute dismiss before showing the bar.
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - viewWillAppear
-- (void)viewWillAppear:(BOOL)animated
-{
-
-    [self adjustScrollView];
-}
-
-#pragma mark - adjustScrollView
-- (void)adjustScrollView
-{
-//    PSLog(@"before width is: %f, height is:%f",self.view.frame.size.width,self.view.frame.size.height);
-//     PSLog(@"bounds width is: %f, height is:%f",self.view.bounds.size.width,self.view.bounds.size.height);
-//    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-//    if(orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight){
-    
-    if( self.view.bounds.size.width < 1024){
-        self.view.bounds = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
-    }
-//        PSLog(@"after width is: %f, height is:%f",self.view.frame.size.width,self.view.frame.size.height);
-    
-        int page = _page; // resize scrollview can cause setContentOffset off for no reason and screw things up
-        
-        CGFloat blackSideBarWidth = 2;
-        [_viewScroller setFrame:CGRectMake(0, 0, self.view.bounds.size.width + 2*blackSideBarWidth, self.view.bounds.size.height)];
-        //        PSLog(@"_viewScroll width:%f",_viewScroller.frame.size.width);
-        [_viewScroller setContentSize:CGSizeMake(_scrollViewArray.count * _viewScroller.frame.size.width, self.view.bounds.size.height)];
-//        
-//        [_glassScrollView1 setFrame:self.view.frame];
-//        [_glassScrollView2 setFrame:self.view.frame];
-//        [_glassScrollView3 setFrame:self.view.frame];
-//        [_glassScrollView4 setFrame:self.view.frame];
-//        [_glassScrollView5 setFrame:self.view.frame];
-//        
-//        [_glassScrollView2 setFrame:CGRectOffset(_glassScrollView2.bounds, _viewScroller.frame.size.width, 0)];
-//        [_glassScrollView3 setFrame:CGRectOffset(_glassScrollView3.bounds, 2*_viewScroller.frame.size.width, 0)];
-//        [_glassScrollView4 setFrame:CGRectOffset(_glassScrollView4.bounds, 3*_viewScroller.frame.size.width, 0)];
-//        [_glassScrollView5 setFrame:CGRectOffset(_glassScrollView5.bounds, 4*_viewScroller.frame.size.width, 0)];
-    
-     [_scrollViewArray enumerateObjectsUsingBlock:^(StanGlassScrollView *subScrollView, NSUInteger idx, BOOL *stop) {
-         [subScrollView setFrame:self.view.bounds];
-     }];
-    
-     [_scrollViewArray enumerateObjectsUsingBlock:^(StanGlassScrollView *subScrollView, NSUInteger idx, BOOL *stop) {
-        if(idx != 0){
-            [subScrollView setFrame:CGRectOffset(subScrollView.bounds, idx * _viewScroller.frame.size.width, 0)];
-        }
-     }];
-    
-    
-    [_viewScroller setContentOffset:CGPointMake(page * _viewScroller.frame.size.width, _viewScroller.contentOffset.y)];
-    _page = page;
-
-}
-
-#pragma mark - add scrollView
-- (void)addScrollView
-{
-    NSMutableArray* cityarray = [[NSMutableArray alloc]initWithArray:@[@"杭州",@"北京",@"上海",@"深圳",@"武汉",@"智利"]];
-    NSArray *mainWeather = @[@(sunny),@(rainy),@(foggy),@(snowy)];
-    NSArray *downWeahter = @[@(10.),@(11),@(12),@(13)];
-    NSArray *upWeahter   = @[@(20),@(21),@(22),@(23)];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-//    if( self.view.frame.size.width < 1024){
-//        self.view.frame = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
-//    }
-//        
-//        PSLog(@"out width is: %f, height is:%f",self.view.bounds.size.width,self.view.bounds.size.height);
-//        PSLog(@"out width is: %f, height is:%f",self.view.frame.size.width,self.view.frame.size.height);
-
-        StanGlassScrollView  *addingScrollView = [[StanGlassScrollView alloc] initWithFrame:self.view.bounds BackgroundImage:[UIImage imageNamed:@"snowy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"snowy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"天堂" image:@"snowy_big" mainTemp:12 upTemp:14 downTemp:10 humidity:10 wind:14 ] headerView:[self headerViewWithCityName:@"天堂" temp:12 mainweather:foggy] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."] testViewController:nil];
-        
-        [_scrollViewArray addObject:addingScrollView];
-        
-        [_viewScroller addSubview:addingScrollView];
-        
-        [self adjustScrollView];
-        
-    });
-    
-}
-
-#pragma mark - network
-// upper and down temperature HZ http://www.weather.com.cn/data/cityinfo/101210101.html
-// {"weatherinfo":{"city":"杭州","cityid":"101210101","temp1":"22℃","temp2":"17℃","weather":"阵雨转阴","img1":"d3.gif","img2":"n2.gif","ptime":"11:00"}}
-// details of weather HZ        http://www.weather.com.cn/data/sk/101210101.html
-// {"weatherinfo":{"city":"杭州","cityid":"101210101","temp":"20","WD":"东南风","WS":"1级","SD":"68%","WSE":"1","time":"13:25","isRadar":"1","Radar":"JC_RADAR_AZ9571_JB"}}
-
--(NSString*) getWeather:(NSString* )text
-{
-    if(![CheckNetwork isExistenceNetwork]) return nil;
-    
-    NSURL *url1 =  [NSURL URLWithString:@"http://www.weather.com.cn/data/sk/101210101.html"];
-    NSURLRequest *request1 = [[NSURLRequest alloc]initWithURL:url1 cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
-    //    NSData *received1 = [NSURLConnection sendSynchronousRequest:request1 returningResponse:nil error:nil];
-    
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    
-    [NSURLConnection sendAsynchronousRequest:request1 queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-     {
-         NSDictionary* json = [NSJSONSerialization
-                               JSONObjectWithData:data
-                               options:kNilOptions
-                               error:&connectionError];
-         if(nil == json){
-             PSLog(@"json is nil");
-             return ;
-         }
-         
-         NSDictionary *json1 = [json valueForKey:[[json allKeys]objectAtIndex:0]];
-         NSArray * keyArray1 = [json1 allKeys];
-         //        PSLog(@"length: %i",keyArray1.count);
-         NSString *text0 = [json1 objectForKey:[keyArray1 objectAtIndex:0]];
-         NSString *text1 = [json1 objectForKey:[keyArray1 objectAtIndex:1]];
-         NSString *text2 = [json1 objectForKey:[keyArray1 objectAtIndex:2]];
-         NSString *text3 = [json1 objectForKey:[keyArray1 objectAtIndex:3]];
-         NSString *text4 = [json1 objectForKey:[keyArray1 objectAtIndex:4]];
-         NSString *text5 = [json1 objectForKey:[keyArray1 objectAtIndex:5]];
-         NSString *text6 = [json1 objectForKey:[keyArray1 objectAtIndex:6]];
-         NSString *text7 = [json1 objectForKey:[keyArray1 objectAtIndex:7]];
-         NSString *text8 = [json1 objectForKey:[keyArray1 objectAtIndex:8]];
-         NSString *text9 = [json1 objectForKey:[keyArray1 objectAtIndex:9]];
-         
-         PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
-         //        PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ",text0,text1,text2,text3,text4,text5,text6,text7);
-     }];
-    
-    return text;
-}
 
 #pragma mark - All kinds of view
 
@@ -1613,29 +1592,34 @@ So we must NOT execute dismiss before showing the bar.
     UIView *painterInfo = [[UIView alloc] initWithFrame:frame];
     //    painterInfo.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.5];
     
-    UILabel *labelPainter = [[UILabel alloc] init];
-    labelPainter.font = [UIFont boldSystemFontOfSize:18.0];
-    [labelPainter setText:painter];
-    CGSize sz = [labelPainter.text sizeWithAttributes:@{NSFontAttributeName:labelPainter.font}];
-    labelPainter.frame = CGRectMake(15 , 10 ,sz.width, sz.height  );
-    [labelPainter setTextColor:[UIColor whiteColor]];
+    _labelPainter = [[RQShineLabel alloc] init];
+    _labelPainter.font = [UIFont boldSystemFontOfSize:18.0];
+    [_labelPainter setText:painter];
+    CGSize sz = [_labelPainter.text sizeWithAttributes:@{NSFontAttributeName:_labelPainter.font}];
+    _labelPainter.frame = CGRectMake(15 , 10 ,sz.width, sz.height  );
+    [_labelPainter setTextColor:[UIColor whiteColor]];
     //    [labelTitle setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:20]];
-    labelPainter.textAlignment = NSTextAlignmentCenter;
+    _labelPainter.textAlignment = NSTextAlignmentCenter;
     
-    [painterInfo addSubview:labelPainter];
+    [painterInfo addSubview:_labelPainter];
     
     
-    UILabel *labelPainterDetails = [[UILabel alloc] init];
-    labelPainterDetails.font = [UIFont boldSystemFontOfSize:16.0];
-    labelPainterDetails.numberOfLines =2;
-    [labelPainterDetails setText:details];
-    CGSize sz1 = [labelPainterDetails.text sizeWithAttributes:@{NSFontAttributeName:labelPainterDetails.font}];
-    labelPainterDetails.frame = CGRectMake(20 + labelPainter.frame.origin.x + labelPainter.frame.size.width , 5 ,sz1.width, sz1.height  );
-    [labelPainterDetails setTextColor:[UIColor whiteColor]];
+    _labelPainterDetails = [[RQShineLabel alloc] init];
+    _labelPainterDetails.font = [UIFont boldSystemFontOfSize:16.0];
+    _labelPainterDetails.numberOfLines =2;
+    [_labelPainterDetails setText:details];
+    CGSize sz1 = [_labelPainterDetails.text sizeWithAttributes:@{NSFontAttributeName:_labelPainterDetails.font}];
+    _labelPainterDetails.frame = CGRectMake(20 + _labelPainter.frame.origin.x + _labelPainter.frame.size.width , 5 ,sz1.width, sz1.height  );
+    [_labelPainterDetails setTextColor:[UIColor whiteColor]];
     //    [labelTitle setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:20]];
-    labelPainterDetails.textAlignment = NSTextAlignmentLeft;
-    [painterInfo addSubview:labelPainterDetails];
+    _labelPainterDetails.textAlignment = NSTextAlignmentLeft;
+    [painterInfo addSubview:_labelPainterDetails];
     
+    _labelPainter.fadeoutDuration = 0.1;
+    _labelPainterDetails.fadeoutDuration = 0.1;
+    
+    [_labelPainter fadeOut];
+    [_labelPainterDetails fadeOut];
     return  painterInfo;
 }
 

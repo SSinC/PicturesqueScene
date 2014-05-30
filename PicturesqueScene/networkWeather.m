@@ -91,8 +91,6 @@
             if([[addressString substringFromIndex:addressString.length - 1] isEqualToString:@"市"]){
                  targetName = [addressString substringToIndex:(addressString.length-1)];
             }
-            
-        
             PSLog(@"city name :%@",targetName);
             
             //寻找路径
@@ -114,7 +112,6 @@
             }
             
             FMDatabase *db=[FMDatabase databaseWithPath:sqlPath];
-            
             if (![db open]) {
                 PSLog(@"Init DB failed");
             }
@@ -157,24 +154,54 @@
             NSString *string3 = @".html";
             NSString *weatherURLString = @"";
             weatherURLString = [weatherURLString stringByAppendingFormat:@"%@%@%@",string1,cityNumber,string3];
-            
             PSLog(@"URL is :%@",weatherURLString);
             
             [strongSelf getWeather:weatherURLString];
             
+            
+            NSString *string4 = @"http://www.weather.com.cn/data/cityinfo/";
+            NSString *weatherURLString1 = [NSString stringWithFormat:@"%@%@%@",string4,cityNumber,string3];
+            PSLog(@"URL is :%@",weatherURLString1);
+            
+            [strongSelf getWeather:weatherURLString1];
         });//end of dispatch_async
         
     }];//end of getCity
 }
 
-// upper and down temperature HZ http://www.weather.com.cn/data/cityinfo/101210101.html
-// {"weatherinfo":{"city":"杭州","cityid":"101210101","temp1":"22℃","temp2":"17℃","weather":"阵雨转阴","img1":"d3.gif","img2":"n2.gif","ptime":"11:00"}}
-// details of weather HZ        http://www.weather.com.cn/data/sk/101210101.html
-// {"weatherinfo":{"city":"杭州","cityid":"101210101","temp":"20","WD":"东南风","WS":"1级","SD":"68%","WSE":"1","time":"13:25","isRadar":"1","Radar":"JC_RADAR_AZ9571_JB"}}
-
-- (NSString *)getWeather:(NSString *)URLString
+/* upper and down temperature HZ http://www.weather.com.cn/data/cityinfo/101210101.html
+jsonData {
+    "weatherinfo" : {
+        "img2" : "n2.gif",
+        "city" : "杭州",
+        "cityid" : "101210101",
+        "temp1" : "32℃",
+        "weather" : "多云转阴",
+        "img1" : "d1.gif",
+        "ptime" : "11:00",
+        "temp2" : "22℃"
+    }
+}
+ 
+ details of weather HZ        http://www.weather.com.cn/data/sk/101210101.html
+ jsonData {
+     "weatherinfo" : {
+     "city" : "杭州",
+     "cityid" : "101210101",
+     "SD" : "50%",
+     "WS" : "3级",
+     "WSE" : "3",
+     "time" : "12:45",
+     "WD" : "南风",
+     "isRadar" : "1",
+     "Radar" : "JC_RADAR_AZ9571_JB",
+     "temp" : "30"
+     }
+ }
+*/
+- (BOOL)getWeather:(NSString *)URLString
 {
-    if(![CheckNetwork isExistenceNetwork]) return nil;
+    if(![CheckNetwork isExistenceNetwork]) return NO;
     
     networkWeather *strongSelf = _wself;
     
@@ -184,20 +211,13 @@
     //    NSData *received1 = [NSURLConnection sendSynchronousRequest:request1 returningResponse:nil error:nil];
     
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    __block NSString *text0,*text1,*text2,*text3,*text4,*text5,*text6,*text7,*text8,*text9;
     
-    //        NSString *text8 = [json1 objectForKey:[keyArray1 objectAtIndex:8]];
-    //        NSString *text9 = [json1 objectForKey:[keyArray1 objectAtIndex:9]];
+    __block NSDictionary *json;
     
     [NSURLConnection sendAsynchronousRequest:request1 queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError){
         
-        NSDictionary *json;
         if(data){
-            
-           json = [NSJSONSerialization
-                               JSONObjectWithData:data
-                                          options:kNilOptions
-                                            error:&connectionError];
+           json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&connectionError];
         }else{
             json = nil;
         }
@@ -217,67 +237,47 @@
         PSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
         
         NSDictionary *json1 = [json objectForKey:[[json allKeys] objectAtIndex:0]];
-        NSArray *keyArray1 = [json1 allKeys];
-        text0 = [json1 objectForKey:[keyArray1 objectAtIndex:0]];
-        text1 = [json1 objectForKey:[keyArray1 objectAtIndex:1]];
-        text2 = [json1 objectForKey:[keyArray1 objectAtIndex:2]];
-        text3 = [json1 objectForKey:[keyArray1 objectAtIndex:3]];
-        text4 = [json1 objectForKey:[keyArray1 objectAtIndex:4]];
-        text5 = [json1 objectForKey:[keyArray1 objectAtIndex:5]];
-        text6 = [json1 objectForKey:[keyArray1 objectAtIndex:6]];
-        text7 = [json1 objectForKey:[keyArray1 objectAtIndex:7]];
-        //        text8 = [json1 objectForKey:[keyArray1 objectAtIndex:8]];
-        //        text9 = [json1 objectForKey:[keyArray1 objectAtIndex:9]];
         
-        //         PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
-        //         PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ",text0,text1,text2,text3,text4,text5,text6,text7);
-        
+        NSDictionary *sendDick;
+        NSArray      *sendArray;
         NSString *currentTemp = [json1 objectForKey:@"temp"];
-        NSString *humidity    = [json1 objectForKey:@"SD"];
-        NSString *cityID      = [json1 objectForKey:@"cityid"];
-        NSArray  *array       = @[currentTemp,humidity,cityID];
+        [_userDefaults setObject:currentTemp forKey:PSLastCurrentTemp];
         
-        [_userDefaults setObject:text4 forKey:PSLastCurrentTemp];
-        if ([strongSelf.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
-            _sendWeatherInfoCompleted = [strongSelf.delegate gotWeatherInfo:array];
+        if(currentTemp){
+            NSString *humidity    = [json1 objectForKey:@"SD"];
+            NSString *cityID      = [json1 objectForKey:@"cityid"];
+            NSString *windPower   = [json1 objectForKey:@"WS"];
+            [_userDefaults setObject:humidity forKey:PSLastHumidity];
+            [_userDefaults setObject:windPower forKey:PSLastWindPower];
+            
+            sendArray = @[currentTemp,humidity,windPower,cityID];
+            sendDick  = @{@"currentTemp":currentTemp,@"humidity":humidity,@"windPower":windPower,@"cityID":cityID};
+        }else{
+            NSString *maxTemp     = [json1 objectForKey:@"temp1"];
+            NSString *minTemp     = [json1 objectForKey:@"temp2"];
+            NSString *updatedTime = [json1 objectForKey:@"ptime"];
+            NSString *weather     = [json1 objectForKey:@"weather"];
+            [_userDefaults setObject:weather forKey:PSLastMainWeather];
+            [_userDefaults setObject:maxTemp forKey:PSLastMaxTemp];
+            [_userDefaults setObject:minTemp forKey:PSLastMinTemp];
+            [_userDefaults setObject:updatedTime forKey:PSLastUpdatedTime];
+            
+            sendArray = @[weather,maxTemp,minTemp,updatedTime];
+            sendDick  = @{@"mainWeather":weather,@"maxTemp":maxTemp,@"minTemp":minTemp,@"updatedTime":updatedTime};
         }
+        
+        if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
+            _sendWeatherInfoCompleted = [strongSelf.delegate gotWeatherInfo:sendDick];
+        }
+        
     }];
     
+    if(json){
+        return YES;
+    }else {
+        return NO;
+    }
     
-    //     NSError* error;
-    //    NSDictionary* json = [NSJSONSerialization
-    //                          JSONObjectWithData:received1 //1
-    //                          options:kNilOptions
-    //                          error:&error];
-    //    if(nil == json){
-    //        PSLog(@"json is nil");
-    //    }
-    //
-    //    NSDictionary *json1 = [json valueForKey:[[json allKeys]objectAtIndex:0]];
-    //    NSArray * keyArray1 = [json1 allKeys];
-    //    PSLog(@"length: %i",keyArray1.count);
-    //    NSString *text0 = [json1 objectForKey:[keyArray1 objectAtIndex:0]];
-    //    NSString *text1 = [json1 objectForKey:[keyArray1 objectAtIndex:1]];
-    //    NSString *text2 = [json1 objectForKey:[keyArray1 objectAtIndex:2]];
-    //    NSString *text3 = [json1 objectForKey:[keyArray1 objectAtIndex:3]];
-    //    NSString *text4 = [json1 objectForKey:[keyArray1 objectAtIndex:4]];
-    //    NSString *text5 = [json1 objectForKey:[keyArray1 objectAtIndex:5]];
-    //    NSString *text6 = [json1 objectForKey:[keyArray1 objectAtIndex:6]];
-    //    NSString *text7 = [json1 objectForKey:[keyArray1 objectAtIndex:7]];
-    //    NSString *text8 = [json1 objectForKey:[keyArray1 objectAtIndex:8]];
-    //    NSString *text9 = [json1 objectForKey:[keyArray1 objectAtIndex:9]];
-    //
-    ////    JSONDecoder * jd = [[JSONDecoder alloc]init];
-    ////    NSDictionary * result = [jd objectWithData:received1];
-    ////    NSDictionary * a = [result valueForKey:[[result allKeys]objectAtIndex:0]];
-    ////    NSArray * keyArray = [a allKeys];
-    ////    NSString *text1 = [a objectForKey:[keyArray objectAtIndex:6]];
-    ////
-    ////    NSString *text2 = [a objectForKey:[keyArray objectAtIndex:0]];
-    //
-    //    PSLog(@"weather info: %@, %@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@ ,%@",text0,text1,text2,text3,text4,text5,text6,text7,text8,text9);
-    
-    return text4;
 }
 
 

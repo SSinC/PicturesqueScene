@@ -10,7 +10,7 @@
 
 @protocol weatherDelegate <NSObject>
 @required
-- (BOOL)gotWeatherInfo:(NSArray *)weather;
+- (BOOL)gotWeatherInfo:(NSDictionary *)weather;
 @end
 
 
@@ -25,5 +25,5 @@
  ****************************/
 - (void)obtainWeaterInfoLocationBased;
 
-- (NSString *)getWeather:(NSString *)URLString;
+- (BOOL)getWeather:(NSString *)URLString;
 @end

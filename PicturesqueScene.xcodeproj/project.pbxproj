@@ -72,6 +72,7 @@
 		F623EEDA192F394200FD505E /* TSMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F623EED8192F394200FD505E /* TSMessageView.m */; };
 		F623EEDD192F3A2100FD505E /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = F623EEDC192F3A2100FD505E /* HexColor.m */; };
 		F623EEE019371B7E00FD505E /* weatherViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F623EEDF19371B7E00FD505E /* weatherViewContainer.m */; };
+		F623EEE31938561700FD505E /* RQShineLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F623EEE21938561700FD505E /* RQShineLabel.m */; };
 		F62D112A18FE78E80041CEFE /* networkWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = F62D112918FE78E80041CEFE /* networkWeather.m */; };
 		F62D112E18FF6CCB0041CEFE /* weatherData.m in Sources */ = {isa = PBXBuildFile; fileRef = F62D112D18FF6CCB0041CEFE /* weatherData.m */; };
 		F62D113C190766310041CEFE /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = F62D113B190766310041CEFE /* FXBlurView.m */; };
@@ -276,6 +277,8 @@
 		F623EEDC192F3A2100FD505E /* HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexColor.m; sourceTree = "<group>"; };
 		F623EEDE19371B7E00FD505E /* weatherViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = weatherViewContainer.h; sourceTree = "<group>"; };
 		F623EEDF19371B7E00FD505E /* weatherViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = weatherViewContainer.m; sourceTree = "<group>"; };
+		F623EEE11938561700FD505E /* RQShineLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RQShineLabel.h; sourceTree = "<group>"; };
+		F623EEE21938561700FD505E /* RQShineLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RQShineLabel.m; sourceTree = "<group>"; };
 		F62D112818FE78E80041CEFE /* networkWeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = networkWeather.h; sourceTree = "<group>"; };
 		F62D112918FE78E80041CEFE /* networkWeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = networkWeather.m; sourceTree = "<group>"; };
 		F62D112C18FF6CCB0041CEFE /* weatherData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = weatherData.h; sourceTree = "<group>"; };
@@ -622,6 +625,8 @@
 		F62D1139190766170041CEFE /* UI_lib */ = {
 			isa = PBXGroup;
 			children = (
+				F623EEE11938561700FD505E /* RQShineLabel.h */,
+				F623EEE21938561700FD505E /* RQShineLabel.m */,
 				F623EEAB192F388300FD505E /* TSMessages */,
 				F62D113A190766310041CEFE /* FXBlurView.h */,
 				F62D113B190766310041CEFE /* FXBlurView.m */,
@@ -1109,6 +1114,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F623EEE31938561700FD505E /* RQShineLabel.m in Sources */,
 				F69A08F318EEA6E600D88D85 /* ViewController.m in Sources */,
 				3D89099318F955640052C34C /* StanGlassScrollView.m in Sources */,
 				F623EEB2192F391000FD505E /* TSMessage.m in Sources */,

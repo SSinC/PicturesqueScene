@@ -11,13 +11,21 @@
 
 #define __IPHONE_OS_VERSION_SOFT_MAX_REQUIRED __IPHONE_7_0
 
+//Location Info
 #define  PSLastLongitude    @"PSLastLongitude"
 #define  PSLastLatitude     @"PSLastLatitude"
 #define  PSLastCity         @"PSLastCity"
 #define  PSLastAddress      @"PSLastAddress"
 #define  PSLastCityNumber   @"PSLastCityNumber"
+
+//Weather Info
 #define  PSLastMainWeather  @"PSLastMainWeather"
 #define  PSLastCurrentTemp  @"PSLastCurrentTemp"
+#define  PSLastHumidity     @"PSLastHumidity"
+#define  PSLastWindPower    @"PSLastWindPower"
+#define  PSLastMaxTemp      @"PSLastMaxTemp"
+#define  PSLastMinTemp      @"PSLastMinTemp"
+#define  PSLastUpdatedTime  @"PSLastUpdatedTime"
 
 #define ENABLE_LOGGING_DEBUG 1
 
