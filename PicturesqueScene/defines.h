@@ -19,13 +19,14 @@
 #define  PSLastCityNumber   @"PSLastCityNumber"
 
 //Weather Info
-#define  PSLastMainWeather  @"PSLastMainWeather"
-#define  PSLastCurrentTemp  @"PSLastCurrentTemp"
-#define  PSLastHumidity     @"PSLastHumidity"
-#define  PSLastWindPower    @"PSLastWindPower"
-#define  PSLastMaxTemp      @"PSLastMaxTemp"
-#define  PSLastMinTemp      @"PSLastMinTemp"
-#define  PSLastUpdatedTime  @"PSLastUpdatedTime"
+#define  PSLastMainWeather      @"PSLastMainWeather"
+#define  PSLastMainWeatherType  @"PSLastMainWeatherType"
+#define  PSLastCurrentTemp      @"PSLastCurrentTemp"
+#define  PSLastHumidity         @"PSLastHumidity"
+#define  PSLastWindPower        @"PSLastWindPower"
+#define  PSLastMaxTemp          @"PSLastMaxTemp"
+#define  PSLastMinTemp          @"PSLastMinTemp"
+#define  PSLastUpdatedTime      @"PSLastUpdatedTime"
 
 #define ENABLE_LOGGING_DEBUG 1
 

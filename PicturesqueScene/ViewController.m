@@ -143,6 +143,7 @@ typedef void (^blk) (void);
     UITestViewController *testController;
     
     __weak id           _wself;
+    NSUserDefaults      *_userDefault;
 }
 
 //-(void)loadView
@@ -159,7 +160,7 @@ typedef void (^blk) (void);
         self.view.frame = CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width);
     }
     _wself = self;
-    
+    _userDefault = [NSUserDefaults standardUserDefaults];
     /*************************************
      Netwokr weather instance
      *************************************/
@@ -287,8 +288,14 @@ typedef void (^blk) (void);
     cv.view.frame = CGRectMake(341,198,343,343);
     aboutUS1 = [[aboutUSView alloc]initWithFrame:CGRectMake(341,198,343,343) title:@"关于我们"  text:@"画境是... ..."];
 
+    NSInteger mainTemp = ((NSString *)[_userDefault objectForKey:PSLastCurrentTemp]).integerValue;
+    NSInteger upTemp   = ((NSString *)[_userDefault objectForKey:PSLastMaxTemp]).integerValue;
+    NSInteger downTemp = ((NSString *)[_userDefault objectForKey:PSLastMinTemp]).integerValue;
+    NSInteger humidity = ((NSString *)[_userDefault objectForKey:PSLastHumidity]).integerValue;
+    NSInteger wind     = ((NSString *)[_userDefault objectForKey:PSLastWindPower]).integerValue;
+    weatherType weatherType = ((NSNumber *)[_userDefault objectForKey:PSLastWindPower]).integerValue;
 
-    weatherDataItem *data1 = [[weatherDataItem alloc] initWithCity:@"杭州" weather:Sunny mainTemp:18 upTemp:22 downTemp:16 humidity:56 wind:12];
+    weatherDataItem *data1 = [[weatherDataItem alloc] initWithCity:@"杭州" weather:weatherType mainTemp:mainTemp upTemp:upTemp downTemp:downTemp humidity:humidity wind:wind];
     weatherInfoDetailView* pop1 = [[weatherInfoDetailView alloc]initWithFrame:CGRectMake(0, 0, 360, 360) withDataItem:data1];
     weatherHeaderView* headerView1 = [[weatherHeaderView alloc]initWithFrame:CGRectMake(725, 16, 291, 39) city:@"杭州" temperature:23 weather:Sunny];
     
@@ -297,13 +304,13 @@ typedef void (^blk) (void);
     container1.weatherInfoDetailView = pop1;
     [_viewContainerArray addObject:container1];
     
-    _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop1  headerView:headerView1 citySwitchView:cv.view infoView:aboutUS1 testViewController:nil];
+    _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop1  headerView:headerView1 citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."] testViewController:nil];
     
     weatherDataItem* data2 = [[weatherDataItem alloc]initWithCity:@"武汉" weather:Cloudy mainTemp:18 upTemp:22 downTemp:16 humidity:10 wind:14];
     weatherInfoDetailView* pop2 = [[weatherInfoDetailView alloc]initWithFrame:CGRectMake(0, 0, 360, 360) withDataItem:data2];
     weatherHeaderView* headerView2 = [[weatherHeaderView alloc]initWithFrame:CGRectMake(725, 16, 291, 39) city:@"武汉" temperature:18 weather:Cloudy];
     
-    _glassScrollView2 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"cloudy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"cloudy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop2  headerView:headerView2 citySwitchView:cv.view infoView:aboutUS1 testViewController:nil];
+    _glassScrollView2 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"cloudy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"cloudy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop2  headerView:headerView2 citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."] testViewController:nil];
     
     
     weatherDataItem* data3 = [[weatherDataItem alloc]initWithCity:@"悉尼" weather:Snowy mainTemp:-8 upTemp:-5 downTemp:-9 humidity:10 wind:14];
@@ -311,20 +318,20 @@ typedef void (^blk) (void);
     weatherInfoDetailView* pop3 = [[weatherInfoDetailView alloc]initWithFrame:CGRectMake(0, 0, 360, 360) withDataItem:data3];
     weatherHeaderView* headerView3 = [[weatherHeaderView alloc]initWithFrame:CGRectMake(725, 16, 291, 39) city:@"悉尼" temperature:-8 weather:Snowy];
     
-    _glassScrollView3 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"snowy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"snowy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop3  headerView:headerView3 citySwitchView:cv.view infoView:aboutUS1 testViewController:nil];
+    _glassScrollView3 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"snowy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"snowy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop3  headerView:headerView3 citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."] testViewController:nil];
 
     weatherDataItem* data4 = [[weatherDataItem alloc]initWithCity:@"深圳" weather:Rainy mainTemp:14 upTemp:16 downTemp:12 humidity:10 wind:14];
     weatherInfoDetailView* pop4 = [[weatherInfoDetailView alloc]initWithFrame:CGRectMake(0, 0, 360, 360) withDataItem:data4];
     weatherHeaderView* headerView4 = [[weatherHeaderView alloc]initWithFrame:CGRectMake(725, 16, 291, 39) city:@"深圳" temperature:14 weather:Rainy];
     
-    _glassScrollView4 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"rainy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"rainy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop4  headerView:headerView4 citySwitchView:cv.view infoView:aboutUS1 testViewController:nil];
+    _glassScrollView4 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"rainy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"rainy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop4  headerView:headerView4 citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."] testViewController:nil];
 
     weatherDataItem* data5 = [[weatherDataItem alloc]initWithCity:@"北京" weather:Foggy mainTemp:12 upTemp:14 downTemp:10 humidity:10 wind:14];
     weatherInfoDetailView* pop5 = [[weatherInfoDetailView alloc]initWithFrame:CGRectMake(0, 0, 360, 360) withDataItem:data5];
     weatherHeaderView* headerView5 = [[weatherHeaderView alloc]initWithFrame:CGRectMake(725, 16, 291, 39) city:@"深圳" temperature:12 weather:Foggy];
     
 
-    _glassScrollView5 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"foggy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"foggy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop5  headerView:headerView5 citySwitchView:cv.view infoView:aboutUS1 testViewController:nil];
+    _glassScrollView5 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"foggy_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"foggy_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:pop5  headerView:headerView5 citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."] testViewController:nil];
 
 //    _glassScrollView1 = [[StanGlassScrollView alloc] initWithFrame:self.view.frame BackgroundImage:[UIImage imageNamed:@"sunny_background"] BackgroundView:nil blurredImage:[UIImage imageNamed:@"sunny_background"] viewDistanceFromBottom:120 foregroundView:[self createForegroundViewWithMainWeather:mainWeather upWeather:upWeahter downWeather:downWeahter] popOverView:[self createPopOverViewWithFrame:CGRectZero city:@"杭州" image:@"sunny_big" mainTemp:23 upTemp:26 downTemp:10 humidity:10 wind:14 ]  headerView:[self headerViewWithCityName:@"杭州" temp:23 mainweather:sunny] citySwitchView:[self createCitySwitchViewWithFrame:CGRectMake(341,198,343,343) title:@"城市管理" cityArray:cityarray] infoView:[self createInfoViewWithFrame:CGRectMake(341,198,343,343) title:@"关于我们" text:@"画境是... ..."]];
 
@@ -448,8 +455,8 @@ typedef void (^blk) (void);
 //    sum(a);
 //    NSLog(@"array:%@",array);
 //    
-    [self testGlobalObj];
-     printf("global address: %p\n", &__globalString);
+//    [self testGlobalObj];
+//     printf("global address: %p\n", &__globalString);
 }
 
 NSString *__globalString = nil;
@@ -519,18 +526,19 @@ NSString *__globalString = nil;
         viewContainer.weatherDataItem.downTemperature = ((NSString *)weather[@"minTemp"]).intValue;
         
         NSString *mainWeather = (NSString *)weather[@"mainWeather"];
-        
-        if([mainWeather rangeOfString:@"晴"].length>0){
-            viewContainer.weatherDataItem.weather = Sunny;
-        }else if([mainWeather rangeOfString:@"雪"].length>0){
-            viewContainer.weatherDataItem.weather = Snowy;
-        }else if([mainWeather rangeOfString:@"雨"].length>0){
-            viewContainer.weatherDataItem.weather = Rainy;
-        }else if([mainWeather rangeOfString:@"阴"].length>0){
-            viewContainer.weatherDataItem.weather = Cloudy;
-        }else{
-            viewContainer.weatherDataItem.weather = Foggy;
-        }
+        viewContainer.weatherDataItem.weather = ((NSNumber *)weather[@"mainWeatherType"]).integerValue;
+
+//        if([mainWeather rangeOfString:@"晴"].length>0){
+//            viewContainer.weatherDataItem.weather = Sunny;
+//        }else if([mainWeather rangeOfString:@"雪"].length>0){
+//            viewContainer.weatherDataItem.weather = Snowy;
+//        }else if([mainWeather rangeOfString:@"雨"].length>0){
+//            viewContainer.weatherDataItem.weather = Rainy;
+//        }else if([mainWeather rangeOfString:@"阴"].length>0){
+//            viewContainer.weatherDataItem.weather = Cloudy;
+//        }else{
+//            viewContainer.weatherDataItem.weather = Foggy;
+//        }
         
         PSLog(@"mainWeather: %@", mainWeather);
     }
@@ -561,7 +569,6 @@ NSString *__globalString = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"viewScrolled" object:nil];
         
         double delayInSeconds = 1.0;
-//        __weak id wself = self;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         
         dispatch_after(popTime, dispatch_get_main_queue(), ^{

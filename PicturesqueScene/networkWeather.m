@@ -15,6 +15,7 @@
 #import "FMDatabaseAdditions.h"
 #import "LocationManager.h"
 #import "defines.h"
+#import "weatherData.h"
 
 @implementation networkWeather
 {
@@ -40,8 +41,8 @@
     if (self = [super init]) {
         _userDefaults = [NSUserDefaults standardUserDefaults];
         _wself        = self;
-        
     }
+    
     return self;
 }
 
@@ -224,11 +225,6 @@ jsonData {
         
         if(nil == json){
             PSLog(@"json is nil");
-            NSString *lastMainWeather = [_userDefaults objectForKey:PSLastMainWeather];
-            NSArray  *array       = @[lastMainWeather];
-            if ([strongSelf.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
-                [strongSelf.delegate gotWeatherInfo:array];
-            }
             return ;
         }
         
@@ -240,31 +236,8 @@ jsonData {
         
         NSDictionary *sendDick;
         NSArray      *sendArray;
-        NSString *currentTemp = [json1 objectForKey:@"temp"];
-        [_userDefaults setObject:currentTemp forKey:PSLastCurrentTemp];
         
-        if(currentTemp){
-            NSString *humidity    = [json1 objectForKey:@"SD"];
-            NSString *cityID      = [json1 objectForKey:@"cityid"];
-            NSString *windPower   = [json1 objectForKey:@"WS"];
-            [_userDefaults setObject:humidity forKey:PSLastHumidity];
-            [_userDefaults setObject:windPower forKey:PSLastWindPower];
-            
-            sendArray = @[currentTemp,humidity,windPower,cityID];
-            sendDick  = @{@"currentTemp":currentTemp,@"humidity":humidity,@"windPower":windPower,@"cityID":cityID};
-        }else{
-            NSString *maxTemp     = [json1 objectForKey:@"temp1"];
-            NSString *minTemp     = [json1 objectForKey:@"temp2"];
-            NSString *updatedTime = [json1 objectForKey:@"ptime"];
-            NSString *weather     = [json1 objectForKey:@"weather"];
-            [_userDefaults setObject:weather forKey:PSLastMainWeather];
-            [_userDefaults setObject:maxTemp forKey:PSLastMaxTemp];
-            [_userDefaults setObject:minTemp forKey:PSLastMinTemp];
-            [_userDefaults setObject:updatedTime forKey:PSLastUpdatedTime];
-            
-            sendArray = @[weather,maxTemp,minTemp,updatedTime];
-            sendDick  = @{@"mainWeather":weather,@"maxTemp":maxTemp,@"minTemp":minTemp,@"updatedTime":updatedTime};
-        }
+        [strongSelf handleData:json1 toDick:sendDick array:sendArray];
         
         if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
             _sendWeatherInfoCompleted = [strongSelf.delegate gotWeatherInfo:sendDick];
@@ -280,9 +253,60 @@ jsonData {
     
 }
 
+/*********
+  Analysis Data and send data to UI
+ *********/
+- (void)handleData:(NSDictionary *)data toDick:(NSDictionary *)sendDick array:(NSArray *)sendArray
+{
+    NSString *currentTemp = [data objectForKey:@"temp"];
+    [_userDefaults setObject:currentTemp forKey:PSLastCurrentTemp];
+    
+    if(currentTemp){
+        NSString *humidity    = [data objectForKey:@"SD"];
+        NSString *cityID      = [data objectForKey:@"cityid"];
+        NSString *windPower   = [data objectForKey:@"WS"];
+        [_userDefaults setObject:humidity forKey:PSLastHumidity];
+        [_userDefaults setObject:windPower forKey:PSLastWindPower];
+        
+        sendArray = @[currentTemp,humidity,windPower,cityID];
+        sendDick  = @{@"currentTemp":currentTemp,@"humidity":humidity,@"windPower":windPower,@"cityID":cityID};
+    }else{
+        NSString *maxTemp     = [data objectForKey:@"temp1"];
+        NSString *minTemp     = [data objectForKey:@"temp2"];
+        NSString *updatedTime = [data objectForKey:@"ptime"];
+        NSString *weather     = [data objectForKey:@"weather"];
+        [_userDefaults setObject:weather forKey:PSLastMainWeather];
+        [_userDefaults setObject:maxTemp forKey:PSLastMaxTemp];
+        [_userDefaults setObject:minTemp forKey:PSLastMinTemp];
+        [_userDefaults setObject:updatedTime forKey:PSLastUpdatedTime];
+        
+        NSNumber *weahterType;
+        if([weather rangeOfString:@"雪"].length>0){
+            weahterType = [NSNumber numberWithInteger:Snowy];
+            [_userDefaults setObject:weahterType forKey:PSLastMainWeatherType];
+        }else if([weather rangeOfString:@"雨"].length>0){
+            weahterType = [NSNumber numberWithInteger:Rainy];
+            [_userDefaults setObject:weahterType forKey:PSLastMainWeatherType];
+        }else if([weather rangeOfString:@"阴"].length>0 || [weather rangeOfString:@"云"].length>0){
+            weahterType = [NSNumber numberWithInteger:Cloudy];
+            [_userDefaults setObject:weahterType forKey:PSLastMainWeatherType];
+        }else if([weather rangeOfString:@"晴"].length>0){
+            weahterType = [NSNumber numberWithInteger:Sunny];
+            [_userDefaults setObject:weahterType forKey:PSLastMainWeatherType];
+        }
+        else{
+            weahterType = [NSNumber numberWithInteger:Foggy];
+            [_userDefaults setObject:weahterType forKey:PSLastMainWeatherType];
+        }
+        
+        
+        sendArray = @[weather,maxTemp,minTemp,updatedTime];
+        sendDick  = @{@"mainWeather":weather,@"mainWeatherType":weahterType,@"maxTemp":maxTemp,@"minTemp":minTemp,@"updatedTime":updatedTime};
+    }
+}
 
 
--(void)showCityNameResponse:(NSString *)cityName
+- (void)showCityNameResponse:(NSString *)cityName
 {
     [[AFWeather sharedClient] fetchForecastOfLocationWithName:cityName andCompletionBlock:^(NSDictionary *response, NSError *error) {
         if (!error) {
