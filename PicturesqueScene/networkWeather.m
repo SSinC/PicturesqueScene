@@ -92,8 +92,7 @@
                  targetName = [addressString substringToIndex:(addressString.length-1)];
             }
             PSLog(@"city name :%@",targetName);
-            
-            //寻找路径
+                        //寻找路径
             NSString *doc_path=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
             //数据库路径
             NSString *sqlPath=[doc_path stringByAppendingPathComponent:@"cityname.sqlite"];

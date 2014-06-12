@@ -450,6 +450,16 @@ typedef void (^blk) (void);
 //    
     [self testGlobalObj];
      printf("global address: %p\n", &__globalString);
+    
+    CAKeyframeAnimation *animation = [CAKeyframeAnimation animation];
+    animation.keyPath = @"position.x";
+    animation.values = @[ @0, @10, @-10, @10, @0 ];
+    animation.keyTimes = @[ @0, @(1 / 6.0), @(3 / 6.0), @(5 / 6.0), @1 ];
+    animation.duration = 0.4;
+    
+    animation.additive = YES;
+    
+    [self.view.layer addAnimation:animation forKey:@"shake"];
 }
 
 NSString *__globalString = nil;
