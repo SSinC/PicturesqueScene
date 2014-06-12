@@ -45,10 +45,11 @@
 
 
 typedef NS_ENUM(NSUInteger, weatherType) {
-    
     Sunny = 0,
-    Cloudy,
     Rainy,
     Snowy,
     Foggy,
+    Cloudy,
 };
+
+
