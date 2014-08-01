@@ -455,6 +455,7 @@ typedef void (^blk) (void);
 //    sum(a);
 //    NSLog(@"array:%@",array);
 //    
+
 //    [self testGlobalObj];
 //     printf("global address: %p\n", &__globalString);
 }
