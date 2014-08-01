@@ -90,10 +90,9 @@
             NSString *targetName = addressString;
             
             if([[addressString substringFromIndex:addressString.length - 1] isEqualToString:@"市"]){
-                 targetName = [addressString substringToIndex:(addressString.length-1)];
+                targetName = [addressString substringToIndex:(addressString.length-1)];
             }
             PSLog(@"city name :%@",targetName);
-            
             //寻找路径
             NSString *doc_path=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
             //数据库路径
@@ -144,8 +143,11 @@
             
             if (cityNumber == nil) {
                 PSLog(@"city Number is Nil,uses PSLastCityNumber");
-//                cityNumber = @"101210101";
+                //                cityNumber = @"101210101";
                 cityNumber = [_userDefaults objectForKey:PSLastCityNumber];
+                if(nil == cityNumber){
+                    cityNumber = @"101210101";
+                }
             }else{
                 PSLog(@"cityNumber:%@",cityNumber);
                 [_userDefaults setObject:cityNumber forKey:PSLastCityNumber];
@@ -171,35 +173,35 @@
 }
 
 /* upper and down temperature HZ http://www.weather.com.cn/data/cityinfo/101210101.html
-jsonData {
-    "weatherinfo" : {
-        "img2" : "n2.gif",
-        "city" : "杭州",
-        "cityid" : "101210101",
-        "temp1" : "32℃",
-        "weather" : "多云转阴",
-        "img1" : "d1.gif",
-        "ptime" : "11:00",
-        "temp2" : "22℃"
-    }
-}
+ jsonData {
+ "weatherinfo" : {
+ "img2" : "n2.gif",
+ "city" : "杭州",
+ "cityid" : "101210101",
+ "temp1" : "32℃",
+ "weather" : "多云转阴",
+ "img1" : "d1.gif",
+ "ptime" : "11:00",
+ "temp2" : "22℃"
+ }
+ }
  
  details of weather HZ        http://www.weather.com.cn/data/sk/101210101.html
  jsonData {
-     "weatherinfo" : {
-     "city" : "杭州",
-     "cityid" : "101210101",
-     "SD" : "50%",
-     "WS" : "3级",
-     "WSE" : "3",
-     "time" : "12:45",
-     "WD" : "南风",
-     "isRadar" : "1",
-     "Radar" : "JC_RADAR_AZ9571_JB",
-     "temp" : "30"
-     }
+ "weatherinfo" : {
+ "city" : "杭州",
+ "cityid" : "101210101",
+ "SD" : "50%",
+ "WS" : "3级",
+ "WSE" : "3",
+ "time" : "12:45",
+ "WD" : "南风",
+ "isRadar" : "1",
+ "Radar" : "JC_RADAR_AZ9571_JB",
+ "temp" : "30"
  }
-*/
+ }
+ */
 - (BOOL)getWeather:(NSString *)URLString
 {
     if(![CheckNetwork isExistenceNetwork]) return NO;
@@ -218,7 +220,7 @@ jsonData {
     [NSURLConnection sendAsynchronousRequest:request1 queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError){
         
         if(data){
-           json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&connectionError];
+            json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&connectionError];
         }else{
             json = nil;
         }
@@ -237,7 +239,7 @@ jsonData {
         NSDictionary *sendDick;
         NSArray      *sendArray;
         
-        [strongSelf handleData:json1 toDick:sendDick array:sendArray];
+        sendDick = [strongSelf handleData:json1 toDick:sendDick array:sendArray];
         
         if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(gotWeatherInfo:)]) {
             _sendWeatherInfoCompleted = [strongSelf.delegate gotWeatherInfo:sendDick];
@@ -254,9 +256,9 @@ jsonData {
 }
 
 /*********
-  Analysis Data and send data to UI
+ Analysis Data and send data to UI
  *********/
-- (void)handleData:(NSDictionary *)data toDick:(NSDictionary *)sendDick array:(NSArray *)sendArray
+- (NSDictionary *)handleData:(NSDictionary *)data toDick:(NSDictionary *)sendDick array:(NSArray *)sendArray
 {
     NSString *currentTemp = [data objectForKey:@"temp"];
     [_userDefaults setObject:currentTemp forKey:PSLastCurrentTemp];
@@ -303,6 +305,7 @@ jsonData {
         sendArray = @[weather,maxTemp,minTemp,updatedTime];
         sendDick  = @{@"mainWeather":weather,@"mainWeatherType":weahterType,@"maxTemp":maxTemp,@"minTemp":minTemp,@"updatedTime":updatedTime};
     }
+    return  sendDick;
 }
 
 

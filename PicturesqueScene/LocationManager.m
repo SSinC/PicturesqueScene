@@ -46,7 +46,7 @@
         self.lastAddress=[standard objectForKey:PSLastAddress];
     }
     return self;
-
+    
 }
 
 - (instancetype)init
@@ -66,7 +66,7 @@
 //    self = [super init];
 //    if (self) {
 //        NSUserDefaults *standard = [NSUserDefaults standardUserDefaults];
-//        
+//
 //        float longitude = [standard floatForKey:MMLastLongitude];
 //        float latitude = [standard floatForKey:MMLastLatitude];
 //        self.longitude = longitude;
@@ -171,7 +171,7 @@
         _mapView = nil;
     }
     
-//mapView 必须在主线程种创建
+    //mapView 必须在主线程种创建
     __weak id wself = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         LocationManager *strongSelf = wself;
@@ -180,9 +180,9 @@
         _mapView.showsUserLocation = YES;
     });
     
-//    _mapView = [[MKMapView alloc] init];
-//    _mapView.delegate = self;
-//    _mapView.showsUserLocation = YES;
+    //    _mapView = [[MKMapView alloc] init];
+    //    _mapView.delegate = self;
+    //    _mapView.showsUserLocation = YES;
 }
 
 -(void)stopLocation
@@ -196,6 +196,18 @@
     PSLog(@"didFailToLocateUserWithError");
     [TSMessage showNotificationWithTitle:@"Warning" subtitle:@"There is a problem getting your location automatically.Please choose your city if you want" type:TSMessageNotificationTypeWarning];
     [self stopLocation];
+    
+    NSUserDefaults *standard = [NSUserDefaults standardUserDefaults];
+    if (_cityBlock) {
+        NSString *lastCity = [standard objectForKey:PSLastCity];
+        if(nil == lastCity){
+            _cityBlock(@"杭州");
+        }else{
+            _cityBlock([standard objectForKey:PSLastCity]);
+        }
+        _cityBlock = nil;
+    }
+    
 }
 
 @end
